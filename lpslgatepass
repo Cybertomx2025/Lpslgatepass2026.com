@@ -1,0 +1,1645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limburg Power Solutions — Gate Pass System</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-2: #141414;
+    --panel: #1a1a1a;
+    --panel-2: #222;
+    --border: #2a2a2a;
+    --fg: #f5f5f5;
+    --muted: #9a9a9a;
+    --accent: #dc2626;
+    --accent-2: #ef4444;
+    --accent-dim: #7f1d1d;
+    --gold: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family:'Inter',sans-serif; overflow-x:hidden; }
+  .font-display { font-family:'Rajdhani',sans-serif; letter-spacing:0.02em; }
+
+  .grid-bg-dense {
+    background-image: linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .login-bg {
+    background: radial-gradient(ellipse at 20% 30%,rgba(220,38,38,0.15),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(220,38,38,0.1),transparent 50%),#050505;
+    position:relative; overflow:hidden;
+  }
+  .login-bg::before {
+    content:''; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(220,38,38,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(220,38,38,0.06) 1px,transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center,black 30%,transparent 80%);
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove { from{background-position:0 0,0 0} to{background-position:60px 60px,60px 60px} }
+
+  .lightning-flash {
+    position:absolute; inset:0;
+    background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.08) 50%,transparent 70%);
+    opacity:0; pointer-events:none; animation:flash 8s infinite;
+  }
+  @keyframes flash { 0%,92%,100%{opacity:0} 93%{opacity:0.6} 94%{opacity:0} 95%{opacity:0.4} 96%{opacity:0} }
+
+  .field {
+    background:rgba(255,255,255,0.03); border:1px solid var(--border); color:var(--fg);
+    padding:12px 16px; border-radius:6px; width:100%; font-family:'Inter',sans-serif;
+    transition:all 0.2s ease; font-size:14px;
+  }
+  .field:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(220,38,38,0.15),inset 0 0 20px rgba(220,38,38,0.05); background:rgba(255,255,255,0.05); }
+  .field::placeholder { color:#555; }
+
+  .field-light { background:white; border:1px solid #ccc; color:#111; }
+  .field-light:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(220,38,38,0.15); }
+
+  .btn-primary {
+    background:linear-gradient(135deg,var(--accent),var(--accent-dim)); color:white; border:none;
+    padding:12px 24px; border-radius:6px; font-weight:600; font-family:'Rajdhani',sans-serif;
+    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease;
+    position:relative; overflow:hidden;
+  }
+  .btn-primary::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition:left 0.5s ease; }
+  .btn-primary:hover::before { left:100%; }
+  .btn-primary:hover { box-shadow:0 0 24px rgba(220,38,38,0.5); transform:translateY(-1px); }
+  .btn-primary:active { transform:translateY(0); }
+
+  .btn-ghost {
+    background:transparent; color:var(--fg); border:1px solid var(--border);
+    padding:10px 20px; border-radius:6px; font-weight:500; font-family:'Rajdhani',sans-serif;
+    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease;
+  }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--accent-2); background:rgba(220,38,38,0.05); }
+
+  .btn-danger { background:#7f1d1d; color:white; border:none; padding:8px 16px; border-radius:6px; font-weight:600; font-family:'Rajdhani',sans-serif; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease; }
+  .btn-danger:hover { background:#991b1b; }
+
+  .sidebar-item {
+    display:flex; align-items:center; gap:12px; padding:14px 20px; color:var(--muted);
+    cursor:pointer; border-left:3px solid transparent; transition:all 0.2s ease;
+    font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.04em; font-size:15px;
+  }
+  .sidebar-item:hover { color:var(--fg); background:rgba(220,38,38,0.05); }
+  .sidebar-item.active { color:var(--accent-2); background:linear-gradient(90deg,rgba(220,38,38,0.12),transparent); border-left-color:var(--accent); }
+
+  .stat-card {
+    background:linear-gradient(135deg,var(--panel) 0%,var(--bg-2) 100%);
+    border:1px solid var(--border); border-radius:12px; padding:24px;
+    position:relative; overflow:hidden; transition:all 0.3s ease;
+  }
+  .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:0; transition:opacity 0.3s ease; }
+  .stat-card:hover { border-color:var(--accent-dim); transform:translateY(-2px); }
+  .stat-card:hover::before { opacity:1; }
+
+  .data-table { width:100%; border-collapse:collapse; }
+  .data-table th { background:var(--bg-2); color:var(--accent-2); text-align:left; padding:12px 16px; font-family:'Rajdhani',sans-serif; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; font-size:13px; border-bottom:1px solid var(--border); }
+  .data-table td { padding:12px 16px; border-bottom:1px solid var(--border); color:var(--fg); font-size:14px; }
+  .data-table tr:hover { background:rgba(220,38,38,0.04); }
+
+  .page { animation:fadeUp 0.4s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .toast {
+    position:fixed; bottom:32px; right:32px; background:var(--panel); border:1px solid var(--accent);
+    color:var(--fg); padding:16px 24px; border-radius:8px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(220,38,38,0.2);
+    z-index:1000; display:flex; align-items:center; gap:12px;
+    transform:translateX(120%); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.03em;
+  }
+  .toast.show { transform:translateX(0); }
+
+  .gp-doc { background:white; color:#111; width:210mm; min-height:297mm; margin:0 auto; padding:18mm 16mm; box-shadow:0 30px 80px rgba(0,0,0,0.6); font-family:'Inter',sans-serif; position:relative; }
+  .gp-doc .gp-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #111; padding-bottom:14px; margin-bottom:6px; }
+  .gp-doc .gp-title-bar { display:flex; justify-content:space-between; align-items:center; background:#111; color:white; padding:8px 16px; margin:12px 0 18px; border-left:6px solid var(--accent); }
+  .gp-doc .gp-field-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+  .gp-doc .gp-field { border:1px solid #999; padding:6px 10px; min-height:34px; font-size:13px; background:#fff; position:relative; }
+  .gp-doc .gp-field-label { position:absolute; top:-8px; left:8px; background:white; padding:0 4px; font-size:10px; text-transform:uppercase; font-weight:600; color:#555; letter-spacing:0.05em; }
+  .gp-doc .gp-items-table { width:100%; border-collapse:collapse; margin-top:8px; }
+  .gp-doc .gp-items-table th { background:#f0f0f0; border:1px solid #555; padding:8px 6px; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; }
+  .gp-doc .gp-items-table td { border:1px solid #555; padding:8px 6px; font-size:13px; min-height:30px; }
+  .gp-doc .gp-signature-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:40px; }
+  .gp-doc .gp-signature { text-align:center; }
+  .gp-doc .gp-sign-line { border-top:1px solid #111; margin-top:40px; padding-top:6px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; }
+  .gp-doc .gp-footer { margin-top:30px; padding-top:12px; border-top:1px solid #999; display:flex; justify-content:space-between; font-size:10px; color:#666; }
+  .gp-doc .gp-type-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border:1px solid #111; font-size:11px; font-weight:600; text-transform:uppercase; margin-right:8px; }
+  .gp-doc .gp-type-badge.checked { background:var(--accent); color:white; border-color:var(--accent); }
+
+  @media print {
+    body * { visibility:hidden; }
+    #printArea, #printArea * { visibility:visible; }
+    #printArea { position:absolute; left:0; top:0; width:100%; margin:0; padding:0; }
+    .gp-doc { box-shadow:none; margin:0; width:100%; min-height:auto; padding:12mm; }
+    @page { size:A4; margin:0; }
+  }
+
+  ::-webkit-scrollbar { width:10px; height:10px; }
+  ::-webkit-scrollbar-track { background:var(--bg-2); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:5px; }
+  ::-webkit-scrollbar-thumb:hover { background:var(--accent-dim); }
+
+  .check-pill {
+    display:inline-flex; align-items:center; gap:8px; padding:8px 16px;
+    border:1px solid var(--border); border-radius:999px; cursor:pointer;
+    transition:all 0.2s ease; font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.04em;
+  }
+  .check-pill.active { background:rgba(220,38,38,0.15); border-color:var(--accent); color:var(--accent-2); }
+
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .modal-content { background:var(--panel); border:1px solid var(--border); border-radius:16px; width:100%; max-width:460px; max-height:90vh; overflow-y:auto; animation:fadeUp 0.3s ease; }
+
+  .pulse-dot { width:8px; height:8px; background:var(--accent); border-radius:50%; box-shadow:0 0 0 0 var(--accent); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(220,38,38,0.7)} 70%{box-shadow:0 0 0 12px rgba(220,38,38,0)} 100%{box-shadow:0 0 0 0 rgba(220,38,38,0)} }
+
+  .lightning-icon { display:inline-block; animation:flicker 4s infinite; }
+  @keyframes flicker { 0%,100%,50%{opacity:1} 48%,52%{opacity:0.3} 49%,51%{opacity:1} }
+
+  .slide-in { animation:slideIn 0.3s ease; }
+  @keyframes slideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+
+  .header-glow { background:linear-gradient(180deg,rgba(220,38,38,0.08),transparent); }
+
+  .login-tab { padding:10px 24px; font-family:'Rajdhani',sans-serif; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; font-size:14px; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted); transition:all 0.2s ease; }
+  .login-tab:hover { color:var(--fg); }
+  .login-tab.active { color:var(--accent-2); border-bottom-color:var(--accent); }
+
+  .role-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; font-family:'Rajdhani',sans-serif; }
+  .role-badge.admin { background:rgba(220,38,38,0.2); color:#ef4444; border:1px solid rgba(220,38,38,0.3); }
+  .role-badge.user { background:rgba(59,130,246,0.2); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
+
+  .logo-img { height:80px; border-radius:8px; box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05); }
+  .logo-img-sm { height:38px; border-radius:4px; }
+</style>
+</head>
+<body>
+
+<!-- ====================== LOGIN PAGE ====================== -->
+<div id="loginPage" class="login-bg min-h-screen flex items-center justify-center p-6 relative">
+  <div class="lightning-flash"></div>
+  <div class="absolute top-0 left-0 w-40 h-40 border-t-2 border-l-2 border-red-600/30"></div>
+  <div class="absolute top-0 right-0 w-40 h-40 border-t-2 border-r-2 border-red-600/30"></div>
+  <div class="absolute bottom-0 left-0 w-40 h-40 border-b-2 border-l-2 border-red-600/30"></div>
+  <div class="absolute bottom-0 right-0 w-40 h-40 border-b-2 border-r-2 border-red-600/30"></div>
+
+  <div class="relative z-10 w-full max-w-md">
+    <!-- Logo Image -->
+    <div class="flex justify-center mb-6">
+      <img src="https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8" alt="Limburg Power Solutions" class="logo-img">
+    </div>
+
+    <div class="text-center mb-6">
+      <h1 class="font-display text-3xl font-bold tracking-wider text-white">GATE PASS SYSTEM</h1>
+      <div class="flex items-center justify-center gap-2 mt-2 text-red-400 text-sm font-display tracking-widest">
+        <span class="pulse-dot"></span>
+        <span>SECURE PORTAL ACCESS</span>
+      </div>
+    </div>
+
+    <!-- Role Tabs -->
+    <div class="flex border-b border-gray-800 mb-0">
+      <div class="login-tab active flex-1 text-center" data-role="admin" onclick="switchLoginTab('admin')">
+        <i class="fas fa-shield-alt mr-1"></i> Admin
+      </div>
+      <div class="login-tab flex-1 text-center" data-role="user" onclick="switchLoginTab('user')">
+        <i class="fas fa-user mr-1"></i> User
+      </div>
+    </div>
+
+    <div class="bg-black/60 backdrop-blur-xl border border-red-900/40 rounded-b-xl p-8 shadow-2xl">
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label class="block text-xs font-display tracking-widest text-red-400 mb-2">USERNAME</label>
+          <div class="relative">
+            <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <input type="text" id="loginUser" class="field pl-11" placeholder="Enter username" autocomplete="username">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-display tracking-widest text-red-400 mb-2">PASSWORD</label>
+          <div class="relative">
+            <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <input type="password" id="loginPass" class="field pl-11 pr-11" placeholder="Enter password" autocomplete="current-password">
+            <button type="button" id="togglePass" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-400 transition">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginError" class="hidden text-red-400 text-sm flex items-center gap-2">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span id="loginErrorMsg">Invalid credentials.</span>
+        </div>
+
+        <button type="submit" class="btn-primary w-full text-base flex items-center justify-center gap-2">
+          <i class="fas fa-bolt"></i>
+          <span>ACCESS SYSTEM</span>
+        </button>
+      </form>
+
+      <div class="mt-5 pt-5 border-t border-gray-800 text-center">
+        <p class="text-gray-500 text-sm mb-3">Don't have an account?</p>
+        <button onclick="openRegisterModal()" class="btn-ghost w-full text-sm">
+          <i class="fas fa-user-plus mr-2"></i> Create <span id="regRoleLabel">Admin</span> Account
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center mt-6 text-xs text-gray-600 font-display tracking-widest">
+      <i class="fas fa-shield-alt mr-1"></i> LIMBURG POWER SOLUTIONS LIMITED &middot; UTTARA, DHAKA
+    </div>
+  </div>
+</div>
+
+<!-- ====================== REGISTER MODAL ====================== -->
+<div id="registerModal" class="modal-backdrop hidden">
+  <div class="modal-content p-8">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-white">Create Account</h2>
+        <p class="text-xs text-gray-500 mt-1">Register a new <span id="regModalRole" class="text-red-400 font-semibold">Admin</span> account</p>
+      </div>
+      <button onclick="closeRegisterModal()" class="text-gray-500 hover:text-white text-xl transition"><i class="fas fa-times"></i></button>
+    </div>
+
+    <form id="registerForm" class="space-y-4">
+      <div>
+        <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">FULL NAME</label>
+        <div class="relative">
+          <i class="fas fa-id-card absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input type="text" id="regName" class="field pl-11" placeholder="Full name" required>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">USERNAME</label>
+        <div class="relative">
+          <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input type="text" id="regUser" class="field pl-11" placeholder="Choose a username" required>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PASSWORD</label>
+        <div class="relative">
+          <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input type="password" id="regPass" class="field pl-11" placeholder="Min 4 characters" required minlength="4">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CONFIRM PASSWORD</label>
+        <div class="relative">
+          <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input type="password" id="regPassConfirm" class="field pl-11" placeholder="Re-enter password" required>
+        </div>
+      </div>
+
+      <div id="regError" class="hidden text-red-400 text-sm flex items-center gap-2">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="regErrorMsg"></span>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button type="button" onclick="closeRegisterModal()" class="btn-ghost flex-1">Cancel</button>
+        <button type="submit" class="btn-primary flex-1"><i class="fas fa-check mr-2"></i> Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ====================== VIEW GATE PASS MODAL ====================== -->
+<div id="viewModal" class="modal-backdrop hidden" style="overflow-y:auto;">
+  <div class="modal-content p-0 max-w-4xl" style="max-height:95vh;overflow-y:auto;">
+    <div id="viewModalBody"></div>
+  </div>
+</div>
+
+<!-- ====================== DELETE CONFIRM MODAL ====================== -->
+<div id="deleteModal" class="modal-backdrop hidden">
+  <div class="modal-content p-8 text-center" style="max-width:400px;">
+    <div class="w-16 h-16 rounded-full bg-red-600/20 flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-trash-alt text-2xl text-red-500"></i>
+    </div>
+    <h3 class="font-display text-xl font-bold text-white mb-2">Delete Gate Pass?</h3>
+    <p class="text-gray-400 text-sm mb-6" id="deleteMsg">This action cannot be undone.</p>
+    <div class="flex gap-3">
+      <button onclick="closeDeleteModal()" class="btn-ghost flex-1">Cancel</button>
+      <button id="confirmDeleteBtn" class="btn-danger flex-1"><i class="fas fa-trash mr-1"></i> Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== MAIN APP ====================== -->
+<div id="mainApp" class="hidden min-h-screen">
+  <header class="header-glow border-b border-gray-800 sticky top-0 z-30 bg-black/80 backdrop-blur-xl">
+    <div class="flex items-center justify-between px-6 py-3">
+      <div class="flex items-center gap-4">
+        <button id="toggleSidebar" class="lg:hidden text-gray-400 hover:text-white">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        <div class="flex items-center gap-3">
+          <img src="https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8" alt="Logo" class="logo-img-sm">
+          <div class="hidden md:block">
+            <div class="font-display text-white text-sm font-semibold tracking-wide">Gate Pass System</div>
+            <div class="text-[10px] text-gray-500 tracking-widest">LIMBURG POWER SOLUTIONS LTD.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="hidden md:flex items-center gap-2 text-xs text-gray-400">
+          <span class="pulse-dot"></span>
+          <span class="font-display tracking-wider" id="liveTime">--:--:--</span>
+        </div>
+        <div class="flex items-center gap-3 pl-4 border-l border-gray-800">
+          <div class="text-right hidden sm:block">
+            <div class="text-sm font-semibold text-white" id="headerName">--</div>
+            <div id="headerRole"></div>
+          </div>
+          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center font-display font-bold text-white" id="headerAvatar">?</div>
+          <button id="logoutBtn" class="text-gray-400 hover:text-red-400 transition" title="Logout">
+            <i class="fas fa-sign-out-alt text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex">
+    <aside id="sidebar" class="w-64 bg-[var(--bg-2)] border-r border-gray-800 min-h-[calc(100vh-65px)] sticky top-[65px] hidden lg:block">
+      <nav class="py-4" id="sidebarNav"></nav>
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+        <div class="text-[10px] text-gray-600 font-display tracking-widest mb-1">SYSTEM STATUS</div>
+        <div class="flex items-center gap-2 text-xs text-green-400">
+          <i class="fas fa-circle text-[6px]"></i>
+          <span>Online &middot; LocalStorage Active</span>
+        </div>
+      </div>
+    </aside>
+    <main class="flex-1 p-6 lg:p-8 grid-bg-dense" id="content"></main>
+  </div>
+</div>
+
+<!-- Print Area -->
+<div id="printArea" class="hidden"></div>
+
+<!-- Toast -->
+<div id="toast" class="toast">
+  <i class="fas fa-check-circle text-red-500" id="toastIcon"></i>
+  <span id="toastMsg">Saved successfully</span>
+</div>
+
+<script>
+/* ============================================================
+   CONSTANTS & STATE
+============================================================ */
+const STORAGE_KEY = 'limburg_gatepasses';
+const LOGO_KEY = 'limburg_custom_logo';
+const COMPANY_KEY = 'limburg_company_info';
+const AUTH_KEY = 'limburg_auth';
+const USERS_KEY = 'limburg_users';
+
+const defaultCompany = {
+  name: 'LIMBURG POWER SOLUTIONS LIMITED',
+  address: 'House #16, Road #18, Sector #10, Uttara, Dhaka - 1230',
+  phone: '+880 1700-000000',
+  email: 'info@limburgpower.com',
+  web: 'www.limburgpower.com'
+};
+
+let currentPage = 'dashboard';
+let editingId = null;
+let selectedLoginRole = 'admin';
+let deleteTargetId = null;
+
+// 当前登录用户
+let currentUser = null;
+
+/* ============================================================
+   UTILITY FUNCTIONS
+============================================================ */
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function formatDate(d) {
+  if (!d) return '-';
+  try {
+    const dt = new Date(d);
+    return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  } catch { return d; }
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  const icon = document.getElementById('toastIcon');
+  document.getElementById('toastMsg').textContent = msg;
+  if (type === 'warn') {
+    icon.className = 'fas fa-exclamation-triangle text-yellow-500';
+    t.style.borderColor = '#eab308';
+  } else {
+    icon.className = 'fas fa-check-circle text-red-500';
+    t.style.borderColor = 'var(--accent)';
+  }
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ============================================================
+   USER MANAGEMENT (LocalStorage)
+============================================================ */
+function getUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveUsers(list) {
+  localStorage.setItem(USERS_KEY, JSON.stringify(list));
+}
+
+function findUser(username, password) {
+  return getUsers().find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+}
+
+function usernameExists(username) {
+  return getUsers().some(u => u.username.toLowerCase() === username.toLowerCase());
+}
+
+/* ============================================================
+   LOGIN TAB SWITCHING
+============================================================ */
+function switchLoginTab(role) {
+  selectedLoginRole = role;
+  document.querySelectorAll('.login-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.role === role);
+  });
+  document.getElementById('regRoleLabel').textContent = role === 'admin' ? 'Admin' : 'User';
+  document.getElementById('loginError').classList.add('hidden');
+}
+
+/* ============================================================
+   REGISTER MODAL
+============================================================ */
+function openRegisterModal() {
+  document.getElementById('registerModal').classList.remove('hidden');
+  document.getElementById('regModalRole').textContent = selectedLoginRole === 'admin' ? 'Admin' : 'User';
+  document.getElementById('regError').classList.add('hidden');
+  document.getElementById('registerForm').reset();
+}
+
+function closeRegisterModal() {
+  document.getElementById('registerModal').classList.add('hidden');
+}
+
+document.getElementById('registerForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = document.getElementById('regName').value.trim();
+  const username = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const passConfirm = document.getElementById('regPassConfirm').value;
+  const errEl = document.getElementById('regError');
+  const errMsg = document.getElementById('regErrorMsg');
+
+  if (!name || !username || !pass) {
+    errMsg.textContent = 'All fields are required.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  if (pass.length < 4) {
+    errMsg.textContent = 'Password must be at least 4 characters.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  if (pass !== passConfirm) {
+    errMsg.textContent = 'Passwords do not match.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+  if (usernameExists(username)) {
+    errMsg.textContent = 'Username already exists. Choose a different one.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const users = getUsers();
+  users.push({
+    id: 'user_' + Date.now(),
+    name,
+    username,
+    password: pass,
+    role: selectedLoginRole,
+    createdAt: new Date().toISOString()
+  });
+  saveUsers(users);
+
+  closeRegisterModal();
+  showToast(`${selectedLoginRole === 'admin' ? 'Admin' : 'User'} account "${username}" created successfully!`, 'success');
+  document.getElementById('loginUser').value = username;
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginPass').focus();
+});
+
+/* ============================================================
+   LOGIN
+============================================================ */
+document.getElementById('loginForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const username = document.getElementById('loginUser').value.trim();
+  const password = document.getElementById('loginPass').value.trim();
+  const errEl = document.getElementById('loginError');
+  const errMsg = document.getElementById('loginErrorMsg');
+
+  if (!username || !password) {
+    errMsg.textContent = 'Please enter both username and password.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  const user = findUser(username, password);
+  if (!user) {
+    errMsg.textContent = 'Invalid username or password.';
+    errEl.classList.remove('hidden');
+    document.getElementById('loginPass').value = '';
+    return;
+  }
+
+  // 检查角色是否匹配选中的tab
+  if (user.role !== selectedLoginRole) {
+    errMsg.textContent = `This account is a "${user.role}" account. Please switch to the correct tab.`;
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  currentUser = user;
+  sessionStorage.setItem(AUTH_KEY, JSON.stringify({ id: user.id, username: user.username, name: user.name, role: user.role }));
+  errEl.classList.add('hidden');
+  showApp();
+  showToast(`Welcome back, ${user.name}`, 'success');
+});
+
+document.getElementById('togglePass').addEventListener('click', () => {
+  const inp = document.getElementById('loginPass');
+  const icon = document.querySelector('#togglePass i');
+  if (inp.type === 'password') { inp.type = 'text'; icon.classList.replace('fa-eye','fa-eye-slash'); }
+  else { inp.type = 'password'; icon.classList.replace('fa-eye-slash','fa-eye'); }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem(AUTH_KEY);
+  currentUser = null;
+  document.getElementById('mainApp').classList.add('hidden');
+  document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginUser').value = '';
+});
+
+/* ============================================================
+   SESSION CHECK
+============================================================ */
+function checkAuth() {
+  try {
+    const auth = JSON.parse(sessionStorage.getItem(AUTH_KEY));
+    if (auth && auth.id) {
+      // 从localStorage重新加载用户信息（可能已更新）
+      const user = getUsers().find(u => u.id === auth.id);
+      if (user) {
+        currentUser = user;
+        showApp();
+        return;
+      }
+    }
+  } catch {}
+}
+
+function showApp() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('mainApp').classList.remove('hidden');
+
+  // 更新header用户信息
+  document.getElementById('headerName').textContent = currentUser.name;
+  const roleBadge = currentUser.role === 'admin'
+    ? '<span class="role-badge admin"><i class="fas fa-shield-alt text-[8px]"></i> ADMIN</span>'
+    : '<span class="role-badge user"><i class="fas fa-user text-[8px]"></i> USER</span>';
+  document.getElementById('headerRole').innerHTML = roleBadge;
+  document.getElementById('headerAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+  buildSidebar();
+  // 用户默认进入创建页面，管理员默认进入仪表板
+  const defaultPage = currentUser.role === 'admin' ? 'dashboard' : 'create';
+  renderPage(defaultPage);
+  updateCount();
+}
+
+/* ============================================================
+   SIDEBAR (动态生成，基于角色)
+============================================================ */
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  const role = currentUser.role;
+
+  const sections = [
+    {
+      label: 'MAIN MENU',
+      items: [
+        { page: 'dashboard', icon: 'fa-chart-pie', label: 'Dashboard', roles: ['admin'] },
+        { page: 'create', icon: 'fa-plus-circle', label: 'Create Gate Pass', roles: ['admin', 'user'] },
+        { page: 'all', icon: 'fa-list-alt', label: 'All Gate Pass', roles: ['admin', 'user'], badge: true },
+      ]
+    },
+    {
+      label: 'ADMINISTRATION',
+      items: [
+        { page: 'users', icon: 'fa-users-cog', label: 'Manage Users', roles: ['admin'] },
+        { page: 'upload', icon: 'fa-upload', label: 'Upload Logo', roles: ['admin'] },
+        { page: 'company', icon: 'fa-building', label: 'Company Info', roles: ['admin'] },
+      ]
+    }
+  ];
+
+  let html = '';
+  sections.forEach(sec => {
+    const filtered = sec.items.filter(i => i.roles.includes(role));
+    if (filtered.length === 0) return;
+    html += `<div class="px-5 py-2 text-[10px] tracking-widest text-gray-600 font-display">${sec.label}</div>`;
+    filtered.forEach(item => {
+      const badge = item.badge ? `<span id="allCount" class="ml-auto bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full">${getGatePasses().length}</span>` : '';
+      html += `<div class="sidebar-item" data-page="${item.page}"><i class="fas ${item.icon} w-5"></i><span>${item.label}</span>${badge}</div>`;
+    });
+  });
+  nav.innerHTML = html;
+
+  // 重新绑定sidebar点击事件
+  nav.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const page = item.dataset.page;
+      nav.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+      item.classList.add('active');
+      renderPage(page);
+      if (window.innerWidth < 1024) document.getElementById('sidebar').classList.add('hidden');
+    });
+  });
+}
+
+/* ============================================================
+   STORAGE HELPERS
+============================================================ */
+function getGatePasses() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+function saveGatePasses(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+function getCompany() {
+  try { const c = localStorage.getItem(COMPANY_KEY); return c ? JSON.parse(c) : defaultCompany; }
+  catch { return defaultCompany; }
+}
+function saveCompany(c) { localStorage.setItem(COMPANY_KEY, JSON.stringify(c)); }
+function getCustomLogo() { return localStorage.getItem(LOGO_KEY); }
+function saveCustomLogo(dataUrl) { localStorage.setItem(LOGO_KEY, dataUrl); }
+function clearCustomLogo() { localStorage.removeItem(LOGO_KEY); }
+
+function generateGpNo() {
+  const list = getGatePasses();
+  const year = new Date().getFullYear();
+  const num = String(list.length + 1).padStart(4, '0');
+  return `GP-${year}-${num}`;
+}
+
+function updateCount() {
+  const el = document.getElementById('allCount');
+  if (el) el.textContent = getGatePasses().length;
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+document.getElementById('toggleSidebar').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('hidden');
+});
+
+function navigateTo(page) {
+  document.querySelectorAll('.sidebar-item').forEach(s => {
+    s.classList.toggle('active', s.dataset.page === page);
+  });
+  renderPage(page);
+}
+
+function renderPage(page) {
+  currentPage = page;
+  const content = document.getElementById('content');
+  if (page === 'dashboard') content.innerHTML = dashboardHTML();
+  else if (page === 'create') content.innerHTML = createHTML();
+  else if (page === 'all') content.innerHTML = allHTML();
+  else if (page === 'users') content.innerHTML = usersHTML();
+  else if (page === 'upload') content.innerHTML = uploadHTML();
+  else if (page === 'company') content.innerHTML = companyHTML();
+  bindPageEvents();
+}
+
+function bindPageEvents() {
+  // 未来可扩展的页面级事件绑定
+}
+
+/* ============================================================
+   DASHBOARD (仅管理员)
+============================================================ */
+function dashboardHTML() {
+  const list = getGatePasses();
+  const returnable = list.filter(g => g.type === 'Returnable').length;
+  const nonReturnable = list.filter(g => g.type === 'Non-Returnable').length;
+  const today = new Date().toDateString();
+  const todayCount = list.filter(g => new Date(g.createdAt).toDateString() === today).length;
+
+  return `
+    <div class="page">
+      <div class="mb-8">
+        <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+          <i class="fas fa-chart-pie"></i><span>OVERVIEW</span>
+        </div>
+        <h1 class="font-display text-4xl font-bold text-white">Dashboard</h1>
+        <p class="text-gray-500 mt-1">Monitor gate pass activity and system metrics</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-gray-500 text-xs font-display tracking-widest">TOTAL PASSES</div>
+              <div class="font-display text-5xl font-bold text-white mt-2">${list.length}</div>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-red-600/20 flex items-center justify-center text-red-500 text-xl"><i class="fas fa-file-alt"></i></div>
+          </div>
+          <div class="text-xs text-gray-600 mt-3 font-display tracking-wider">ALL TIME RECORDS</div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-gray-500 text-xs font-display tracking-widest">RETURNABLE</div>
+              <div class="font-display text-5xl font-bold text-white mt-2">${returnable}</div>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-500 text-xl"><i class="fas fa-undo"></i></div>
+          </div>
+          <div class="text-xs text-gray-600 mt-3 font-display tracking-wider">TO BE RETURNED</div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-gray-500 text-xs font-display tracking-widest">NON-RETURNABLE</div>
+              <div class="font-display text-5xl font-bold text-white mt-2">${nonReturnable}</div>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-500 text-xl"><i class="fas fa-truck"></i></div>
+          </div>
+          <div class="text-xs text-gray-600 mt-3 font-display tracking-wider">PERMANENT TRANSFER</div>
+        </div>
+        <div class="stat-card">
+          <div class="flex items-start justify-between">
+            <div>
+              <div class="text-gray-500 text-xs font-display tracking-widest">TODAY</div>
+              <div class="font-display text-5xl font-bold text-white mt-2">${todayCount}</div>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center text-green-500 text-xl"><i class="fas fa-calendar-day"></i></div>
+          </div>
+          <div class="text-xs text-gray-600 mt-3 font-display tracking-wider">${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden">
+          <div class="flex items-center justify-between p-5 border-b border-gray-800">
+            <div>
+              <h3 class="font-display text-lg font-semibold text-white">Recent Gate Passes</h3>
+              <p class="text-xs text-gray-500">Latest 5 entries in the system</p>
+            </div>
+            <button onclick="navigateTo('all')" class="btn-ghost text-xs">View All <i class="fas fa-arrow-right ml-1"></i></button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="data-table">
+              <thead><tr><th>GP No</th><th>Client</th><th>Carried By</th><th>Type</th><th>Date</th></tr></thead>
+              <tbody>
+                ${list.slice(-5).reverse().map(g => `
+                  <tr class="cursor-pointer" onclick="viewGatePass('${g.id}')">
+                    <td class="font-display font-semibold text-red-400">${escapeHtml(g.gpNo)}</td>
+                    <td>${escapeHtml(g.client||'-')}</td>
+                    <td>${escapeHtml(g.carriedBy||'-')}</td>
+                    <td><span class="text-xs px-2 py-1 rounded ${g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400'}">${g.type}</span></td>
+                    <td class="text-gray-400">${g.date||'-'}</td>
+                  </tr>
+                `).join('') || '<tr><td colspan="5" class="text-center text-gray-500 py-8">No gate passes yet</td></tr>'}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-5">
+          <h3 class="font-display text-lg font-semibold text-white mb-4">Quick Actions</h3>
+          <div class="space-y-3">
+            <button onclick="navigateTo('create')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-red-600/20 to-transparent border border-red-900/40 hover:border-red-600 transition group">
+              <div class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center text-white"><i class="fas fa-plus"></i></div>
+              <div class="text-left"><div class="font-display font-semibold text-white">New Gate Pass</div><div class="text-xs text-gray-500">Create a new pass</div></div>
+              <i class="fas fa-chevron-right text-gray-600 group-hover:text-red-400 ml-auto"></i>
+            </button>
+            <button onclick="navigateTo('all')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-[var(--bg-2)] border border-gray-800 hover:border-gray-600 transition group">
+              <div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center text-white"><i class="fas fa-list"></i></div>
+              <div class="text-left"><div class="font-display font-semibold text-white">All Gate Passes</div><div class="text-xs text-gray-500">View, print, manage</div></div>
+              <i class="fas fa-chevron-right text-gray-600 group-hover:text-white ml-auto"></i>
+            </button>
+            <button onclick="navigateTo('users')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-[var(--bg-2)] border border-gray-800 hover:border-gray-600 transition group">
+              <div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center text-white"><i class="fas fa-users-cog"></i></div>
+              <div class="text-left"><div class="font-display font-semibold text-white">Manage Users</div><div class="text-xs text-gray-500">${getUsers().length} registered users</div></div>
+              <i class="fas fa-chevron-right text-gray-600 group-hover:text-white ml-auto"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   CREATE GATE PASS
+============================================================ */
+function createHTML() {
+  const gpNo = editingId ? '' : generateGpNo();
+  const today = new Date().toISOString().split('T')[0];
+  const editing = editingId ? getGatePasses().find(g => g.id === editingId) : null;
+
+  const data = editing || {
+    gpNo, date: today, type: 'Returnable',
+    client: '', carriedBy: '', mobile: '', vehicleNo: '',
+    timeIn: '', timeOut: '', purpose: '',
+    items: [{sl:1, description:'', unit:'', quantity:'', remarks:''}]
+  };
+
+  return `
+    <div class="page">
+      <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+            <i class="fas fa-plus-circle"></i><span>${editingId ? 'EDIT' : 'NEW'} GATE PASS</span>
+          </div>
+          <h1 class="font-display text-4xl font-bold text-white">${editingId ? 'Edit' : 'Create'} Gate Pass</h1>
+          <p class="text-gray-500 mt-1">Fill in the details below to ${editingId ? 'update' : 'create'} the gate pass.</p>
+        </div>
+        <button onclick="cancelEdit()" class="btn-ghost"><i class="fas fa-arrow-left mr-1"></i> Back</button>
+      </div>
+
+      <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">GATE PASS NO</label>
+            <input type="text" id="f_gpNo" class="field" value="${escapeHtml(data.gpNo)}" readonly>
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">DATE</label>
+            <input type="date" id="f_date" class="field" value="${escapeHtml(data.date)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PASS TYPE</label>
+            <div class="flex gap-2 pt-2">
+              <div class="check-pill ${data.type==='Returnable'?'active':''}" onclick="selectType(this,'Returnable')"><i class="fas fa-undo text-xs"></i> Returnable</div>
+              <div class="check-pill ${data.type==='Non-Returnable'?'active':''}" onclick="selectType(this,'Non-Returnable')"><i class="fas fa-truck text-xs"></i> Non-Returnable</div>
+            </div>
+            <input type="hidden" id="f_type" value="${data.type}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CLIENT</label>
+            <input type="text" id="f_client" class="field" placeholder="Client / Company name" value="${escapeHtml(data.client)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CARRIED BY</label>
+            <input type="text" id="f_carriedBy" class="field" placeholder="Person name" value="${escapeHtml(data.carriedBy)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">MOBILE NO</label>
+            <input type="text" id="f_mobile" class="field" placeholder="+8801XXXXXXXXX" value="${escapeHtml(data.mobile)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">VEHICLE NO (Optional)</label>
+            <input type="text" id="f_vehicle" class="field" placeholder="Dhaka-Metro-XX-XXXX" value="${escapeHtml(data.vehicleNo)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TIME IN</label>
+            <input type="time" id="f_timeIn" class="field" value="${escapeHtml(data.timeIn)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TIME OUT</label>
+            <input type="time" id="f_timeOut" class="field" value="${escapeHtml(data.timeOut)}">
+          </div>
+        </div>
+        <div class="mt-5">
+          <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PURPOSE / REMARKS</label>
+          <textarea id="f_purpose" class="field" rows="2" placeholder="Purpose of carrying goods...">${escapeHtml(data.purpose)}</textarea>
+        </div>
+      </div>
+
+      <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-white">Goods / Items</h3>
+            <p class="text-xs text-gray-500">Following goods are permitted to be carried</p>
+          </div>
+          <button onclick="addItemRow()" class="btn-ghost text-xs"><i class="fas fa-plus mr-1"></i> Add Row</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="data-table">
+            <thead><tr><th style="width:60px">SL</th><th>Description</th><th style="width:100px">Unit</th><th style="width:120px">Quantity</th><th>Remarks</th><th style="width:60px"></th></tr></thead>
+            <tbody id="itemsBody">${data.items.map((it,i) => itemRowHTML(it,i)).join('')}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-3 justify-end">
+        <button onclick="cancelEdit()" class="btn-ghost">Cancel</button>
+        <button onclick="saveDraft()" class="btn-ghost"><i class="fas fa-save mr-1"></i> Save Draft</button>
+        ${currentUser.role === 'admin' ? `<button onclick="saveAndPrint()" class="btn-primary"><i class="fas fa-print mr-2"></i> Save & Print</button>` : ''}
+        <button onclick="saveDraft()" class="btn-primary"><i class="fas fa-check mr-2"></i> Save Gate Pass</button>
+      </div>
+    </div>
+  `;
+}
+
+function cancelEdit() {
+  editingId = null;
+  navigateTo(currentUser.role === 'admin' ? 'dashboard' : 'all');
+}
+
+function itemRowHTML(it, i) {
+  return `
+    <tr class="slide-in" data-row="${i}">
+      <td><input type="number" class="field field-light py-1 text-center" value="${it.sl||i+1}" onchange="renumberRows()" style="min-width:50px"></td>
+      <td><input type="text" class="field field-light py-1" placeholder="Item description" value="${escapeHtml(it.description)}"></td>
+      <td><input type="text" class="field field-light py-1" placeholder="pcs/set/box" value="${escapeHtml(it.unit)}"></td>
+      <td><input type="text" class="field field-light py-1" placeholder="Qty" value="${escapeHtml(it.quantity)}"></td>
+      <td><input type="text" class="field field-light py-1" placeholder="Remarks" value="${escapeHtml(it.remarks)}"></td>
+      <td class="text-center"><button onclick="removeRow(this)" class="text-red-400 hover:text-red-300 px-2"><i class="fas fa-trash"></i></button></td>
+    </tr>
+  `;
+}
+
+function addItemRow() {
+  const body = document.getElementById('itemsBody');
+  const idx = body.children.length;
+  const tr = document.createElement('tr');
+  tr.className = 'slide-in';
+  tr.innerHTML = itemRowHTML({sl:idx+1,description:'',unit:'',quantity:'',remarks:''},idx);
+  body.appendChild(tr);
+}
+
+function removeRow(btn) {
+  const body = document.getElementById('itemsBody');
+  if (body.children.length <= 1) { showToast('At least one row is required','warn'); return; }
+  btn.closest('tr').remove();
+  renumberRows();
+}
+
+function renumberRows() {
+  document.querySelectorAll('#itemsBody tr').forEach((r,i) => { r.querySelector('input[type="number"]').value = i+1; });
+}
+
+function selectType(el, type) {
+  document.querySelectorAll('.check-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('f_type').value = type;
+}
+
+function collectFormData() {
+  const items = [];
+  document.querySelectorAll('#itemsBody tr').forEach((tr,i) => {
+    const inputs = tr.querySelectorAll('input');
+    items.push({ sl:i+1, description:inputs[1].value.trim(), unit:inputs[2].value.trim(), quantity:inputs[3].value.trim(), remarks:inputs[4].value.trim() });
+  });
+  return {
+    id: editingId || ('gp_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)),
+    gpNo: document.getElementById('f_gpNo').value,
+    date: document.getElementById('f_date').value,
+    type: document.getElementById('f_type').value,
+    client: document.getElementById('f_client').value.trim(),
+    carriedBy: document.getElementById('f_carriedBy').value.trim(),
+    mobile: document.getElementById('f_mobile').value.trim(),
+    vehicleNo: document.getElementById('f_vehicle').value.trim(),
+    timeIn: document.getElementById('f_timeIn').value,
+    timeOut: document.getElementById('f_timeOut').value,
+    purpose: document.getElementById('f_purpose').value.trim(),
+    items,
+    createdBy: editingId ? (getGatePasses().find(g=>g.id===editingId)?.createdBy || currentUser.username) : currentUser.username,
+    createdAt: editingId ? (getGatePasses().find(g=>g.id===editingId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+}
+
+function validateData(data) {
+  if (!data.client) return 'Client name is required';
+  if (!data.carriedBy) return '"Carried By" is required';
+  if (!data.items.length || !data.items.some(i => i.description)) return 'At least one item with description is required';
+  return null;
+}
+
+function saveDraft() {
+  const data = collectFormData();
+  const err = validateData(data);
+  if (err) { showToast(err,'warn'); return; }
+  const list = getGatePasses();
+  if (editingId) {
+    const idx = list.findIndex(g => g.id === editingId);
+    if (idx > -1) list[idx] = data;
+  } else { list.push(data); }
+  saveGatePasses(list);
+  updateCount();
+  showToast(`Gate Pass ${data.gpNo} saved successfully`,'success');
+  editingId = null;
+  navigateTo('all');
+}
+
+function saveAndPrint() {
+  const data = collectFormData();
+  const err = validateData(data);
+  if (err) { showToast(err,'warn'); return; }
+  const list = getGatePasses();
+  if (editingId) {
+    const idx = list.findIndex(g => g.id === editingId);
+    if (idx > -1) list[idx] = data;
+  } else { list.push(data); }
+  saveGatePasses(list);
+  updateCount();
+  showToast(`Gate Pass ${data.gpNo} saved. Opening print...`,'success');
+  setTimeout(() => { printGatePass(data); editingId = null; navigateTo('all'); }, 600);
+}
+
+/* ============================================================
+   ALL GATE PASSES
+============================================================ */
+function allHTML() {
+  const list = getGatePasses().slice().reverse();
+  const isAdmin = currentUser.role === 'admin';
+
+  return `
+    <div class="page">
+      <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+            <i class="fas fa-list-alt"></i><span>RECORDS</span>
+          </div>
+          <h1 class="font-display text-4xl font-bold text-white">All Gate Passes</h1>
+          <p class="text-gray-500 mt-1">${list.length} record(s) stored in local database</p>
+        </div>
+        <button onclick="navigateTo('create')" class="btn-primary"><i class="fas fa-plus mr-2"></i> New Gate Pass</button>
+      </div>
+
+      <div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden">
+        <div class="p-4 border-b border-gray-800 flex flex-wrap items-center gap-3">
+          <div class="relative flex-1 min-w-[200px]">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <input type="text" id="searchGp" class="field pl-10" placeholder="Search by GP No, Client, Carried By..." oninput="filterGp()">
+          </div>
+          <select id="filterType" class="field max-w-[180px]" onchange="filterGp()">
+            <option value="">All Types</option>
+            <option value="Returnable">Returnable</option>
+            <option value="Non-Returnable">Non-Returnable</option>
+          </select>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="data-table" id="gpTable">
+            <thead><tr>
+              <th>GP No</th><th>Date</th><th>Client</th><th>Carried By</th><th>Mobile</th><th>Type</th><th>Items</th><th>Created By</th><th style="text-align:right">Actions</th>
+            </tr></thead>
+            <tbody>
+              ${list.map(g => `
+                <tr data-search="${(g.gpNo+' '+g.client+' '+g.carriedBy+' '+g.mobile+' '+(g.createdBy||'')).toLowerCase()}" data-type="${g.type}">
+                  <td class="font-display font-bold text-red-400">${escapeHtml(g.gpNo)}</td>
+                  <td>${formatDate(g.date)}</td>
+                  <td>${escapeHtml(g.client||'-')}</td>
+                  <td>${escapeHtml(g.carriedBy||'-')}</td>
+                  <td class="text-gray-400">${escapeHtml(g.mobile||'-')}</td>
+                  <td><span class="text-xs px-2 py-1 rounded ${g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400'}">${g.type}</span></td>
+                  <td class="text-center">${g.items.filter(i=>i.description).length}</td>
+                  <td class="text-gray-500 text-xs">${escapeHtml(g.createdBy||'-')}</td>
+                  <td>
+                    <div class="flex items-center justify-end gap-2">
+                      <button onclick="viewGatePass('${g.id}')" class="w-8 h-8 rounded bg-gray-700 hover:bg-gray-600 text-white" title="View"><i class="fas fa-eye text-xs"></i></button>
+                      ${isAdmin ? `<button onclick="printGatePassById('${g.id}')" class="w-8 h-8 rounded bg-red-600 hover:bg-red-500 text-white" title="Print"><i class="fas fa-print text-xs"></i></button>` : ''}
+                      <button onclick="editGatePass('${g.id}')" class="w-8 h-8 rounded bg-blue-600 hover:bg-blue-500 text-white" title="Edit"><i class="fas fa-edit text-xs"></i></button>
+                      ${isAdmin ? `<button onclick="confirmDeleteGatePass('${g.id}')" class="w-8 h-8 rounded bg-gray-700 hover:bg-red-600 text-white" title="Delete"><i class="fas fa-trash text-xs"></i></button>` : ''}
+                    </div>
+                  </td>
+                </tr>
+              `).join('') || `<tr><td colspan="9" class="text-center text-gray-500 py-12">
+                <i class="fas fa-inbox text-4xl text-gray-700 mb-3 block"></i>
+                <div class="font-display text-xl text-gray-500 mb-2">No Gate Passes Found</div>
+                <p class="text-sm text-gray-600 mb-4">Create your first gate pass to get started</p>
+                <button onclick="navigateTo('create')" class="btn-primary"><i class="fas fa-plus mr-2"></i> Create Gate Pass</button>
+              </td></tr>`}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function filterGp() {
+  const q = document.getElementById('searchGp').value.toLowerCase();
+  const t = document.getElementById('filterType').value;
+  document.querySelectorAll('#gpTable tbody tr[data-search]').forEach(tr => {
+    const matchSearch = tr.dataset.search.includes(q);
+    const matchType = !t || tr.dataset.type === t;
+    tr.style.display = (matchSearch && matchType) ? '' : 'none';
+  });
+}
+
+/* ============================================================
+   VIEW / EDIT / DELETE GATE PASS
+============================================================ */
+function viewGatePass(id) {
+  const g = getGatePasses().find(gp => gp.id === id);
+  if (!g) return;
+  const company = getCompany();
+  const logoSrc = getCustomLogo() || 'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+
+  const html = `
+    <div class="gp-doc">
+      <div class="gp-header">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <img src="${logoSrc}" alt="Logo" style="height:52px;border-radius:4px;">
+          <div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:0.05em;">${escapeHtml(company.name)}</div>
+            <div style="font-size:11px;color:#666;">${escapeHtml(company.address)}</div>
+            <div style="font-size:11px;color:#666;">Phone: ${escapeHtml(company.phone)} | Email: ${escapeHtml(company.email)}</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:13px;color:#888;letter-spacing:0.1em;">GATE PASS</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;">${escapeHtml(g.gpNo)}</div>
+        </div>
+      </div>
+
+      <div class="gp-title-bar">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;letter-spacing:0.08em;">AUTHORIZATION FOR MOVEMENT OF GOODS</div>
+        <div style="display:flex;gap:8px;">
+          <span class="gp-type-badge ${g.type==='Returnable'?'checked':''}"><i class="fas fa-undo" style="font-size:10px;"></i> Returnable</span>
+          <span class="gp-type-badge ${g.type==='Non-Returnable'?'checked':''}"><i class="fas fa-truck" style="font-size:10px;"></i> Non-Returnable</span>
+        </div>
+      </div>
+
+      <div class="gp-field-row">
+        <div class="gp-field"><span class="gp-field-label">Date</span>${escapeHtml(g.date||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Client</span>${escapeHtml(g.client||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Carried By</span>${escapeHtml(g.carriedBy||'-')}</div>
+      </div>
+      <div class="gp-field-row">
+        <div class="gp-field"><span class="gp-field-label">Mobile No</span>${escapeHtml(g.mobile||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Vehicle No</span>${escapeHtml(g.vehicleNo||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Time In / Out</span>${escapeHtml(g.timeIn||'-')} / ${escapeHtml(g.timeOut||'-')}</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div class="gp-field"><span class="gp-field-label">Purpose / Remarks</span>${escapeHtml(g.purpose||'-')}</div>
+      </div>
+
+      <table class="gp-items-table">
+        <thead><tr><th style="width:40px;">SL</th><th>Description</th><th style="width:80px;">Unit</th><th style="width:80px;">Quantity</th><th>Remarks</th></tr></thead>
+        <tbody>
+          ${g.items.map((it,i) => `<tr><td style="text-align:center;">${i+1}</td><td>${escapeHtml(it.description)}</td><td>${escapeHtml(it.unit)}</td><td style="text-align:center;">${escapeHtml(it.quantity)}</td><td>${escapeHtml(it.remarks)}</td></tr>`).join('')}
+          ${Array(Math.max(0, 5 - g.items.length)).fill('<tr><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>').join('')}
+        </tbody>
+      </table>
+
+      <div class="gp-signature-row">
+        <div class="gp-signature"><div class="gp-sign-line">Prepared By</div></div>
+        <div class="gp-signature"><div class="gp-sign-line">Checked By</div></div>
+        <div class="gp-signature"><div class="gp-sign-line">Authorized By</div></div>
+      </div>
+
+      <div class="gp-footer">
+        <span>${escapeHtml(company.web)}</span>
+        <span>This is a computer-generated document</span>
+      </div>
+    </div>
+
+    <div style="padding:16px;display:flex;gap:12px;justify-content:flex-end;background:var(--panel);border-top:1px solid var(--border);">
+      <button onclick="closeViewModal()" class="btn-ghost text-sm">Close</button>
+      ${currentUser.role === 'admin' ? `<button onclick="printGatePassById('${g.id}');closeViewModal();" class="btn-primary text-sm"><i class="fas fa-print mr-1"></i> Print</button>` : ''}
+    </div>
+  `;
+
+  document.getElementById('viewModalBody').innerHTML = html;
+  document.getElementById('viewModal').classList.remove('hidden');
+}
+
+function closeViewModal() {
+  document.getElementById('viewModal').classList.add('hidden');
+}
+
+function editGatePass(id) {
+  editingId = id;
+  navigateTo('create');
+}
+
+function confirmDeleteGatePass(id) {
+  const g = getGatePasses().find(gp => gp.id === id);
+  if (!g) return;
+  deleteTargetId = id;
+  document.getElementById('deleteMsg').textContent = `Delete gate pass "${g.gpNo}" for ${g.client || 'N/A'}? This cannot be undone.`;
+  document.getElementById('deleteModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteBtn').onclick = () => deleteGatePass(id);
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.add('hidden');
+  deleteTargetId = null;
+}
+
+function deleteGatePass(id) {
+  const list = getGatePasses().filter(g => g.id !== id);
+  saveGatePasses(list);
+  updateCount();
+  closeDeleteModal();
+  showToast('Gate pass deleted','success');
+  renderPage('all');
+}
+
+/* ============================================================
+   PRINT
+============================================================ */
+function printGatePassById(id) {
+  const g = getGatePasses().find(gp => gp.id === id);
+  if (g) printGatePass(g);
+}
+
+function printGatePass(g) {
+  const company = getCompany();
+  const logoSrc = getCustomLogo() || 'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+
+  document.getElementById('printArea').innerHTML = `
+    <div class="gp-doc">
+      <div class="gp-header">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <img src="${logoSrc}" alt="Logo" style="height:52px;border-radius:4px;">
+          <div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:0.05em;">${escapeHtml(company.name)}</div>
+            <div style="font-size:11px;color:#666;">${escapeHtml(company.address)}</div>
+            <div style="font-size:11px;color:#666;">Phone: ${escapeHtml(company.phone)} | Email: ${escapeHtml(company.email)}</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:13px;color:#888;letter-spacing:0.1em;">GATE PASS</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;">${escapeHtml(g.gpNo)}</div>
+        </div>
+      </div>
+      <div class="gp-title-bar">
+        <div style="font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;letter-spacing:0.08em;">AUTHORIZATION FOR MOVEMENT OF GOODS</div>
+        <div style="display:flex;gap:8px;">
+          <span class="gp-type-badge ${g.type==='Returnable'?'checked':''}"><i class="fas fa-undo" style="font-size:10px;"></i> Returnable</span>
+          <span class="gp-type-badge ${g.type==='Non-Returnable'?'checked':''}"><i class="fas fa-truck" style="font-size:10px;"></i> Non-Returnable</span>
+        </div>
+      </div>
+      <div class="gp-field-row">
+        <div class="gp-field"><span class="gp-field-label">Date</span>${escapeHtml(g.date||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Client</span>${escapeHtml(g.client||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Carried By</span>${escapeHtml(g.carriedBy||'-')}</div>
+      </div>
+      <div class="gp-field-row">
+        <div class="gp-field"><span class="gp-field-label">Mobile No</span>${escapeHtml(g.mobile||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Vehicle No</span>${escapeHtml(g.vehicleNo||'-')}</div>
+        <div class="gp-field"><span class="gp-field-label">Time In / Out</span>${escapeHtml(g.timeIn||'-')} / ${escapeHtml(g.timeOut||'-')}</div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div class="gp-field"><span class="gp-field-label">Purpose / Remarks</span>${escapeHtml(g.purpose||'-')}</div>
+      </div>
+      <table class="gp-items-table">
+        <thead><tr><th style="width:40px;">SL</th><th>Description</th><th style="width:80px;">Unit</th><th style="width:80px;">Quantity</th><th>Remarks</th></tr></thead>
+        <tbody>
+          ${g.items.map((it,i) => `<tr><td style="text-align:center;">${i+1}</td><td>${escapeHtml(it.description)}</td><td>${escapeHtml(it.unit)}</td><td style="text-align:center;">${escapeHtml(it.quantity)}</td><td>${escapeHtml(it.remarks)}</td></tr>`).join('')}
+          ${Array(Math.max(0, 5 - g.items.length)).fill('<tr><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>').join('')}
+        </tbody>
+      </table>
+      <div class="gp-signature-row">
+        <div class="gp-signature"><div class="gp-sign-line">Prepared By</div></div>
+        <div class="gp-signature"><div class="gp-sign-line">Checked By</div></div>
+        <div class="gp-signature"><div class="gp-sign-line">Authorized By</div></div>
+      </div>
+      <div class="gp-footer">
+        <span>${escapeHtml(company.web)}</span>
+        <span>This is a computer-generated document</span>
+      </div>
+    </div>
+  `;
+  document.getElementById('printArea').classList.remove('hidden');
+  setTimeout(() => { window.print(); }, 300);
+}
+
+/* ============================================================
+   MANAGE USERS (仅管理员)
+============================================================ */
+function usersHTML() {
+  const users = getUsers();
+  const admins = users.filter(u => u.role === 'admin');
+  const regularUsers = users.filter(u => u.role === 'user');
+
+  function userTable(list, title) {
+    if (list.length === 0) return `
+      <div class="text-center py-8 text-gray-500">
+        <i class="fas fa-user-slash text-2xl mb-2 block text-gray-700"></i>
+        <p class="text-sm">No ${title.toLowerCase()} found</p>
+      </div>`;
+    return `
+      <table class="data-table">
+        <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Created</th><th style="text-align:right">Action</th></tr></thead>
+        <tbody>
+          ${list.map(u => `
+            <tr>
+              <td class="font-semibold">${escapeHtml(u.name)}</td>
+              <td class="text-gray-400">${escapeHtml(u.username)}</td>
+              <td><span class="role-badge ${u.role}"><i class="fas ${u.role==='admin'?'fa-shield-alt':'fa-user'} text-[8px]"></i> ${u.role.toUpperCase()}</span></td>
+              <td class="text-gray-400 text-xs">${formatDate(u.createdAt)}</td>
+              <td style="text-align:right">
+                ${u.id !== currentUser.id ? `<button onclick="deleteUser('${u.id}')" class="btn-danger text-xs py-1 px-3"><i class="fas fa-trash mr-1"></i> Remove</button>` : '<span class="text-xs text-gray-600">(Current User)</span>'}
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  return `
+    <div class="page">
+      <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+            <i class="fas fa-users-cog"></i><span>USER MANAGEMENT</span>
+          </div>
+          <h1 class="font-display text-4xl font-bold text-white">Manage Users</h1>
+          <p class="text-gray-500 mt-1">${users.length} registered user(s) &middot; ${admins.length} admin(s), ${regularUsers.length} user(s)</p>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="switchLoginTab('admin');openRegisterModal()" class="btn-ghost text-sm"><i class="fas fa-user-shield mr-1"></i> Add Admin</button>
+          <button onclick="switchLoginTab('user');openRegisterModal()" class="btn-primary text-sm"><i class="fas fa-user-plus mr-1"></i> Add User</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden">
+          <div class="p-5 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-red-600/20 flex items-center justify-center text-red-500"><i class="fas fa-shield-alt"></i></div>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-white">Administrators</h3>
+              <p class="text-xs text-gray-500">Full system access</p>
+            </div>
+          </div>
+          <div class="overflow-x-auto">${userTable(admins, 'Administrators')}</div>
+        </div>
+
+        <div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden">
+          <div class="p-5 border-b border-gray-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center text-blue-500"><i class="fas fa-user"></i></div>
+            <div>
+              <h3 class="font-display text-lg font-semibold text-white">Regular Users</h3>
+              <p class="text-xs text-gray-500">Gate pass create & edit only</p>
+            </div>
+          </div>
+          <div class="overflow-x-auto">${userTable(regularUsers, 'Users')}</div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-[var(--bg-2)] border border-gray-800 rounded-xl p-5">
+        <h3 class="font-display text-base font-semibold text-white mb-3"><i class="fas fa-info-circle text-red-400 mr-2"></i>Access Control Summary</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <div class="text-red-400 font-display font-semibold mb-2">ADMIN ACCESS</div>
+            <ul class="space-y-1 text-gray-400">
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Dashboard & Analytics</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Create, Edit, Delete Gate Passes</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Print Gate Passes</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Manage Users (add/remove)</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Upload Custom Logo</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Edit Company Information</li>
+            </ul>
+          </div>
+          <div>
+            <div class="text-blue-400 font-display font-semibold mb-2">USER ACCESS</div>
+            <ul class="space-y-1 text-gray-400">
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Create Gate Passes</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>Edit Gate Passes</li>
+              <li><i class="fas fa-check text-green-500 mr-2 text-xs"></i>View Gate Pass Details</li>
+              <li><i class="fas fa-times text-red-500 mr-2 text-xs"></i>No Dashboard Access</li>
+              <li><i class="fas fa-times text-red-500 mr-2 text-xs"></i>No Delete Permission</li>
+              <li><i class="fas fa-times text-red-500 mr-2 text-xs"></i>No Print Permission</li>
+              <li><i class="fas fa-times text-red-500 mr-2 text-xs"></i>No Settings Access</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function deleteUser(id) {
+  if (id === currentUser.id) { showToast('Cannot delete your own account','warn'); return; }
+  const users = getUsers().filter(u => u.id !== id);
+  saveUsers(users);
+  showToast('User removed successfully','success');
+  renderPage('users');
+  buildSidebar();
+}
+
+/* ============================================================
+   UPLOAD LOGO
+============================================================ */
+function uploadHTML() {
+  const currentLogo = getCustomLogo();
+  const defaultLogo = 'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+
+  return `
+    <div class="page">
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+          <i class="fas fa-upload"></i><span>BRANDING</span>
+        </div>
+        <h1 class="font-display text-4xl font-bold text-white">Upload Logo</h1>
+        <p class="text-gray-500 mt-1">Customize the logo displayed on gate pass documents</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6">
+          <h3 class="font-display text-lg font-semibold text-white mb-4">Current Logo</h3>
+          <div class="bg-[var(--bg)] rounded-lg p-8 text-center border border-gray-800">
+            <img src="${currentLogo || defaultLogo}" alt="Current Logo" class="mx-auto rounded-lg" style="max-height:120px;object-fit:contain;">
+            <p class="text-xs text-gray-500 mt-4">${currentLogo ? 'Custom logo (uploaded)' : 'Default Limburg Power logo'}</p>
+          </div>
+          ${currentLogo ? `<button onclick="resetLogo()" class="btn-danger mt-4 w-full text-sm"><i class="fas fa-undo mr-1"></i> Reset to Default Logo</button>` : ''}
+        </div>
+
+        <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6">
+          <h3 class="font-display text-lg font-semibold text-white mb-4">Upload New Logo</h3>
+          <div class="dropzone" id="logoDropzone" onclick="document.getElementById('logoInput').click()">
+            <i class="fas fa-cloud-upload-alt text-4xl text-gray-600 mb-3"></i>
+            <p class="font-display text-lg text-gray-400">Click or drag image here</p>
+            <p class="text-xs text-gray-600 mt-2">Supports JPG, PNG, SVG &middot; Max 500KB recommended</p>
+          </div>
+          <input type="file" id="logoInput" accept="image/*" class="hidden" onchange="handleLogoUpload(event)">
+          <div id="logoPreview" class="mt-4 hidden">
+            <p class="text-xs text-gray-400 mb-2">Preview:</p>
+            <img id="logoPreviewImg" src="" alt="Preview" class="rounded-lg border border-gray-800" style="max-height:100px;">
+            <button onclick="confirmLogoUpload()" class="btn-primary mt-3 w-full text-sm"><i class="fas fa-check mr-1"></i> Apply This Logo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+let pendingLogoData = null;
+
+function handleLogoUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 1024 * 1024) { showToast('File too large. Max 1MB.','warn'); return; }
+
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    pendingLogoData = ev.target.result;
+    document.getElementById('logoPreviewImg').src = pendingLogoData;
+    document.getElementById('logoPreview').classList.remove('hidden');
+  };
+  reader.readAsDataURL(file);
+}
+
+function confirmLogoUpload() {
+  if (!pendingLogoData) return;
+  saveCustomLogo(pendingLogoData);
+  pendingLogoData = null;
+  showToast('Custom logo applied successfully','success');
+  renderPage('upload');
+}
+
+function resetLogo() {
+  clearCustomLogo();
+  showToast('Logo reset to default','success');
+  renderPage('upload');
+}
+
+// 拖拽上传
+document.addEventListener('dragover', (e) => e.preventDefault());
+document.addEventListener('drop', (e) => {
+  e.preventDefault();
+  const dz = document.getElementById('logoDropzone');
+  if (!dz) return;
+  const rect = dz.getBoundingClientRect();
+  if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      document.getElementById('logoInput').files = e.dataTransfer.files;
+      handleLogoUpload({ target: { files: [file] } });
+    }
+  }
+});
+
+/* ============================================================
+   COMPANY INFO
+============================================================ */
+function companyHTML() {
+  const c = getCompany();
+  return `
+    <div class="page">
+      <div class="mb-6">
+        <div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2">
+          <i class="fas fa-building"></i><span>SETTINGS</span>
+        </div>
+        <h1 class="font-display text-4xl font-bold text-white">Company Information</h1>
+        <p class="text-gray-500 mt-1">Details displayed on gate pass documents</p>
+      </div>
+
+      <div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 max-w-2xl">
+        <div class="space-y-5">
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">COMPANY NAME</label>
+            <input type="text" id="c_name" class="field" value="${escapeHtml(c.name)}">
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">ADDRESS</label>
+            <textarea id="c_address" class="field" rows="2">${escapeHtml(c.address)}</textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PHONE</label>
+              <input type="text" id="c_phone" class="field" value="${escapeHtml(c.phone)}">
+            </div>
+            <div>
+              <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">EMAIL</label>
+              <input type="email" id="c_email" class="field" value="${escapeHtml(c.email)}">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-display tracking-widest text-gray-400 mb-2">WEBSITE</label>
+            <input type="text" id="c_web" class="field" value="${escapeHtml(c.web)}">
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6 pt-6 border-t border-gray-800">
+          <button onclick="resetCompanyInfo()" class="btn-ghost">Reset to Default</button>
+          <button onclick="saveCompanyInfo()" class="btn-primary"><i class="fas fa-save mr-2"></i> Save Changes</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function saveCompanyInfo() {
+  const c = {
+    name: document.getElementById('c_name').value.trim(),
+    address: document.getElementById('c_address').value.trim(),
+    phone: document.getElementById('c_phone').value.trim(),
+    email: document.getElementById('c_email').value.trim(),
+    web: document.getElementById('c_web').value.trim()
+  };
+  if (!c.name) { showToast('Company name is required','warn'); return; }
+  saveCompany(c);
+  showToast('Company information updated','success');
+}
+
+function resetCompanyInfo() {
+  saveCompany(defaultCompany);
+  showToast('Company info reset to defaults','success');
+  renderPage('company');
+}
+
+/* ============================================================
+   LIVE CLOCK
+============================================================ */
+function updateClock() {
+  const el = document.getElementById('liveTime');
+  if (el) {
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  }
+  requestAnimationFrame(updateClock);
+}
+
+/* ============================================================
+   CLOSE MODALS ON BACKDROP CLICK
+============================================================ */
+document.getElementById('viewModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('viewModal')) closeViewModal();
+});
+document.getElementById('deleteModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('deleteModal')) closeDeleteModal();
+});
+document.getElementById('registerModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('registerModal')) closeRegisterModal();
+});
+
+/* ============================================================
+   INIT
+============================================================ */
+checkAuth();
+updateClock();
+</script>
+</body>
+</html>
