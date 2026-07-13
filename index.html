@@ -10,264 +10,127 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --bg-2: #141414;
-    --panel: #1a1a1a;
-    --panel-2: #222;
-    --border: #2a2a2a;
-    --fg: #f5f5f5;
-    --muted: #9a9a9a;
-    --accent: #dc2626;
-    --accent-2: #ef4444;
-    --accent-dim: #7f1d1d;
-    --gold: #fbbf24;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family:'Inter',sans-serif; overflow-x:hidden; }
-  .font-display { font-family:'Rajdhani',sans-serif; letter-spacing:0.02em; }
-
-  .grid-bg-dense {
-    background-image: linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .login-bg {
-    background: radial-gradient(ellipse at 20% 30%,rgba(220,38,38,0.15),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(220,38,38,0.1),transparent 50%),#050505;
-    position:relative; overflow:hidden;
-  }
-  .login-bg::before {
-    content:''; position:absolute; inset:0;
-    background-image: linear-gradient(rgba(220,38,38,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(220,38,38,0.06) 1px,transparent 1px);
-    background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center,black 30%,transparent 80%);
-    animation: gridMove 20s linear infinite;
-  }
-  @keyframes gridMove { from{background-position:0 0,0 0} to{background-position:60px 60px,60px 60px} }
-
-  .lightning-flash {
-    position:absolute; inset:0;
-    background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,0.08) 50%,transparent 70%);
-    opacity:0; pointer-events:none; animation:flash 8s infinite;
-  }
-  @keyframes flash { 0%,92%,100%{opacity:0} 93%{opacity:0.6} 94%{opacity:0} 95%{opacity:0.4} 96%{opacity:0} }
-
-  .field {
-    background:rgba(255,255,255,0.03); border:1px solid var(--border); color:var(--fg);
-    padding:12px 16px; border-radius:6px; width:100%; font-family:'Inter',sans-serif;
-    transition:all 0.2s ease; font-size:14px;
-  }
-  .field:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(220,38,38,0.15),inset 0 0 20px rgba(220,38,38,0.05); background:rgba(255,255,255,0.05); }
-  .field::placeholder { color:#555; }
-
-  .field-light { background:white; border:1px solid #ccc; color:#111; }
-  .field-light:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(220,38,38,0.15); }
-
-  .btn-primary {
-    background:linear-gradient(135deg,var(--accent),var(--accent-dim)); color:white; border:none;
-    padding:12px 24px; border-radius:6px; font-weight:600; font-family:'Rajdhani',sans-serif;
-    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease;
-    position:relative; overflow:hidden;
-  }
-  .btn-primary::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent); transition:left 0.5s ease; }
-  .btn-primary:hover::before { left:100%; }
-  .btn-primary:hover { box-shadow:0 0 24px rgba(220,38,38,0.5); transform:translateY(-1px); }
-  .btn-primary:active { transform:translateY(0); }
-
-  .btn-ghost {
-    background:transparent; color:var(--fg); border:1px solid var(--border);
-    padding:10px 20px; border-radius:6px; font-weight:500; font-family:'Rajdhani',sans-serif;
-    letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease;
-  }
-  .btn-ghost:hover { border-color:var(--accent); color:var(--accent-2); background:rgba(220,38,38,0.05); }
-
-  .btn-danger { background:#7f1d1d; color:white; border:none; padding:8px 16px; border-radius:6px; font-weight:600; font-family:'Rajdhani',sans-serif; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; transition:all 0.2s ease; }
-  .btn-danger:hover { background:#991b1b; }
-
-  .sidebar-item {
-    display:flex; align-items:center; gap:12px; padding:14px 20px; color:var(--muted);
-    cursor:pointer; border-left:3px solid transparent; transition:all 0.2s ease;
-    font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.04em; font-size:15px;
-  }
-  .sidebar-item:hover { color:var(--fg); background:rgba(220,38,38,0.05); }
-  .sidebar-item.active { color:var(--accent-2); background:linear-gradient(90deg,rgba(220,38,38,0.12),transparent); border-left-color:var(--accent); }
-
-  .stat-card {
-    background:linear-gradient(135deg,var(--panel) 0%,var(--bg-2) 100%);
-    border:1px solid var(--border); border-radius:12px; padding:24px;
-    position:relative; overflow:hidden; transition:all 0.3s ease;
-  }
-  .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent),transparent); opacity:0; transition:opacity 0.3s ease; }
-  .stat-card:hover { border-color:var(--accent-dim); transform:translateY(-2px); }
-  .stat-card:hover::before { opacity:1; }
-
-  .data-table { width:100%; border-collapse:collapse; }
-  .data-table th { background:var(--bg-2); color:var(--accent-2); text-align:left; padding:12px 16px; font-family:'Rajdhani',sans-serif; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; font-size:13px; border-bottom:1px solid var(--border); }
-  .data-table td { padding:12px 16px; border-bottom:1px solid var(--border); color:var(--fg); font-size:14px; }
-  .data-table tr:hover { background:rgba(220,38,38,0.04); }
-
-  .page { animation:fadeUp 0.4s ease; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-  .toast {
-    position:fixed; bottom:32px; right:32px; background:var(--panel); border:1px solid var(--accent);
-    color:var(--fg); padding:16px 24px; border-radius:8px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 30px rgba(220,38,38,0.2);
-    z-index:1000; display:flex; align-items:center; gap:12px;
-    transform:translateX(120%); transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-    font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.03em;
-  }
-  .toast.show { transform:translateX(0); }
-
-  /* ===== GATE PASS DOCUMENT — Industrial Rajdhani Font ===== */
-  .gp-doc {
-    background:white; color:#111; width:210mm; min-height:297mm; margin:0 auto;
-    padding:18mm 16mm; box-shadow:0 30px 80px rgba(0,0,0,0.6);
-    font-family:'Lora','Georgia',serif; position:relative;
-  }
-  .gp-doc .gp-header {
-    display:flex; justify-content:space-between; align-items:flex-start;
-    border-bottom:3px solid #111; padding-bottom:14px; margin-bottom:6px;
-  }
-  .gp-doc .gp-company-name {
-    font-family:'Rajdhani',sans-serif;
-    font-size:20px; font-weight:700; letter-spacing:0.12em;
-    text-transform:uppercase; color:#111; line-height:1.2;
-  }
-  .gp-doc .gp-company-sub {
-    font-family:'Rajdhani',sans-serif;
-    font-size:10px; font-weight:500; letter-spacing:0.04em;
-    color:#555; margin-top:2px;
-  }
-  .gp-doc .gp-gpno-label {
-    font-family:'Rajdhani',sans-serif;
-    font-size:10px; font-weight:600; color:#999; letter-spacing:0.12em;
-    text-transform:uppercase;
-  }
-  .gp-doc .gp-gpno-value {
-    font-family:'Rajdhani',sans-serif;
-    font-size:26px; font-weight:700; letter-spacing:0.1em;
-    color:#111; line-height:1;
-  }
-  .gp-doc .gp-title-bar {
-    display:flex; justify-content:space-between; align-items:center;
-    background:#111; color:white; padding:9px 16px; margin:12px 0 18px;
-    border-left:6px solid var(--accent);
-    font-family:'Rajdhani',sans-serif;
-    font-size:18px; font-weight:700; letter-spacing:0.12em;
-    text-transform:uppercase;
-  }
-  .gp-doc .gp-field-row {
-    display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px;
-  }
-  .gp-doc .gp-field {
-    border:1px solid #999; padding:6px 10px; min-height:34px;
-    font-size:13px; background:#fff; position:relative; font-family:'Lora',serif;
-  }
-  .gp-doc .gp-field-label {
-    position:absolute; top:-8px; left:8px; background:white; padding:0 4px;
-    font-size:9px; text-transform:uppercase; font-weight:700; color:#555;
-    letter-spacing:0.06em; font-family:'Rajdhani',sans-serif;
-  }
-  .gp-doc .gp-type-badge {
-    display:inline-flex; align-items:center; gap:6px; padding:4px 10px;
-    border:1px solid #111; font-size:11px; font-weight:700;
-    text-transform:uppercase; margin-right:8px;
-    font-family:'Rajdhani',sans-serif; letter-spacing:0.06em;
-  }
-  .gp-doc .gp-type-badge.checked { background:var(--accent); color:white; border-color:var(--accent); }
-  .gp-doc .gp-items-table {
-    width:100%; border-collapse:collapse; margin-top:8px; font-family:'Lora',serif;
-  }
-  .gp-doc .gp-items-table th {
-    background:#f0f0f0; border:1px solid #555; padding:8px 6px;
-    font-size:11px; text-transform:uppercase; letter-spacing:0.06em;
-    font-family:'Rajdhani',sans-serif; font-weight:700;
-  }
-  .gp-doc .gp-items-table td {
-    border:1px solid #555; padding:8px 6px; font-size:13px; min-height:30px;
-  }
-  .gp-doc .gp-signature-row {
-    display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:40px;
-  }
-  .gp-doc .gp-signature { text-align:center; }
-  .gp-doc .gp-sign-line {
-    border-top:1px solid #111; margin-top:40px; padding-top:6px;
-    font-size:11px; font-weight:700; text-transform:uppercase;
-    letter-spacing:0.08em; font-family:'Rajdhani',sans-serif;
-  }
-  .gp-doc .gp-footer {
-    margin-top:30px; padding-top:12px; border-top:1px solid #999;
-    display:flex; justify-content:space-between; font-size:9px; color:#666;
-    font-family:'Rajdhani',sans-serif; letter-spacing:0.03em;
-  }
-
-  @media print {
-    body * { visibility:hidden; }
-    #printArea, #printArea * { visibility:visible; }
-    #printArea { position:absolute; left:0; top:0; width:100%; margin:0; padding:0; }
-    .gp-doc { box-shadow:none; margin:0; width:100%; min-height:auto; padding:12mm; }
-    @page { size:A4; margin:0; }
-  }
-
-  ::-webkit-scrollbar { width:10px; height:10px; }
-  ::-webkit-scrollbar-track { background:var(--bg-2); }
-  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:5px; }
-  ::-webkit-scrollbar-thumb:hover { background:var(--accent-dim); }
-
-  .check-pill {
-    display:inline-flex; align-items:center; gap:8px; padding:8px 16px;
-    border:1px solid var(--border); border-radius:999px; cursor:pointer;
-    transition:all 0.2s ease; font-family:'Rajdhani',sans-serif; font-weight:500; letter-spacing:0.04em;
-  }
-  .check-pill.active { background:rgba(220,38,38,0.15); border-color:var(--accent); color:var(--accent-2); }
-
-  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:100; display:flex; align-items:center; justify-content:center; padding:20px; }
-  .modal-content { background:var(--panel); border:1px solid var(--border); border-radius:16px; width:100%; max-width:460px; max-height:90vh; overflow-y:auto; animation:fadeUp 0.3s ease; }
-
-  .pulse-dot { width:8px; height:8px; background:var(--accent); border-radius:50%; box-shadow:0 0 0 0 var(--accent); animation:pulse 2s infinite; }
-  @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(220,38,38,0.7)} 70%{box-shadow:0 0 0 12px rgba(220,38,38,0)} 100%{box-shadow:0 0 0 0 rgba(220,38,38,0)} }
-
-  .slide-in { animation:slideIn 0.3s ease; }
-  @keyframes slideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
-
-  .header-glow { background:linear-gradient(180deg,rgba(220,38,38,0.08),transparent); }
-
-  .login-tab { padding:10px 24px; font-family:'Rajdhani',sans-serif; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; font-size:14px; cursor:pointer; border-bottom:2px solid transparent; color:var(--muted); transition:all 0.2s ease; }
-  .login-tab:hover { color:var(--fg); }
-  .login-tab.active { color:var(--accent-2); border-bottom-color:var(--accent); }
-
-  .role-badge { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:999px; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; font-family:'Rajdhani',sans-serif; }
-  .role-badge.admin { background:rgba(220,38,38,0.2); color:#ef4444; border:1px solid rgba(220,38,38,0.3); }
-  .role-badge.user { background:rgba(59,130,246,0.2); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
-
-  .logo-img { height:80px; border-radius:8px; box-shadow:0 8px 40px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.05); }
-  .logo-img-sm { height:38px; border-radius:4px; }
-
-  /* 12-hour time picker — BLACK bg, dark scheme */
-  .time-12h { display:flex; align-items:center; gap:4px; }
-  .time-12h select {
-    background:#0a0a0a; border:1px solid var(--border); color:var(--fg);
-    padding:12px 6px; border-radius:6px; font-family:'Inter',sans-serif;
-    font-size:14px; transition:all 0.2s ease; cursor:pointer;
-    color-scheme:dark;
-    -webkit-appearance:none; -moz-appearance:none; appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 8px center; padding-right:22px;
-  }
-  .time-12h select:hover { border-color:#444; background-color:#0f0f0f; }
-  .time-12h select:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(220,38,38,0.15); background-color:#0a0a0a; }
-  .time-12h select option { background:#111; color:#f0f0f0; padding:10px 12px; border-bottom:1px solid #222; }
-  .time-12h select option:hover, .time-12h select option:checked { background:var(--accent-dim); color:#fff; }
-  .time-12h .time-sep { color:var(--muted); font-size:18px; font-weight:700; padding:0 2px; user-select:none; }
-  .time-12h select.time-hr { width:68px; text-align:center; }
-  .time-12h select.time-min { width:68px; text-align:center; }
-  .time-12h select.time-ampm { width:76px; text-align:center; }
+:root{--bg:#0a0a0a;--bg-2:#141414;--panel:#1a1a1a;--panel-2:#222;--border:#2a2a2a;--fg:#f5f5f5;--muted:#9a9a9a;--accent:#dc2626;--accent-2:#ef4444;--accent-dim:#7f1d1d;--gold:#fbbf24}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;overflow-x:hidden}
+.font-display{font-family:'Rajdhani',sans-serif;letter-spacing:.02em}
+.grid-bg-dense{background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:24px 24px}
+.login-bg{background:radial-gradient(ellipse at 20% 30%,rgba(220,38,38,.15),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(220,38,38,.1),transparent 50%),#050505;position:relative;overflow:hidden}
+.login-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(220,38,38,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(220,38,38,.06) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);animation:gridMove 20s linear infinite}
+@keyframes gridMove{from{background-position:0 0,0 0}to{background-position:60px 60px,60px 60px}}
+.lightning-flash{position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);opacity:0;pointer-events:none;animation:flash 8s infinite}
+@keyframes flash{0%,92%,100%{opacity:0}93%{opacity:.6}94%{opacity:0}95%{opacity:.4}96%{opacity:0}}
+.field{background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--fg);padding:12px 16px;border-radius:6px;width:100%;font-family:'Inter',sans-serif;transition:all .2s ease;font-size:14px}
+.field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15),inset 0 0 20px rgba(220,38,38,.05);background:rgba(255,255,255,.05)}
+.field::placeholder{color:#555}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-dim));color:white;border:none;padding:12px 24px;border-radius:6px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s ease;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .5s ease}
+.btn-primary:hover::before{left:100%}
+.btn-primary:hover{box-shadow:0 0 24px rgba(220,38,38,.5);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--border);padding:10px 20px;border-radius:6px;font-weight:500;font-family:'Rajdhani',sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent-2);background:rgba(220,38,38,.05)}
+.btn-danger{background:#7f1d1d;color:white;border:none;padding:8px 16px;border-radius:6px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+.btn-danger:hover{background:#991b1b}
+.btn-sm{padding:6px 14px;font-size:12px}
+.sidebar-item{display:flex;align-items:center;gap:12px;padding:14px 20px;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:all .2s ease;font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.04em;font-size:15px}
+.sidebar-item:hover{color:var(--fg);background:rgba(220,38,38,.05)}
+.sidebar-item.active{color:var(--accent-2);background:linear-gradient(90deg,rgba(220,38,38,.12),transparent);border-left-color:var(--accent)}
+.stat-card{background:linear-gradient(135deg,var(--panel) 0%,var(--bg-2) 100%);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative;overflow:hidden;transition:all .3s ease}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .3s ease}
+.stat-card:hover{border-color:var(--accent-dim);transform:translateY(-2px)}
+.stat-card:hover::before{opacity:1}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{background:var(--bg-2);color:var(--accent-2);text-align:left;padding:12px 16px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:13px;border-bottom:1px solid var(--border)}
+.data-table td{padding:12px 16px;border-bottom:1px solid var(--border);color:var(--fg);font-size:14px}
+.data-table tr:hover{background:rgba(220,38,38,.04)}
+.page{animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.toast{position:fixed;bottom:32px;right:32px;background:var(--panel);border:1px solid var(--accent);color:var(--fg);padding:16px 24px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 30px rgba(220,38,38,.2);z-index:9999;display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.03em}
+.toast.show{transform:translateX(0)}
+.gp-outer{background:white;width:210mm;min-height:297mm;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6);display:flex;flex-direction:row;font-family:'Lora','Georgia',serif}
+.gp-stamp-space{width:18mm;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc}
+.gp-stamp-space::after{content:'STAMP';writing-mode:vertical-rl;text-orientation:mixed;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#bbb;text-transform:uppercase}
+.gp-stamp-space-left{border-right:none}
+.gp-stamp-space-right{border-left:none}
+.gp-doc{flex:1;padding:16mm 14mm;color:#111;position:relative;min-height:297mm}
+.gp-doc .gp-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:14px;margin-bottom:6px}
+.gp-doc .gp-company-name{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#111;line-height:1.2}
+.gp-doc .gp-company-sub{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em;color:#555;margin-top:2px}
+.gp-doc .gp-gpno-label{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.12em;text-transform:uppercase}
+.gp-doc .gp-gpno-value{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;letter-spacing:.1em;color:#111;line-height:1}
+.gp-doc .gp-title-bar{display:flex;justify-content:space-between;align-items:center;background:#111;color:white;padding:9px 16px;margin:12px 0 18px;border-left:6px solid #dc2626;font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.gp-doc .gp-field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.gp-doc .gp-field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.gp-doc .gp-field{border:1px solid #999;padding:6px 10px;min-height:34px;font-size:13px;background:#fff;position:relative;font-family:'Lora',serif}
+.gp-doc .gp-field-label{position:absolute;top:-8px;left:8px;background:white;padding:0 4px;font-size:9px;text-transform:uppercase;font-weight:700;color:#555;letter-spacing:.06em;font-family:'Rajdhani',sans-serif}
+.gp-doc .gp-type-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid #111;font-size:11px;font-weight:700;text-transform:uppercase;margin-right:8px;font-family:'Rajdhani',sans-serif;letter-spacing:.06em}
+.gp-doc .gp-type-badge.checked{background:#dc2626;color:white;border-color:#dc2626}
+.gp-doc .gp-items-table{width:100%;border-collapse:collapse;margin-top:8px;font-family:'Lora',serif}
+.gp-doc .gp-items-table th{background:#f0f0f0;border:1px solid #555;padding:8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-family:'Rajdhani',sans-serif;font-weight:700}
+.gp-doc .gp-items-table td{border:1px solid #555;padding:8px 6px;font-size:13px;min-height:30px}
+.gp-doc .gp-signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}
+.gp-doc .gp-signature{text-align:center}
+.gp-doc .gp-sign-line{border-top:1px solid #111;margin-top:40px;padding-top:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:'Rajdhani',sans-serif}
+.gp-doc .gp-sign-name{font-size:13px;font-family:'Lora',serif;color:#333;margin-top:2px;min-height:18px}
+.gp-doc .gp-footer{margin-top:24px;padding-top:12px;border-top:1px solid #999;display:flex;justify-content:space-between;font-size:9px;color:#666;font-family:'Rajdhani',sans-serif;letter-spacing:.03em}
+.gp-doc .gp-section-title{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:#111;letter-spacing:.08em;text-transform:uppercase;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid #ccc}
+@media print{
+  body *{visibility:hidden}
+  #printArea,#printArea *{visibility:visible}
+  #printArea{position:absolute;left:0;top:0;width:100%;margin:0;padding:0}
+  .gp-outer{box-shadow:none;width:100%;min-height:auto}
+  .gp-stamp-space{width:15mm}
+  .gp-doc{padding:12mm 10mm;min-height:auto}
+  @page{size:A4;margin:0}
+}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg-2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:5px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-dim)}
+.check-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:999px;cursor:pointer;transition:all .2s ease;font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.04em}
+.check-pill.active{background:rgba(220,38,38,.15);border-color:var(--accent);color:var(--accent-2)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-content{background:var(--panel);border:1px solid var(--border);border-radius:16px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;animation:fadeUp .3s ease}
+.pulse-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 0 var(--accent);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(220,38,38,.7)}70%{box-shadow:0 0 0 12px rgba(220,38,38,0)}100%{box-shadow:0 0 0 0 rgba(220,38,38,0)}}
+.header-glow{background:linear-gradient(180deg,rgba(220,38,38,.08),transparent)}
+.login-tab{padding:10px 24px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:14px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s ease}
+.login-tab:hover{color:var(--fg)}
+.login-tab.active{color:var(--accent-2);border-bottom-color:var(--accent)}
+.role-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-family:'Rajdhani',sans-serif}
+.role-badge.admin{background:rgba(220,38,38,.2);color:#ef4444;border:1px solid rgba(220,38,38,.3)}
+.role-badge.user{background:rgba(59,130,246,.2);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+.logo-img{height:80px;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05)}
+.logo-img-sm{height:38px;border-radius:4px}
+.time-12h{display:flex;align-items:center;gap:4px}
+.time-12h select{background:#0a0a0a;border:1px solid var(--border);color:var(--fg);padding:12px 6px;border-radius:6px;font-family:'Inter',sans-serif;font-size:14px;transition:all .2s ease;cursor:pointer;color-scheme:dark;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:22px}
+.time-12h select:hover{border-color:#444;background-color:#0f0f0f}
+.time-12h select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15);background-color:#0a0a0a}
+.time-12h select option{background:#111;color:#f0f0f0}
+.time-12h .time-sep{color:var(--muted);font-size:18px;font-weight:700;padding:0 2px;user-select:none}
+.time-12h select.time-hr{width:68px;text-align:center}
+.time-12h select.time-min{width:68px;text-align:center}
+.time-12h select.time-ampm{width:76px;text-align:center}
+.flap-toggle{display:flex;align-items:center;gap:10px;padding:10px 16px;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s ease;margin-bottom:12px;user-select:none}
+.flap-toggle:hover{border-color:#444}
+.flap-toggle.active{border-color:var(--accent);background:rgba(220,38,38,.06)}
+.flap-toggle .flap-indicator{width:36px;height:20px;border-radius:10px;background:var(--border);position:relative;transition:all .2s ease;flex-shrink:0}
+.flap-toggle.active .flap-indicator{background:var(--accent)}
+.flap-toggle .flap-indicator::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:white;transition:all .2s ease}
+.flap-toggle.active .flap-indicator::after{left:18px}
+.flap-body{overflow:hidden;transition:max-height .35s ease,opacity .3s ease;max-height:0;opacity:0}
+.flap-body.open{max-height:800px;opacity:1}
+.time-type-toggle{display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.time-type-toggle .tt-btn{flex:1;padding:10px 16px;text-align:center;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:13px;cursor:pointer;transition:all .2s ease;color:var(--muted);background:transparent;border:none}
+.time-type-toggle .tt-btn.active{background:rgba(220,38,38,.15);color:var(--accent-2)}
+.time-type-toggle .tt-btn:hover:not(.active){color:var(--fg);background:rgba(255,255,255,.03)}
+@media(max-width:1024px){.sidebar-mobile-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:none}.sidebar-mobile-overlay.show{display:block}#sidebar{position:fixed;left:0;top:65px;bottom:0;z-index:45;transform:translateX(-100%);transition:transform .3s ease}#sidebar.mobile-open{transform:translateX(0)}}
 </style>
 </head>
 <body>
 
-<!-- ====================== LOGIN PAGE ====================== -->
+<!-- ===== LOGIN PAGE ===== -->
 <div id="loginPage" class="login-bg min-h-screen flex items-center justify-center p-6 relative">
   <div class="lightning-flash"></div>
   <div class="absolute top-0 left-0 w-40 h-40 border-t-2 border-l-2 border-red-600/30"></div>
@@ -275,14 +138,10 @@
   <div class="absolute bottom-0 left-0 w-40 h-40 border-b-2 border-l-2 border-red-600/30"></div>
   <div class="absolute bottom-0 right-0 w-40 h-40 border-b-2 border-r-2 border-red-600/30"></div>
   <div class="relative z-10 w-full max-w-md">
-    <div class="flex justify-center mb-6">
-      <img src="https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8" alt="Limburg Power Solutions" class="logo-img">
-    </div>
+    <div class="flex justify-center mb-6"><img src="https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8" alt="Limburg Power Solutions" class="logo-img" id="loginLogoImg"></div>
     <div class="text-center mb-6">
       <h1 class="font-display text-3xl font-bold tracking-wider text-white">GATE PASS SYSTEM</h1>
-      <div class="flex items-center justify-center gap-2 mt-2 text-red-400 text-sm font-display tracking-widest">
-        <span class="pulse-dot"></span><span>SECURE PORTAL ACCESS</span>
-      </div>
+      <div class="flex items-center justify-center gap-2 mt-2 text-red-400 text-sm font-display tracking-widest"><span class="pulse-dot"></span><span>SECURE PORTAL ACCESS</span></div>
     </div>
     <div class="flex border-b border-gray-800 mb-0" id="loginTabs">
       <div class="login-tab active flex-1 text-center" data-role="admin" onclick="switchLoginTab('admin')"><i class="fas fa-shield-alt mr-1"></i> Admin</div>
@@ -295,20 +154,20 @@
         <div id="loginError" class="hidden text-red-400 text-sm flex items-center gap-2"><i class="fas fa-exclamation-triangle"></i><span id="loginErrorMsg"></span></div>
         <button type="submit" class="btn-primary w-full text-base flex items-center justify-center gap-2"><i class="fas fa-bolt"></i><span>ACCESS SYSTEM</span></button>
       </form>
-      <div class="mt-5 pt-5 border-t border-gray-800 text-center" id="registerSection">
-        <p class="text-gray-500 text-sm mb-3" id="regSectionText">Don't have an account?</p>
-        <button onclick="openRegisterModal()" class="btn-ghost w-full text-sm" id="openRegBtn"><i class="fas fa-user-plus mr-2"></i> <span id="regRoleLabel">Create Account</span></button>
+      <div class="mt-5 pt-5 border-t border-gray-800 text-center" id="registerSection" style="display:none">
+        <p class="text-gray-500 text-sm mb-3">Don't have an account?</p>
+        <button onclick="openRegisterModal()" class="btn-ghost w-full text-sm"><i class="fas fa-user-plus mr-2"></i>Create User Account</button>
       </div>
     </div>
-    <div class="text-center mt-6 text-xs text-gray-600 font-display tracking-widest"><i class="fas fa-shield-alt mr-1"></i> LIMBURG POWER SOLUTIONS LIMITED &middot; UTTARA, DHAKA</div>
+    <div class="text-center mt-6 text-xs text-gray-600 font-display tracking-widest"><i class="fas fa-shield-alt mr-1"></i> LIMBURG POWER SOLUTIONS LIMITED</div>
   </div>
 </div>
 
-<!-- ====================== REGISTER MODAL ====================== -->
+<!-- ===== REGISTER MODAL ===== -->
 <div id="registerModal" class="modal-backdrop hidden">
   <div class="modal-content p-8">
     <div class="flex items-center justify-between mb-6">
-      <div><h2 class="font-display text-2xl font-bold text-white">Create Account</h2><p class="text-xs text-gray-500 mt-1">Register a new <span id="regModalRole" class="text-red-400 font-semibold">Account</span></p></div>
+      <div><h2 class="font-display text-2xl font-bold text-white">Create Account</h2><p class="text-xs text-gray-500 mt-1">Register a new <span class="text-red-400 font-semibold">User</span></p></div>
       <button onclick="closeRegisterModal()" class="text-gray-500 hover:text-white text-xl transition"><i class="fas fa-times"></i></button>
     </div>
     <form id="registerForm" class="space-y-4">
@@ -322,7 +181,7 @@
   </div>
 </div>
 
-<!-- ====================== ADMIN CREATE USER MODAL ====================== -->
+<!-- ===== ADMIN CREATE USER MODAL ===== -->
 <div id="adminCreateUserModal" class="modal-backdrop hidden">
   <div class="modal-content p-8">
     <div class="flex items-center justify-between mb-6">
@@ -340,16 +199,24 @@
   </div>
 </div>
 
-<!-- ====================== VIEW GATE PASS MODAL ====================== -->
-<div id="viewModal" class="modal-backdrop hidden" style="overflow-y:auto;">
-  <div class="modal-content p-0 max-w-4xl" style="max-height:95vh;overflow-y:auto;">
-    <div id="viewModalBody"></div>
+<!-- ===== VIEW GATE PASS MODAL ===== -->
+<div id="viewModal" class="modal-backdrop hidden" style="overflow-y:auto">
+  <div class="modal-content p-0 max-w-4xl" style="max-height:95vh;overflow-y:auto">
+    <div class="sticky top-0 bg-[var(--panel)] border-b border-gray-800 p-4 flex items-center justify-between z-10 rounded-t-2xl">
+      <h3 class="font-display text-lg font-semibold text-white">Gate Pass Preview</h3>
+      <div class="flex gap-2">
+        <button onclick="downloadGatePass()" class="btn-ghost btn-sm"><i class="fas fa-download mr-1"></i> Download</button>
+        <button onclick="printGatePass()" class="btn-primary btn-sm"><i class="fas fa-print mr-1"></i> Print</button>
+        <button onclick="closeViewModal()" class="btn-ghost btn-sm"><i class="fas fa-times"></i></button>
+      </div>
+    </div>
+    <div id="viewModalBody" class="p-4 bg-gray-900"></div>
   </div>
 </div>
 
-<!-- ====================== DELETE CONFIRM MODAL ====================== -->
+<!-- ===== DELETE GP MODAL ===== -->
 <div id="deleteModal" class="modal-backdrop hidden">
-  <div class="modal-content p-8 text-center" style="max-width:400px;">
+  <div class="modal-content p-8 text-center" style="max-width:400px">
     <div class="w-16 h-16 rounded-full bg-red-600/20 flex items-center justify-center mx-auto mb-4"><i class="fas fa-trash-alt text-2xl text-red-500"></i></div>
     <h3 class="font-display text-xl font-bold text-white mb-2">Delete Gate Pass?</h3>
     <p class="text-gray-400 text-sm mb-6" id="deleteMsg">This action cannot be undone.</p>
@@ -357,7 +224,17 @@
   </div>
 </div>
 
-<!-- ====================== MAIN APP ====================== -->
+<!-- ===== DELETE USER MODAL ===== -->
+<div id="deleteUserModal" class="modal-backdrop hidden">
+  <div class="modal-content p-8 text-center" style="max-width:400px">
+    <div class="w-16 h-16 rounded-full bg-red-600/20 flex items-center justify-center mx-auto mb-4"><i class="fas fa-user-slash text-2xl text-red-500"></i></div>
+    <h3 class="font-display text-xl font-bold text-white mb-2">Delete User?</h3>
+    <p class="text-gray-400 text-sm mb-6" id="deleteUserMsg">This will permanently remove this user.</p>
+    <div class="flex gap-3"><button onclick="closeDeleteUserModal()" class="btn-ghost flex-1">Cancel</button><button id="confirmDeleteUserBtn" class="btn-danger flex-1"><i class="fas fa-trash mr-1"></i> Delete</button></div>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
 <div id="mainApp" class="hidden min-h-screen">
   <header class="header-glow border-b border-gray-800 sticky top-0 z-30 bg-black/80 backdrop-blur-xl">
     <div class="flex items-center justify-between px-6 py-3">
@@ -365,7 +242,7 @@
         <button id="toggleSidebar" class="lg:hidden text-gray-400 hover:text-white"><i class="fas fa-bars text-xl"></i></button>
         <div class="flex items-center gap-3">
           <img src="https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8" alt="Logo" class="logo-img-sm" id="headerLogoImg">
-          <div class="hidden md:block"><div class="font-display text-white text-sm font-semibold tracking-wide">Gate Pass System</div><div class="text-[10px] text-gray-500 tracking-widest">LIMBURG POWER SOLUTIONS LTD.</div></div>
+          <div class="hidden md:block"><div class="font-display text-white text-sm font-semibold tracking-wide">Gate Pass System</div><div class="text-[10px] text-gray-500 tracking-widest" id="headerCompanySub">LIMBURG POWER SOLUTIONS LTD.</div></div>
         </div>
       </div>
       <div class="flex items-center gap-4">
@@ -379,59 +256,46 @@
     </div>
   </header>
   <div class="flex">
-    <aside id="sidebar" class="w-64 bg-[var(--bg-2)] border-r border-gray-800 min-h-[calc(100vh-65px)] sticky top-[65px] hidden lg:block relative">
+    <div class="sidebar-mobile-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
+    <aside id="sidebar" class="w-64 bg-[var(--bg-2)] border-r border-gray-800 min-h-[calc(100vh-65px)] sticky top-[65px] hidden lg:block">
       <nav class="py-4" id="sidebarNav"></nav>
-      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800"><div class="text-[10px] text-gray-600 font-display tracking-widest mb-1">SYSTEM STATUS</div><div class="flex items-center gap-2 text-xs text-green-400"><i class="fas fa-circle text-[6px]"></i><span>Online &middot; LocalStorage Active</span></div></div>
+      <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800"><div class="text-[10px] text-gray-600 font-display tracking-widest mb-1">SYSTEM STATUS</div><div class="flex items-center gap-2 text-xs text-green-400"><i class="fas fa-circle text-[6px]"></i><span>Online</span></div></div>
     </aside>
     <main class="flex-1 p-6 lg:p-8 grid-bg-dense" id="content"></main>
   </div>
 </div>
 
 <div id="printArea" class="hidden"></div>
-
-<div id="toast" class="toast"><i class="fas fa-check-circle text-red-500" id="toastIcon"></i><span id="toastMsg">Saved successfully</span></div>
+<div id="toast" class="toast"><i class="fas fa-check-circle text-red-500" id="toastIcon"></i><span id="toastMsg">Saved</span></div>
 
 <script>
+const HARDADMIN_USERNAME='munna0909',HARDADMIN_PASSWORD='mun0909@@##';
+const HARDADMIN={id:'admin_0',name:'System Administrator',username:HARDADMIN_USERNAME,password:HARDADMIN_PASSWORD,role:'admin',createdAt:new Date().toISOString()};
 const STORAGE_KEY='limburg_gatepasses',LOGO_KEY='limburg_custom_logo',COMPANY_KEY='limburg_company_info',AUTH_KEY='limburg_auth',USERS_KEY='limburg_users';
 const defaultCompany={name:'LIMBURG POWER SOLUTIONS LIMITED',address:'House #16, Road #18, Sector #10, Uttara, Dhaka - 1230',phone:'+880 1700-000000',email:'info@limburgpower.com',web:'www.limburgpower.com'};
-let currentPage='dashboard',editingId=null,selectedLoginRole='admin',deleteTargetId=null,currentUser=null;
 
-function escapeHtml(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function formatDate(d){if(!d)return'-';try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return d;}}
+let currentPage='dashboard',editingId=null,selectedLoginRole='admin',deleteTargetId=null,deleteUserTargetId=null,currentUser=null,viewingPassId=null;
+
+function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function fmtDate(d){if(!d)return'-';try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return d;}}
 function to12h(t){if(!t)return'-';if(t.includes('AM')||t.includes('PM'))return t;const p=t.split(':');if(p.length<2)return t;let h=parseInt(p[0],10);const m=p[1];const a=h>=12?'PM':'AM';h=h%12||12;return String(h).padStart(2,'0')+':'+m+' '+a;}
 function now12h(){const n=new Date();let h=n.getHours();const m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0'),a=h>=12?'PM':'AM';h=h%12||12;return String(h).padStart(2,'0')+':'+m+':'+s+' '+a;}
-function showToast(msg,type){const t=document.getElementById('toast'),ic=document.getElementById('toastIcon');document.getElementById('toastMsg').textContent=msg;if(type==='warn'){ic.className='fas fa-exclamation-triangle text-yellow-500';t.style.borderColor='#eab308';}else{ic.className='fas fa-check-circle text-red-500';t.style.borderColor='var(--accent)';}t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(()=>t.classList.remove('show'),3000);}
 
-function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY))||[];}catch{return[];}}
+function showToast(msg,type){
+  const t=document.getElementById('toast'),ic=document.getElementById('toastIcon');
+  document.getElementById('toastMsg').textContent=msg;
+  ic.className=type==='warn'?'fas fa-exclamation-triangle text-yellow-500':'fas fa-check-circle text-red-500';
+  t.style.borderColor=type==='warn'?'#eab308':'var(--accent)';
+  t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+function getUsers(){try{let u=JSON.parse(localStorage.getItem(USERS_KEY))||[];if(!u.some(x=>x.id==='admin_0')){u.unshift({...HARDADMIN});saveUsers(u);}const ai=u.findIndex(x=>x.id==='admin_0');if(ai>-1){u[ai].username=HARDADMIN_USERNAME;u[ai].password=HARDADMIN_PASSWORD;saveUsers(u);}return u;}catch{return [{...HARDADMIN}]};}
 function saveUsers(l){localStorage.setItem(USERS_KEY,JSON.stringify(l));}
 function findUser(u,p){return getUsers().find(x=>x.username.toLowerCase()===u.toLowerCase()&&x.password===p);}
 function usernameExists(u){return getUsers().some(x=>x.username.toLowerCase()===u.toLowerCase());}
-function adminExists(){return getUsers().some(x=>x.role==='admin');}
-
-function updateLoginTabs(){const r=document.getElementById('regRoleLabel'),t=document.getElementById('regSectionText');if(adminExists()){r.textContent='Create User Account';t.textContent='Need a user account?';}else{r.textContent='Create First Admin Account';t.textContent='No admin account found. Create the first one:';}}
-function switchLoginTab(role){selectedLoginRole=role;document.querySelectorAll('.login-tab').forEach(t=>t.classList.toggle('active',t.dataset.role===role));const r=document.getElementById('regRoleLabel');if(role==='admin'&&adminExists())r.textContent='Admin accounts can only be created from inside the panel';else if(role==='admin'&&!adminExists())r.textContent='Create First Admin Account';else r.textContent='Create User Account';document.getElementById('loginError').classList.add('hidden');}
-
-function openRegisterModal(){const ha=adminExists();if(selectedLoginRole==='admin'&&ha){showToast('Admin accounts can only be created by an existing admin from inside the panel.','warn');return;}let cr=selectedLoginRole;if(cr==='admin'&&!ha){}else if(cr==='admin'&&ha){showToast('Admin accounts can only be created by an existing admin.','warn');return;}else cr='user';document.getElementById('registerModal').classList.remove('hidden');document.getElementById('regModalRole').textContent=cr==='admin'?'First Admin':'User';document.getElementById('regError').classList.add('hidden');document.getElementById('registerForm').reset();document.getElementById('registerForm').dataset.createRole=cr;}
-function closeRegisterModal(){document.getElementById('registerModal').classList.add('hidden');}
-document.getElementById('registerForm').addEventListener('submit',e=>{e.preventDefault();const nm=document.getElementById('regName').value.trim(),un=document.getElementById('regUser').value.trim(),pw=document.getElementById('regPass').value,pc=document.getElementById('regPassConfirm').value,er=document.getElementById('regError'),em=document.getElementById('regErrorMsg'),cr=e.target.dataset.createRole||'user';if(!nm||!un||!pw){em.textContent='All fields are required.';er.classList.remove('hidden');return;}if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}if(pw!==pc){em.textContent='Passwords do not match.';er.classList.remove('hidden');return;}if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}if(cr==='admin'&&adminExists()){em.textContent='Admin account already exists.';er.classList.remove('hidden');return;}const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:cr,createdAt:new Date().toISOString()});saveUsers(us);closeRegisterModal();showToast((cr==='admin'?'First Admin':'User')+' "'+un+'" created!','success');document.getElementById('loginUser').value=un;document.getElementById('loginPass').value='';document.getElementById('loginPass').focus();updateLoginTabs();});
-
-function openAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.remove('hidden');document.getElementById('acError').classList.add('hidden');document.getElementById('adminCreateForm').reset();document.getElementById('ac_role').value='user';document.querySelectorAll('#adminCreateUserModal .check-pill').forEach(p=>p.classList.toggle('active',p.dataset.arole==='user'));}
-function closeAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.add('hidden');}
-function selectAdminRole(el,r){document.querySelectorAll('#adminCreateUserModal .check-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('ac_role').value=r;}
-document.getElementById('adminCreateForm').addEventListener('submit',e=>{e.preventDefault();const nm=document.getElementById('ac_name').value.trim(),un=document.getElementById('ac_user').value.trim(),pw=document.getElementById('ac_pass').value,rl=document.getElementById('ac_role').value,er=document.getElementById('acError'),em=document.getElementById('acErrorMsg');if(!nm||!un||!pw){em.textContent='All fields are required.';er.classList.remove('hidden');return;}if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:rl,createdAt:new Date().toISOString()});saveUsers(us);closeAdminCreateModal();showToast((rl==='admin'?'Admin':'User')+' "'+un+'" created!','success');if(currentPage==='users')renderPage('users');});
-
-document.getElementById('loginForm').addEventListener('submit',e=>{e.preventDefault();const un=document.getElementById('loginUser').value.trim(),pw=document.getElementById('loginPass').value.trim(),er=document.getElementById('loginError'),em=document.getElementById('loginErrorMsg');if(!un||!pw){em.textContent='Please enter both username and password.';er.classList.remove('hidden');return;}const u=findUser(un,pw);if(!u){em.textContent='Invalid username or password.';er.classList.remove('hidden');document.getElementById('loginPass').value='';return;}if(u.role!==selectedLoginRole){em.textContent='This is a "'+u.role+'" account. Switch to the correct tab.';er.classList.remove('hidden');return;}currentUser=u;sessionStorage.setItem(AUTH_KEY,JSON.stringify({id:u.id,username:u.username,name:u.name,role:u.role}));er.classList.add('hidden');showApp();showToast('Welcome back, '+u.name,'success');});
-document.getElementById('togglePass').addEventListener('click',()=>{const i=document.getElementById('loginPass'),ic=document.querySelector('#togglePass i');if(i.type==='password'){i.type='text';ic.classList.replace('fa-eye','fa-eye-slash');}else{i.type='password';ic.classList.replace('fa-eye-slash','fa-eye');}});
-document.getElementById('logoutBtn').addEventListener('click',()=>{sessionStorage.removeItem(AUTH_KEY);currentUser=null;document.getElementById('mainApp').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';updateLoginTabs();});
-
-function checkAuth(){try{const a=JSON.parse(sessionStorage.getItem(AUTH_KEY));if(a&&a.id){const u=getUsers().find(x=>x.id===a.id);if(u){currentUser=u;showApp();return;}}}catch{}}
-function showApp(){document.getElementById('loginPage').classList.add('hidden');document.getElementById('mainApp').classList.remove('hidden');document.getElementById('headerName').textContent=currentUser.name;document.getElementById('headerRole').innerHTML=currentUser.role==='admin'?'<span class="role-badge admin"><i class="fas fa-shield-alt text-[8px]"></i> ADMIN</span>':'<span class="role-badge user"><i class="fas fa-user text-[8px]"></i> USER</span>';document.getElementById('headerAvatar').textContent=currentUser.name.charAt(0).toUpperCase();buildSidebar();renderPage(currentUser.role==='admin'?'dashboard':'create');updateCount();}
-
-function buildSidebar(){const nav=document.getElementById('sidebarNav'),r=currentUser.role;const secs=[{l:'MAIN MENU',i:[{p:'dashboard',ic:'fa-chart-pie',lb:'Dashboard',r:['admin']},{p:'create',ic:'fa-plus-circle',lb:'Create Gate Pass',r:['admin','user']},{p:'all',ic:'fa-list-alt',lb:'All Gate Pass',r:['admin','user'],b:true}]},{l:'ADMINISTRATION',i:[{p:'users',ic:'fa-users-cog',lb:'Manage Users',r:['admin']},{p:'upload',ic:'fa-upload',lb:'Upload Logo',r:['admin']},{p:'company',ic:'fa-building',lb:'Company Info',r:['admin']}]}];let h='';secs.forEach(s=>{const f=s.i.filter(x=>x.r.includes(r));if(!f.length)return;h+='<div class="px-5 py-2 text-[10px] tracking-widest text-gray-600 font-display">'+s.l+'</div>';f.forEach(x=>{const bd=x.b?'<span id="allCount" class="ml-auto bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full">'+getGatePasses().length+'</span>':'';h+='<div class="sidebar-item" data-page="'+x.p+'"><i class="fas '+x.ic+' w-5"></i><span>'+x.lb+'</span>'+bd+'</div>';});});nav.innerHTML=h;nav.querySelectorAll('.sidebar-item').forEach(x=>{x.addEventListener('click',()=>{nav.querySelectorAll('.sidebar-item').forEach(s=>s.classList.remove('active'));x.classList.add('active');renderPage(x.dataset.page);if(window.innerWidth<1024)document.getElementById('sidebar').classList.add('hidden');});});}
-
 function getGatePasses(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch{return[];}}
 function saveGatePasses(l){localStorage.setItem(STORAGE_KEY,JSON.stringify(l));}
-function getCompany(){try{const c=localStorage.getItem(COMPANY_KEY);return c?JSON.parse(c):defaultCompany;}catch{return defaultCompany;}}
+function getCompany(){try{const c=localStorage.getItem(COMPANY_KEY);return c?JSON.parse(c):{...defaultCompany};}catch{return {...defaultCompany};}}
 function saveCompany(c){localStorage.setItem(COMPANY_KEY,JSON.stringify(c));}
 function getCustomLogo(){return localStorage.getItem(LOGO_KEY);}
 function saveCustomLogo(d){localStorage.setItem(LOGO_KEY,d);}
@@ -439,107 +303,584 @@ function clearCustomLogo(){localStorage.removeItem(LOGO_KEY);}
 function generateGpNo(){const l=getGatePasses();return 'GP-'+new Date().getFullYear()+'-'+String(l.length+1).padStart(4,'0');}
 function updateCount(){const e=document.getElementById('allCount');if(e)e.textContent=getGatePasses().length;}
 
-function timePickerHTML(id,value){let h='12',m='00',a='AM';if(value){if(value.includes('AM')||value.includes('PM')){const p=value.replace(/\s*(AM|PM)\s*/i,' $1 ').trim().split(/\s+/);h=p[0].split(':')[0];m=p[0].split(':')[1]||'00';a=p[1]||'AM';}else{const p=value.split(':');let hh=parseInt(p[0],10);m=p[1]||'00';a=hh>=12?'PM':'AM';hh=hh%12||12;h=String(hh).padStart(2,'0');}}let ho='',mo='';for(let i=1;i<=12;i++)ho+='<option value="'+String(i).padStart(2,'0')+'"'+(String(i).padStart(2,'0')===h?' selected':'')+'>'+String(i).padStart(2,'0')+'</option>';for(let i=0;i<60;i++)mo+='<option value="'+String(i).padStart(2,'0')+'"'+(String(i).padStart(2,'0')===m?' selected':'')+'>'+String(i).padStart(2,'0')+'</option>';return '<div class="time-12h" id="'+id+'"><select class="time-hr">'+ho+'</select><span class="time-sep">:</span><select class="time-min">'+mo+'</select><select class="time-ampm"><option value="AM"'+(a==='AM'?' selected':'')+'>AM</option><option value="PM"'+(a==='PM'?' selected':'')+'>PM</option></select></div>';}
-function getTimePickerValue(id){const el=document.getElementById(id);if(!el)return '';const s=el.querySelectorAll('select');return s[0].value+':'+s[1].value+' '+s[2].value;}
-
-document.getElementById('toggleSidebar').addEventListener('click',()=>{document.getElementById('sidebar').classList.toggle('hidden');});
-function navigateTo(p){document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.toggle('active',s.dataset.page===p));renderPage(p);}
-function renderPage(p){currentPage=p;const c=document.getElementById('content');if(p==='dashboard')c.innerHTML=dashboardHTML();else if(p==='create')c.innerHTML=createHTML();else if(p==='all')c.innerHTML=allHTML();else if(p==='users')c.innerHTML=usersHTML();else if(p==='upload')c.innerHTML=uploadHTML();else if(p==='company')c.innerHTML=companyHTML();}
-
-function statCard(l,v,ic,c,s){return '<div class="stat-card"><div class="flex items-start justify-between"><div><div class="text-gray-500 text-xs font-display tracking-widest">'+l+'</div><div class="font-display text-5xl font-bold text-white mt-2">'+v+'</div></div><div class="w-12 h-12 rounded-lg bg-'+c+'-500/20 flex items-center justify-center text-'+c+'-500 text-xl"><i class="fas '+ic+'"></i></div></div><div class="text-xs text-gray-600 mt-3 font-display tracking-wider">'+s+'</div></div>';}
-function quickAction(p,ic,t,d,g,b,hv,ib){return '<button onclick="navigateTo(\''+p+'\')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r '+g+' border '+b+' '+hv+' transition group"><div class="w-10 h-10 rounded-lg '+ib+' flex items-center justify-center text-white"><i class="fas '+ic+'"></i></div><div class="text-left"><div class="font-display font-semibold text-white">'+t+'</div><div class="text-xs text-gray-500">'+d+'</div></div><i class="fas fa-chevron-right text-gray-600 group-hover:text-red-400 ml-auto"></i></button>';}
-
-function dashboardHTML(){const l=getGatePasses(),ret=l.filter(g=>g.type==='Returnable').length,nret=l.filter(g=>g.type==='Non-Returnable').length,td=new Date().toDateString(),tc=l.filter(g=>new Date(g.createdAt).toDateString()===td).length;return '<div class="page"><div class="mb-8"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-chart-pie"></i><span>OVERVIEW</span></div><h1 class="font-display text-4xl font-bold text-white">Dashboard</h1><p class="text-gray-500 mt-1">Monitor gate pass activity and system metrics</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">'+statCard('TOTAL PASSES',l.length,'fa-file-alt','red','ALL TIME RECORDS')+statCard('RETURNABLE',ret,'fa-undo','yellow','TO BE RETURNED')+statCard('NON-RETURNABLE',nret,'fa-truck','blue','PERMANENT TRANSFER')+statCard('TODAY',tc,'fa-calendar-day','green',new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}))+'</div><div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="flex items-center justify-between p-5 border-b border-gray-800"><div><h3 class="font-display text-lg font-semibold text-white">Recent Gate Passes</h3><p class="text-xs text-gray-500">Latest 5 entries</p></div><button onclick="navigateTo(\'all\')" class="btn-ghost text-xs">View All <i class="fas fa-arrow-right ml-1"></i></button></div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Client</th><th>Carried By</th><th>Type</th><th>Date</th></tr></thead><tbody>'+(l.slice(-5).reverse().map(g=>'<tr class="cursor-pointer" onclick="viewGatePass(\''+g.id+'\')"><td class="font-display font-semibold text-red-400">'+escapeHtml(g.gpNo)+'</td><td>'+escapeHtml(g.client||'-')+'</td><td>'+escapeHtml(g.carriedBy||'-')+'</td><td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td><td class="text-gray-400">'+(g.date||'-')+'</td></tr>').join('')||'<tr><td colspan="5" class="text-center text-gray-500 py-8">No gate passes yet</td></tr>')+'</tbody></table></div></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-5"><h3 class="font-display text-lg font-semibold text-white mb-4">Quick Actions</h3><div class="space-y-3">'+quickAction('create','fa-plus','New Gate Pass','Create a new pass','from-red-600/20 to-transparent','border-red-900/40','hover:border-red-600','bg-red-600')+quickAction('all','fa-list','All Gate Passes','View, print, manage','from-gray-700/50 to-transparent','border-gray-800','hover:border-gray-600','bg-gray-700')+quickAction('users','fa-users-cog','Manage Users',getUsers().length+' registered users','from-gray-700/50 to-transparent','border-gray-800','hover:border-gray-600','bg-gray-700')+'</div></div></div></div>';}
-
-function createHTML(){const gn=editingId?'':generateGpNo(),td=new Date().toISOString().split('T')[0],ed=editingId?getGatePasses().find(g=>g.id===editingId):null,d=ed||{gpNo:gn,date:td,type:'Returnable',client:'',carriedBy:'',mobile:'',vehicleNo:'',timeIn:'',timeOut:'',purpose:'',items:[{sl:1,description:'',unit:'',quantity:'',remarks:''}]};return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-plus-circle"></i><span>'+(editingId?'EDIT':'NEW')+' GATE PASS</span></div><h1 class="font-display text-4xl font-bold text-white">'+(editingId?'Edit':'Create')+' Gate Pass</h1><p class="text-gray-500 mt-1">Fill in the details below.</p></div><button onclick="cancelEdit()" class="btn-ghost"><i class="fas fa-arrow-left mr-1"></i> Back</button></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6"><div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">GATE PASS NO</label><input type="text" id="f_gpNo" class="field" value="'+escapeHtml(d.gpNo)+'" readonly></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">DATE</label><input type="date" id="f_date" class="field" value="'+escapeHtml(d.date)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PASS TYPE</label><div class="flex gap-2 pt-2"><div class="check-pill '+(d.type==='Returnable'?'active':'')+'" onclick="selectType(this,\'Returnable\')"><i class="fas fa-undo text-xs"></i> Returnable</div><div class="check-pill '+(d.type==='Non-Returnable'?'active':'')+'" onclick="selectType(this,\'Non-Returnable\')"><i class="fas fa-truck text-xs"></i> Non-Returnable</div></div><input type="hidden" id="f_type" value="'+d.type+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CLIENT</label><input type="text" id="f_client" class="field" placeholder="Client / Company name" value="'+escapeHtml(d.client)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CARRIED BY</label><input type="text" id="f_carriedBy" class="field" placeholder="Person name" value="'+escapeHtml(d.carriedBy)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">MOBILE NO</label><input type="text" id="f_mobile" class="field" placeholder="+8801XXXXXXXXX" value="'+escapeHtml(d.mobile)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">VEHICLE NO (Optional)</label><input type="text" id="f_vehicle" class="field" placeholder="Dhaka-Metro-XX-XXXX" value="'+escapeHtml(d.vehicleNo)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TIME IN</label>'+timePickerHTML('f_timeIn',d.timeIn)+'</div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TIME OUT</label>'+timePickerHTML('f_timeOut',d.timeOut)+'</div></div><div class="mt-5"><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PURPOSE / REMARKS</label><textarea id="f_purpose" class="field" rows="2" placeholder="Purpose of carrying goods...">'+escapeHtml(d.purpose)+'</textarea></div></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6"><div class="flex items-center justify-between mb-4"><div><h3 class="font-display text-lg font-semibold text-white">Goods / Items</h3><p class="text-xs text-gray-500">Following goods are permitted to be carried</p></div><button onclick="addItemRow()" class="btn-ghost text-xs"><i class="fas fa-plus mr-1"></i> Add Row</button></div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th style="width:60px">SL</th><th>Description</th><th style="width:100px">Unit</th><th style="width:120px">Quantity</th><th>Remarks</th><th style="width:60px"></th></tr></thead><tbody id="itemsBody">'+d.items.map((it,i)=>itemRowHTML(it,i)).join('')+'</tbody></table></div></div><div class="flex flex-wrap gap-3 justify-end"><button onclick="cancelEdit()" class="btn-ghost">Cancel</button>'+(currentUser.role==='admin'?'<button onclick="saveAndPrint()" class="btn-primary"><i class="fas fa-print mr-2"></i> Save & Print</button>':'')+'<button onclick="saveDraft()" class="btn-primary"><i class="fas fa-check mr-2"></i> Save Gate Pass</button></div></div>';}
-
-function itemRowHTML(it,i){return '<tr class="slide-in" data-row="'+i+'"><td><input type="number" class="field field-light py-1 text-center" value="'+(it.sl||i+1)+'" onchange="renumberRows()" style="min-width:50px"></td><td><input type="text" class="field field-light py-1" placeholder="Item description" value="'+escapeHtml(it.description)+'"></td><td><input type="text" class="field field-light py-1" placeholder="pcs/set/box" value="'+escapeHtml(it.unit)+'"></td><td><input type="text" class="field field-light py-1" placeholder="Qty" value="'+escapeHtml(it.quantity)+'"></td><td><input type="text" class="field field-light py-1" placeholder="Remarks" value="'+escapeHtml(it.remarks)+'"></td><td><button onclick="removeItemRow(this)" class="text-red-500 hover:text-red-300 transition"><i class="fas fa-times-circle"></i></button></td></tr>';}
-function addItemRow(){const tb=document.getElementById('itemsBody'),idx=tb.rows.length;tb.insertAdjacentHTML('beforeend',itemRowHTML({sl:idx+1,description:'',unit:'',quantity:'',remarks:''},idx));}
-function removeItemRow(b){const tb=document.getElementById('itemsBody');if(tb.rows.length<=1){showToast('At least one item row required.','warn');return;}b.closest('tr').remove();renumberRows();}
-function renumberRows(){document.querySelectorAll('#itemsBody tr').forEach((r,i)=>{r.querySelector('input[type="number"]').value=i+1;});}
-function selectType(el,t){document.querySelectorAll('.check-pill').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('f_type').value=t;}
-function cancelEdit(){editingId=null;navigateTo(currentUser.role==='admin'?'dashboard':'all');}
-
-function collectFormData(){const items=[];document.querySelectorAll('#itemsBody tr').forEach((r,i)=>{const inp=r.querySelectorAll('input[type="text"], input[type="number"]');items.push({sl:i+1,description:inp[1]?.value||'',unit:inp[2]?.value||'',quantity:inp[3]?.value||'',remarks:inp[4]?.value||''});});return{gpNo:document.getElementById('f_gpNo').value,date:document.getElementById('f_date').value,type:document.getElementById('f_type').value,client:document.getElementById('f_client').value.trim(),carriedBy:document.getElementById('f_carriedBy').value.trim(),mobile:document.getElementById('f_mobile').value.trim(),vehicleNo:document.getElementById('f_vehicle').value.trim(),timeIn:getTimePickerValue('f_timeIn'),timeOut:getTimePickerValue('f_timeOut'),purpose:document.getElementById('f_purpose').value.trim(),items};}
-function saveDraft(){const d=collectFormData();if(!d.client||!d.carriedBy){showToast('Client and Carried By are required.','warn');return;}const l=getGatePasses();if(editingId){const idx=l.findIndex(g=>g.id===editingId);if(idx>-1)l[idx]={...l[idx],...d};editingId=null;}else{d.id='gp_'+Date.now();d.createdAt=new Date().toISOString();d.createdBy=currentUser.name;l.push(d);}saveGatePasses(l);updateCount();showToast('Gate pass saved!','success');navigateTo(currentUser.role==='admin'?'dashboard':'all');}
-function saveAndPrint(){const d=collectFormData();if(!d.client||!d.carriedBy){showToast('Client and Carried By are required.','warn');return;}const l=getGatePasses();if(editingId){const idx=l.findIndex(g=>g.id===editingId);if(idx>-1)l[idx]={...l[idx],...d};editingId=null;}else{d.id='gp_'+Date.now();d.createdAt=new Date().toISOString();d.createdBy=currentUser.name;l.push(d);}saveGatePasses(l);updateCount();showToast('Saved! Printing...','success');printGatePass(d);}
-
-function allHTML(){const l=getGatePasses().slice().reverse();return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-list-alt"></i><span>ALL RECORDS</span></div><h1 class="font-display text-4xl font-bold text-white">All Gate Passes</h1><p class="text-gray-500 mt-1">'+l.length+' total records</p></div><button onclick="navigateTo(\'create\')" class="btn-primary"><i class="fas fa-plus mr-2"></i> New Pass</button></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Date</th><th>Client</th><th>Carried By</th><th>Time In</th><th>Time Out</th><th>Type</th><th>Actions</th></tr></thead><tbody>'+(l.map(g=>'<tr><td class="font-display font-semibold text-red-400">'+escapeHtml(g.gpNo)+'</td><td class="text-gray-400">'+(g.date||'-')+'</td><td>'+escapeHtml(g.client||'-')+'</td><td>'+escapeHtml(g.carriedBy||'-')+'</td><td class="text-gray-400 text-sm">'+to12h(g.timeIn)+'</td><td class="text-gray-400 text-sm">'+to12h(g.timeOut)+'</td><td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td><td><div class="flex gap-2"><button onclick="viewGatePass(\''+g.id+'\')" class="text-gray-400 hover:text-green-400 transition" title="View"><i class="fas fa-eye"></i></button><button onclick="editGatePass(\''+g.id+'\')" class="text-gray-400 hover:text-yellow-400 transition" title="Edit"><i class="fas fa-edit"></i></button><button onclick="printGatePassById(\''+g.id+'\')" class="text-gray-400 hover:text-blue-400 transition" title="Print"><i class="fas fa-print"></i></button>'+(currentUser.role==='admin'?'<button onclick="confirmDelete(\''+g.id+'\')" class="text-gray-400 hover:text-red-400 transition" title="Delete"><i class="fas fa-trash-alt"></i></button>':'')+'</div></td></tr>').join('')||'<tr><td colspan="8" class="text-center text-gray-500 py-8">No gate passes found</td></tr>')+'</tbody></table></div></div></div>';}
-
-/* ===== GATE PASS DOCUMENT BUILDER — only filled fields ===== */
-function gpField(label,value){return '<div class="gp-field"><span class="gp-field-label">'+label+'</span>'+escapeHtml(value)+'</div>';}
-
-function buildGatePassDoc(g,company,logoSrc){
-  const itemsRows=g.items.map((it,i)=>'<tr><td class="text-center">'+(it.sl||i+1)+'</td><td>'+escapeHtml(it.description)+'</td><td class="text-center">'+escapeHtml(it.unit)+'</td><td class="text-center">'+escapeHtml(it.quantity)+'</td><td>'+escapeHtml(it.remarks)+'</td></tr>').join('');
-
-  /* Collect ONLY filled fields */
-  const fields=[];
-  if(g.date) fields.push({t:'f',l:'Date',v:g.date});
-  if(g.client) fields.push({t:'f',l:'Client',v:g.client});
-  if(g.carriedBy) fields.push({t:'f',l:'Carried By',v:g.carriedBy});
-  if(g.mobile) fields.push({t:'f',l:'Mobile',v:g.mobile});
-  if(g.vehicleNo) fields.push({t:'f',l:'Vehicle No',v:g.vehicleNo});
-  if(g.purpose) fields.push({t:'f',l:'Purpose',v:g.purpose});
-  const tin=to12h(g.timeIn);
-  const tout=to12h(g.timeOut);
-  if(tin&&tin!=='-') fields.push({t:'f',l:'Time In',v:tin});
-  if(tout&&tout!=='-') fields.push({t:'f',l:'Time Out',v:tout});
-
-  /* Always add type badge as last item */
-  const tc=g.type==='Returnable'?'#b45309':'#1d4ed8';
-  const ti=g.type==='Returnable'?'fa-undo':'fa-truck';
-  fields.push({t:'b',c:tc,i:ti,x:g.type.toUpperCase()});
-
-  /* Build field rows in groups of 3 */
-  let fieldHtml='';
-  for(let i=0;i<fields.length;i+=3){
-    const row=fields.slice(i,i+3);
-    const isLast=(i+3>=fields.length);
-    fieldHtml+='<div class="gp-field-row">';
-    /* If last row has ONLY the badge, center it */
-    if(isLast&&row.length===1&&row[0].t==='b'){
-      fieldHtml+='<div></div>'+renderBadge(row[0])+'<div></div>';
-    } else {
-      row.forEach(f=>{ fieldHtml+=f.t==='b'?renderBadge(f):gpField(f.l,f.v); });
-    }
-    fieldHtml+='</div>';
-  }
-
-  return '<div class="gp-doc">'+
-    '<div class="gp-header"><div class="flex items-center gap-4"><img src="'+logoSrc+'" style="height:60px;border-radius:4px;" onerror="this.style.display=\'none\'"><div><div class="gp-company-name">'+escapeHtml(company.name)+'</div><div class="gp-company-sub">'+escapeHtml(company.address)+'</div><div class="gp-company-sub">'+escapeHtml(company.phone)+' | '+escapeHtml(company.email)+'</div></div></div>'+
-    '<div style="text-align:right"><div class="gp-gpno-label">Document Ref</div><div class="gp-gpno-value">'+escapeHtml(g.gpNo)+'</div></div></div>'+
-    '<div class="gp-title-bar"><span>GATE PASS</span><span style="display:flex;align-items:center;font-size:12px;letter-spacing:0.04em"></span></div>'+
-    fieldHtml+
-    '<table class="gp-items-table"><thead><tr><th style="width:40px">SL</th><th>Description of Goods</th><th style="width:80px">Unit</th><th style="width:80px">Qty</th><th>Remarks</th></tr></thead><tbody>'+itemsRows+'</tbody></table>'+
-    '<div class="gp-signature-row"><div class="gp-signature"><div class="gp-sign-line">Prepared By</div></div><div class="gp-signature"><div class="gp-sign-line">Authorized By</div></div><div class="gp-signature"><div class="gp-sign-line">Received By</div></div></div>'+
-    '<div class="gp-footer"><span>'+escapeHtml(company.name)+' | '+escapeHtml(company.web)+'</span><span>Printed: '+formatDate(new Date())+' at '+now12h()+'</span></div></div>';
+function applyLogos(){
+  const cl=getCustomLogo();
+  const def='https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+  const src=cl||def;
+  const li=document.getElementById('loginLogoImg'),hi=document.getElementById('headerLogoImg');
+  if(li)li.src=src;if(hi)hi.src=src;
 }
 
-function renderBadge(f){return '<div class="gp-field" style="display:flex;align-items:center;justify-content:center;font-family:Rajdhani,sans-serif;font-weight:700;letter-spacing:0.08em;font-size:12px;color:'+f.c+';border-color:'+f.c+'"><i class="fas '+f.i+'" style="margin-right:6px"></i>'+f.x+'</div>';}
+function switchLoginTab(role){
+  selectedLoginRole=role;
+  document.querySelectorAll('.login-tab').forEach(t=>t.classList.toggle('active',t.dataset.role===role));
+  document.getElementById('registerSection').style.display=role==='user'?'block':'none';
+  document.getElementById('loginError').classList.add('hidden');
+}
+function openRegisterModal(){document.getElementById('registerModal').classList.remove('hidden');document.getElementById('regError').classList.add('hidden');document.getElementById('registerForm').reset();}
+function closeRegisterModal(){document.getElementById('registerModal').classList.add('hidden');}
 
-function viewGatePass(id){const g=getGatePasses().find(x=>x.id===id);if(!g)return;const c=getCompany(),ls=getCustomLogo()||'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';document.getElementById('viewModalBody').innerHTML='<div class="p-4 flex justify-end gap-2 bg-[var(--bg-2)] sticky top-0 z-10 border-b border-gray-800"><button onclick="printGatePassById(\''+id+'\')" class="btn-primary text-xs"><i class="fas fa-print mr-1"></i> Print</button><button onclick="closeViewModal()" class="btn-ghost text-xs"><i class="fas fa-times mr-1"></i> Close</button></div>'+buildGatePassDoc(g,c,ls);document.getElementById('viewModal').classList.remove('hidden');}
-function closeViewModal(){document.getElementById('viewModal').classList.add('hidden');}
-function editGatePass(id){editingId=id;navigateTo('create');}
-function confirmDelete(id){deleteTargetId=id;const g=getGatePasses().find(x=>x.id===id);document.getElementById('deleteMsg').textContent='Delete gate pass '+(g?g.gpNo:'')+'? This cannot be undone.';document.getElementById('deleteModal').classList.remove('hidden');document.getElementById('confirmDeleteBtn').onclick=function(){saveGatePasses(getGatePasses().filter(x=>x.id!==deleteTargetId));updateCount();closeDeleteModal();showToast('Gate pass deleted.','success');if(currentPage==='all')renderPage('all');else if(currentPage==='dashboard')renderPage('dashboard');};}
+document.getElementById('registerForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const nm=document.getElementById('regName').value.trim(),un=document.getElementById('regUser').value.trim(),
+  pw=document.getElementById('regPass').value,pc=document.getElementById('regPassConfirm').value,
+  er=document.getElementById('regError'),em=document.getElementById('regErrorMsg');
+  if(!nm||!un||!pw){em.textContent='All fields are required.';er.classList.remove('hidden');return;}
+  if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}
+  if(pw!==pc){em.textContent='Passwords do not match.';er.classList.remove('hidden');return;}
+  if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}
+  const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:'user',createdAt:new Date().toISOString()});
+  saveUsers(us);closeRegisterModal();showToast('User "'+un+'" created successfully!');
+});
+
+document.getElementById('loginForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const un=document.getElementById('loginUser').value.trim(),pw=document.getElementById('loginPass').value.trim(),
+  er=document.getElementById('loginError'),em=document.getElementById('loginErrorMsg');
+  if(!un||!pw){em.textContent='Please enter both username and password.';er.classList.remove('hidden');return;}
+  const u=findUser(un,pw);
+  if(!u){em.textContent='Invalid username or password.';er.classList.remove('hidden');document.getElementById('loginPass').value='';return;}
+  if(u.role!==selectedLoginRole){em.textContent='This is a "'+u.role+'" account. Switch to the correct tab.';er.classList.remove('hidden');return;}
+  currentUser=u;
+  sessionStorage.setItem(AUTH_KEY,JSON.stringify({id:u.id,username:u.username,name:u.name,role:u.role}));
+  er.classList.add('hidden');showApp();showToast('Welcome back, '+u.name);
+});
+
+document.getElementById('togglePass').addEventListener('click',()=>{
+  const i=document.getElementById('loginPass'),ic=document.querySelector('#togglePass i');
+  if(i.type==='password'){i.type='text';ic.classList.replace('fa-eye','fa-eye-slash');}
+  else{i.type='password';ic.classList.replace('fa-eye-slash','fa-eye');}
+});
+
+document.getElementById('logoutBtn').addEventListener('click',()=>{
+  sessionStorage.removeItem(AUTH_KEY);currentUser=null;editingId=null;
+  document.getElementById('mainApp').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');
+  document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';
+});
+
+function checkAuth(){try{const a=JSON.parse(sessionStorage.getItem(AUTH_KEY));if(a&&a.id){const u=getUsers().find(x=>x.id===a.id);if(u){currentUser=u;showApp();return;}}}catch{}}
+
+function showApp(){
+  document.getElementById('loginPage').classList.add('hidden');document.getElementById('mainApp').classList.remove('hidden');
+  document.getElementById('headerName').textContent=currentUser.name;
+  document.getElementById('headerRole').innerHTML=currentUser.role==='admin'?'<span class="role-badge admin"><i class="fas fa-shield-alt text-[8px]"></i> ADMIN</span>':'<span class="role-badge user"><i class="fas fa-user text-[8px]"></i> USER</span>';
+  document.getElementById('headerAvatar').textContent=currentUser.name.charAt(0).toUpperCase();
+  const co=getCompany();document.getElementById('headerCompanySub').textContent=co.name.split(' ').slice(0,3).join(' ').toUpperCase();
+  applyLogos();buildSidebar();renderPage(currentUser.role==='admin'?'dashboard':'create');updateCount();
+}
+
+function buildSidebar(){
+  const nav=document.getElementById('sidebarNav'),r=currentUser.role;
+  const secs=[{l:'MAIN MENU',i:[
+    {p:'dashboard',ic:'fa-chart-pie',lb:'Dashboard',r:['admin']},
+    {p:'create',ic:'fa-plus-circle',lb:'Create Gate Pass',r:['admin','user']},
+    {p:'all',ic:'fa-list-alt',lb:'All Gate Passes',r:['admin','user'],badge:true}
+  ]},{l:'ADMINISTRATION',i:[
+    {p:'users',ic:'fa-users-cog',lb:'Manage Users',r:['admin']},
+    {p:'upload',ic:'fa-image',lb:'Change Logo',r:['admin']},
+    {p:'company',ic:'fa-building',lb:'Company Info',r:['admin']}
+  ]}];
+  let h='';
+  const firstPage=r==='admin'?'dashboard':'create';
+  secs.forEach(s=>{const f=s.i.filter(x=>x.r.includes(r));if(!f.length)return;
+    h+='<div class="px-5 py-2 text-[10px] tracking-widest text-gray-600 font-display">'+s.l+'</div>';
+    f.forEach(x=>{
+      const bd=x.badge?'<span id="allCount" class="ml-auto bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full">'+getGatePasses().length+'</span>':'';
+      h+='<div class="sidebar-item'+(x.p===firstPage?' active':'')+'" data-page="'+x.p+'"><i class="fas '+x.ic+' w-5"></i><span>'+x.lb+'</span>'+bd+'</div>';
+    });
+  });
+  nav.innerHTML=h;
+  nav.querySelectorAll('.sidebar-item').forEach(x=>{x.addEventListener('click',()=>{navigateTo(x.dataset.page);});});
+}
+
+document.getElementById('toggleSidebar').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.add('mobile-open');document.getElementById('sidebarOverlay').classList.add('show');
+});
+function closeMobileSidebar(){document.getElementById('sidebar').classList.remove('mobile-open');document.getElementById('sidebarOverlay').classList.remove('show');}
+function navigateTo(p){document.querySelectorAll('.sidebar-item').forEach(s=>s.classList.toggle('active',s.dataset.page===p));renderPage(p);closeMobileSidebar();}
+
+function renderPage(p){
+  currentPage=p;editingId=null;
+  const c=document.getElementById('content');
+  if(p==='dashboard')c.innerHTML=dashboardHTML();
+  else if(p==='create')c.innerHTML=createHTML();
+  else if(p==='all')c.innerHTML=allHTML();
+  else if(p==='users')c.innerHTML=usersHTML();
+  else if(p==='upload')c.innerHTML=uploadHTML();
+  else if(p==='company')c.innerHTML=companyHTML();
+}
+
+/* ===== TIME PICKER ===== */
+function tpHTML(id,val){
+  let h='12',m='00',a='AM';
+  if(val){if(val.includes('AM')||val.includes('PM')){const p=val.replace(/\s*(AM|PM)\s*/i,' $1 ').trim().split(/\s+/);h=p[0].split(':')[0];m=p[0].split(':')[1]||'00';a=p[1]||'AM';}else{const p=val.split(':');let hh=parseInt(p[0],10);m=p[1]||'00';a=hh>=12?'PM':'AM';hh=hh%12||12;h=String(hh).padStart(2,'0');}}
+  let ho='',mo='';
+  for(let i=1;i<=12;i++)ho+='<option value="'+String(i).padStart(2,'0')+'"'+(String(i).padStart(2,'0')===h?' selected':'')+'>'+String(i).padStart(2,'0')+'</option>';
+  for(let i=0;i<60;i++)mo+='<option value="'+String(i).padStart(2,'0')+'"'+(String(i).padStart(2,'0')===m?' selected':'')+'>'+String(i).padStart(2,'0')+'</option>';
+  return '<div class="time-12h" id="'+id+'"><select class="time-hr">'+ho+'</select><span class="time-sep">:</span><select class="time-min">'+mo+'</select><select class="time-ampm"><option value="AM"'+(a==='AM'?' selected':'')+'>AM</option><option value="PM"'+(a==='PM'?' selected':'')+'>PM</option></select></div>';
+}
+function getTPV(id){const el=document.getElementById(id);if(!el)return'';const s=el.querySelectorAll('select');return s[0].value+':'+s[1].value+' '+s[2].value;}
+
+/* ===== FLAP TOGGLE ===== */
+function flapHTML(id,label,active){
+  return '<div class="flap-toggle'+(active?' active':'')+'" onclick="toggleFlap(\''+id+'\',this)"><div class="flap-indicator"></div><span class="font-display font-semibold text-sm tracking-wide">'+label+'</span><i class="fas fa-chevron-down text-xs text-gray-500 ml-auto transition-transform '+(active?'rotate-180':'')+'"></i></div>';
+}
+function toggleFlap(id,el){
+  el.classList.toggle('active');
+  const body=document.getElementById(id);if(body)body.classList.toggle('open');
+  const icon=el.querySelector('.fa-chevron-down');if(icon)icon.classList.toggle('rotate-180');
+}
+
+/* ===== DASHBOARD ===== */
+function statCard(l,v,ic,c,s){return '<div class="stat-card"><div class="flex items-start justify-between"><div><div class="text-gray-500 text-xs font-display tracking-widest">'+l+'</div><div class="font-display text-5xl font-bold text-white mt-2">'+v+'</div></div><div class="w-12 h-12 rounded-lg bg-'+c+'-500/20 flex items-center justify-center text-'+c+'-500 text-xl"><i class="fas '+ic+'"></i></div></div><div class="text-xs text-gray-600 mt-3 font-display tracking-wider">'+s+'</div></div>';}
+
+function dashboardHTML(){
+  const l=getGatePasses(),ret=l.filter(g=>g.type==='Returnable').length,nret=l.filter(g=>g.type==='Non-Returnable').length,
+  td=new Date().toDateString(),tc=l.filter(g=>new Date(g.createdAt).toDateString()===td).length;
+  const recent=l.slice(-5).reverse();
+  return '<div class="page"><div class="mb-8"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-chart-pie"></i><span>OVERVIEW</span></div><h1 class="font-display text-4xl font-bold text-white">Dashboard</h1><p class="text-gray-500 mt-1">Monitor gate pass activity and system metrics</p></div>'+
+  '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">'+
+  statCard('TOTAL PASSES',l.length,'fa-file-alt','red','ALL TIME RECORDS')+
+  statCard('RETURNABLE',ret,'fa-undo','yellow','TO BE RETURNED')+
+  statCard('NON-RETURNABLE',nret,'fa-truck','blue','PERMANENT TRANSFER')+
+  statCard('TODAY',tc,'fa-calendar-day','green',new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}))+
+  '</div>'+
+  '<div class="grid grid-cols-1 lg:grid-cols-3 gap-6"><div class="lg:col-span-2 bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="flex items-center justify-between p-5 border-b border-gray-800"><div><h3 class="font-display text-lg font-semibold text-white">Recent Gate Passes</h3><p class="text-xs text-gray-500">Latest 5 entries</p></div><button onclick="navigateTo(\'all\')" class="btn-ghost text-xs">View All <i class="fas fa-arrow-right ml-1"></i></button></div><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Client</th><th>Carried By</th><th>Type</th><th>Date</th></tr></thead><tbody>'+
+  (recent.map(g=>'<tr class="cursor-pointer" onclick="viewGatePass(\''+g.id+'\')"><td class="font-display font-semibold text-red-400">'+esc(g.gpNo)+'</td><td>'+esc(g.client||'-')+'</td><td>'+esc(g.carriedBy||'-')+'</td><td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td><td class="text-gray-400">'+(g.date||'-')+'</td></tr>').join('')||'<tr><td colspan="5" class="text-center text-gray-500 py-8">No gate passes yet</td></tr>')+
+  '</tbody></table></div></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-5"><h3 class="font-display text-lg font-semibold text-white mb-4">Quick Actions</h3><div class="space-y-3">'+
+  '<button onclick="navigateTo(\'create\')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-red-600/20 to-transparent border border-red-900/40 hover:border-red-600 transition group"><div class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center text-white"><i class="fas fa-plus"></i></div><div class="text-left"><div class="font-display font-semibold text-white">New Gate Pass</div><div class="text-xs text-gray-500">Create a new pass</div></div><i class="fas fa-chevron-right text-gray-600 group-hover:text-red-400 ml-auto"></i></button>'+
+  '<button onclick="navigateTo(\'all\')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-gray-700/50 to-transparent border border-gray-800 hover:border-gray-600 transition group"><div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center text-white"><i class="fas fa-list"></i></div><div class="text-left"><div class="font-display font-semibold text-white">All Gate Passes</div><div class="text-xs text-gray-500">View, print, manage</div></div><i class="fas fa-chevron-right text-gray-600 group-hover:text-red-400 ml-auto"></i></button>'+
+  (currentUser.role==='admin'?'<button onclick="navigateTo(\'users\')" class="w-full flex items-center gap-3 p-4 rounded-lg bg-gradient-to-r from-gray-700/50 to-transparent border border-gray-800 hover:border-gray-600 transition group"><div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center text-white"><i class="fas fa-users-cog"></i></div><div class="text-left"><div class="font-display font-semibold text-white">Manage Users</div><div class="text-xs text-gray-500">'+getUsers().length+' registered</div></div><i class="fas fa-chevron-right text-gray-600 group-hover:text-red-400 ml-auto"></i></button>':'')+
+  '</div></div></div></div>';
+}
+
+/* ===== CREATE / EDIT ===== */
+function selectType(el,t){
+  el.parentElement.querySelectorAll('.check-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById('f_type').value=t;
+}
+function selectTimeType(t){
+  document.querySelectorAll('.tt-btn').forEach(b=>b.classList.toggle('active',b.dataset.tt===t));
+  document.getElementById('f_timeLabel').value=t;
+  const lbl=document.getElementById('timeLabelDisplay');
+  if(lbl)lbl.textContent=t==='In'?'TIME IN':'TIME OUT';
+}
+function selectAdminRole(el,r){
+  el.parentElement.querySelectorAll('.check-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');document.getElementById('ac_role').value=r;
+}
+
+function createHTML(){
+  const gn=generateGpNo(),td=new Date().toISOString().split('T')[0];
+  const ed=editingId?getGatePasses().find(g=>g.id===editingId):null;
+  const d=ed||{gpNo:gn,date:td,type:'Returnable',client:'',carriedBy:'',mobile:'',vehicleNo:'',timeValue:'',timeLabel:'In',purpose:'',locationFrom:'',locationTo:'',preparedBy:'',checkedBy:'',receivedBy:'',items:[{sl:1,description:'',unit:'',quantity:'',remarks:''}],flaps:{}};
+  const fl=d.flaps||{};
+  const hasClient=d.client||d.carriedBy||d.mobile;
+  const hasVehicle=d.vehicleNo;
+  const hasTime=d.timeValue;
+  const hasPurpose=d.purpose;
+  const hasLocation=d.locationFrom||d.locationTo;
+  const hasItems=d.items&&d.items.some(i=>i.description);
+
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-plus-circle"></i><span>'+(editingId?'EDIT':'NEW')+' GATE PASS</span></div><h1 class="font-display text-4xl font-bold text-white">'+(editingId?'Edit':'Create')+' Gate Pass</h1><p class="text-gray-500 mt-1">Toggle each section ON to include it in the gate pass.</p></div>'+(editingId?'<button onclick="cancelEdit()" class="btn-ghost"><i class="fas fa-arrow-left mr-1"></i> Cancel Edit</button>':'')+'</div>'+
+
+  /* Basic Info */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">GATE PASS NO</label><input type="text" id="f_gpNo" class="field" value="'+esc(d.gpNo)+'" readonly></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">DATE</label><input type="date" id="f_date" class="field" value="'+esc(d.date)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PASS TYPE</label><div class="flex gap-2 pt-2"><div class="check-pill '+(d.type==='Returnable'?'active':'')+'" onclick="selectType(this,\'Returnable\')"><i class="fas fa-undo text-xs"></i> Returnable</div><div class="check-pill '+(d.type==='Non-Returnable'?'active':'')+'" onclick="selectType(this,\'Non-Returnable\')"><i class="fas fa-truck text-xs"></i> Non-Returnable</div></div><input type="hidden" id="f_type" value="'+d.type+'"></div>'+
+  '</div></div>'+
+
+  /* Client Details Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_client','Client / Carrier Details',!!(fl.client||hasClient))+
+  '<div id="flap_client" class="flap-body'+(fl.client||hasClient?' open':'')+'">'+
+  '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CLIENT / COMPANY</label><input type="text" id="f_client" class="field" placeholder="Client / Company name" value="'+esc(d.client)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CARRIED BY</label><input type="text" id="f_carriedBy" class="field" placeholder="Person name" value="'+esc(d.carriedBy)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">MOBILE NO</label><input type="text" id="f_mobile" class="field" placeholder="+8801XXXXXXXXX" value="'+esc(d.mobile)+'"></div>'+
+  '</div></div></div>'+
+
+  /* Location Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_location','Location / Destination',!!(fl.location||hasLocation))+
+  '<div id="flap_location" class="flap-body'+(fl.location||hasLocation?' open':'')+'">'+
+  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">FROM (SOURCE)</label><input type="text" id="f_locFrom" class="field" placeholder="e.g. Warehouse, Site A" value="'+esc(d.locationFrom||'')+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TO (DESTINATION)</label><input type="text" id="f_locTo" class="field" placeholder="e.g. Client Site, Office" value="'+esc(d.locationTo||'')+'"></div>'+
+  '</div></div></div>'+
+
+  /* Vehicle Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_vehicle','Vehicle Information',!!(fl.vehicle||hasVehicle))+
+  '<div id="flap_vehicle" class="flap-body'+(fl.vehicle||hasVehicle?' open':'')+'">'+
+  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">VEHICLE NO</label><input type="text" id="f_vehicleNo" class="field" placeholder="e.g. Dhaka Metro GA-12-3456" value="'+esc(d.vehicleNo)+'"></div>'+
+  '<div></div>'+
+  '</div></div></div>'+
+
+  /* Time Flap — SINGLE time field with IN/OUT toggle */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_time','Time Record',!!(fl.time||hasTime))+
+  '<div id="flap_time" class="flap-body'+(fl.time||hasTime?' open':'')+'">'+
+  '<div class="time-type-toggle"><button type="button" class="tt-btn '+(d.timeLabel==='In'?'active':'')+'" data-tt="In" onclick="selectTimeType(\'In\')"><i class="fas fa-sign-in-alt mr-1"></i> Time In</button><button type="button" class="tt-btn '+(d.timeLabel==='Out'?'active':'')+'" data-tt="Out" onclick="selectTimeType(\'Out\')"><i class="fas fa-sign-out-alt mr-1"></i> Time Out</button></div>'+
+  '<input type="hidden" id="f_timeLabel" value="'+(d.timeLabel||'In')+'">'+
+  '<div class="flex items-center gap-4"><label class="text-xs font-display tracking-widest text-gray-400 whitespace-nowrap" id="timeLabelDisplay">'+(d.timeLabel==='In'?'TIME IN':'TIME OUT')+'</label>'+tpHTML('f_timePicker',d.timeValue||'')+'</div>'+
+  '</div></div>'+
+
+  /* Items Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_items','Items / Equipment',!!(fl.items||hasItems))+
+  '<div id="flap_items" class="flap-body'+(fl.items||hasItems?' open':'')+'">'+
+  '<div class="overflow-x-auto"><table class="data-table" id="itemsTable"><thead><tr><th style="width:50px">SL</th><th>Description</th><th>Unit</th><th>Qty</th><th>Remarks</th><th style="width:50px"></th></tr></thead><tbody>'+
+  (d.items||[{sl:1,description:'',unit:'',quantity:'',remarks:''}]).map((it,i)=>'<tr>'+
+  '<td><input type="text" class="field text-center item-sl" value="'+it.sl+'" style="padding:8px 4px"></td>'+
+  '<td><input type="text" class="field item-desc" placeholder="Item description" value="'+esc(it.description)+'"></td>'+
+  '<td><input type="text" class="field item-unit" placeholder="Pcs/Box" value="'+esc(it.unit)+'" style="max-width:100px"></td>'+
+  '<td><input type="text" class="field item-qty text-center" placeholder="0" value="'+esc(it.quantity)+'" style="max-width:80px"></td>'+
+  '<td><input type="text" class="field item-remarks" placeholder="Remarks" value="'+esc(it.remarks)+'"></td>'+
+  '<td><button onclick="removeItemRow(this)" class="text-gray-500 hover:text-red-400 transition text-sm"><i class="fas fa-times"></i></button></td>'+
+  '</tr>').join('')+
+  '</tbody></table></div>'+
+  '<button onclick="addItemRow()" class="btn-ghost text-xs mt-3"><i class="fas fa-plus mr-1"></i> Add Row</button>'+
+  '</div></div>'+
+
+  /* Purpose Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_purpose','Purpose / Remarks',!!(fl.purpose||hasPurpose))+
+  '<div id="flap_purpose" class="flap-body'+(fl.purpose||hasPurpose?' open':'')+'">'+
+  '<textarea id="f_purpose" class="field" rows="3" placeholder="Purpose of this gate pass...">'+esc(d.purpose)+'</textarea>'+
+  '</div></div>'+
+
+  /* Signature Names — always shown for data entry */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6">'+
+  '<div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-4"><i class="fas fa-pen-nib"></i><span>SIGNATURE FIELDS (Always Shown on Gate Pass)</span></div>'+
+  '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PREPARED BY</label><input type="text" id="f_preparedBy" class="field" placeholder="Name" value="'+esc(d.preparedBy)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CHECKED BY</label><input type="text" id="f_checkedBy" class="field" placeholder="Name" value="'+esc(d.checkedBy)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">RECEIVED BY</label><input type="text" id="f_receivedBy" class="field" placeholder="Name" value="'+esc(d.receivedBy)+'"></div>'+
+  '</div></div>'+
+
+  /* Submit */
+  '<div class="flex gap-3 justify-end">'+
+  '<button onclick="navigateTo(\''+(currentUser.role==='admin'?'dashboard':'create')+'\')" class="btn-ghost">Cancel</button>'+
+  '<button onclick="saveGP()" class="btn-primary text-base"><i class="fas fa-save mr-2"></i>'+(editingId?'Update':'Save')+' Gate Pass</button>'+
+  '</div></div>';
+}
+
+function addItemRow(){
+  const tb=document.querySelector('#itemsTable tbody');
+  const rows=tb.querySelectorAll('tr');const n=rows.length+1;
+  const tr=document.createElement('tr');
+  tr.innerHTML='<td><input type="text" class="field text-center item-sl" value="'+n+'" style="padding:8px 4px"></td><td><input type="text" class="field item-desc" placeholder="Item description"></td><td><input type="text" class="field item-unit" placeholder="Pcs/Box" style="max-width:100px"></td><td><input type="text" class="field item-qty text-center" placeholder="0" style="max-width:80px"></td><td><input type="text" class="field item-remarks" placeholder="Remarks"></td><td><button onclick="removeItemRow(this)" class="text-gray-500 hover:text-red-400 transition text-sm"><i class="fas fa-times"></i></button></td>';
+  tb.appendChild(tr);
+}
+function removeItemRow(btn){
+  const tb=document.querySelector('#itemsTable tbody');
+  if(tb.querySelectorAll('tr').length<=1){showToast('At least one row required','warn');return;}
+  btn.closest('tr').remove();
+  tb.querySelectorAll('tr').forEach((r,i)=>{r.querySelector('.item-sl').value=i+1;});
+}
+
+function collectItems(){
+  const rows=document.querySelectorAll('#itemsTable tbody tr');const items=[];
+  rows.forEach((r,i)=>{
+    items.push({
+      sl:i+1,
+      description:r.querySelector('.item-desc').value.trim(),
+      unit:r.querySelector('.item-unit').value.trim(),
+      quantity:r.querySelector('.item-qty').value.trim(),
+      remarks:r.querySelector('.item-remarks').value.trim()
+    });
+  });
+  return items;
+}
+
+function saveGP(){
+  const gpNo=document.getElementById('f_gpNo').value.trim();
+  const date=document.getElementById('f_date').value;
+  const type=document.getElementById('f_type').value;
+  const client=document.getElementById('f_client').value.trim();
+  const carriedBy=document.getElementById('f_carriedBy').value.trim();
+  const mobile=document.getElementById('f_mobile').value.trim();
+  const locFrom=document.getElementById('f_locFrom').value.trim();
+  const locTo=document.getElementById('f_locTo').value.trim();
+  const vehicleNo=document.getElementById('f_vehicleNo').value.trim();
+  const timeLabel=document.getElementById('f_timeLabel').value||'In';
+  const timeValue=getTPV('f_timePicker');
+  const purpose=document.getElementById('f_purpose').value.trim();
+  const preparedBy=document.getElementById('f_preparedBy').value.trim();
+  const checkedBy=document.getElementById('f_checkedBy').value.trim();
+  const receivedBy=document.getElementById('f_receivedBy').value.trim();
+  const items=collectItems();
+
+  if(!date){showToast('Please select a date','warn');return;}
+
+  const flaps={
+    client:!!(client||carriedBy||mobile),
+    location:!!(locFrom||locTo),
+    vehicle:!!vehicleNo,
+    time:!!timeValue,
+    items:items.some(i=>i.description),
+    purpose:!!purpose
+  };
+
+  const data={gpNo,date,type,client,carriedBy,mobile,locationFrom:locFrom,locationTo:locTo,vehicleNo,timeLabel,timeValue,purpose,preparedBy,checkedBy,receivedBy,items,flaps,createdBy:currentUser.name,createdAt:new Date().toISOString()};
+
+  const list=getGatePasses();
+  if(editingId){
+    const idx=list.findIndex(g=>g.id===editingId);
+    if(idx>-1){data.id=editingId;data.createdAt=list[idx].createdAt;list[idx]=data;}
+    editingId=null;
+    showToast('Gate Pass updated successfully!');
+  }else{
+    data.id='gp_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
+    list.push(data);
+    showToast('Gate Pass created successfully!');
+  }
+  saveGatePasses(list);updateCount();navigateTo('all');
+}
+
+function cancelEdit(){editingId=null;navigateTo(currentUser.role==='admin'?'dashboard':'create');}
+
+/* ===== ALL GATE PASSES ===== */
+function allHTML(){
+  const list=getGatePasses().slice().reverse();
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-list-alt"></i><span>RECORDS</span></div><h1 class="font-display text-4xl font-bold text-white">All Gate Passes</h1><p class="text-gray-500 mt-1">'+list.length+' total records</p></div><button onclick="navigateTo(\'create\')" class="btn-primary"><i class="fas fa-plus mr-2"></i>New Gate Pass</button></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Date</th><th>Type</th><th>Client</th><th>Carried By</th><th>Time</th><th>Actions</th></tr></thead><tbody>'+
+  (list.map(g=>{
+    const timeStr=g.timeValue?(g.timeLabel==='In'?'IN: ':'OUT: ')+g.timeValue:'-';
+    return '<tr><td class="font-display font-semibold text-red-400">'+esc(g.gpNo)+'</td><td class="text-gray-400">'+(g.date||'-')+'</td><td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td><td>'+esc(g.client||'-')+'</td><td>'+esc(g.carriedBy||'-')+'</td><td class="text-gray-400 text-sm">'+timeStr+'</td><td><div class="flex gap-1"><button onclick="viewGatePass(\''+g.id+'\')" class="text-gray-400 hover:text-blue-400 p-1 transition" title="View"><i class="fas fa-eye"></i></button><button onclick="editGP(\''+g.id+'\')" class="text-gray-400 hover:text-yellow-400 p-1 transition" title="Edit"><i class="fas fa-edit"></i></button><button onclick="confirmDeleteGP(\''+g.id+'\')" class="text-gray-400 hover:text-red-400 p-1 transition" title="Delete"><i class="fas fa-trash-alt"></i></button></div></td></tr>';
+  }).join('')||'<tr><td colspan="7" class="text-center text-gray-500 py-8">No gate passes found</td></tr>')+
+  '</tbody></table></div></div></div>';
+}
+
+/* ===== VIEW / PRINT / DOWNLOAD ===== */
+function buildGPDoc(g){
+  const co=getCompany();
+  const cl=getCustomLogo();
+  const def='https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+  const logoSrc=cl||def;
+  const fl=g.flaps||{};
+
+  let body='';
+
+  /* Header */
+  body+='<div class="gp-header"><div><img src="'+logoSrc+'" style="height:50px;border-radius:4px;margin-bottom:6px"><div class="gp-company-name">'+esc(co.name)+'</div><div class="gp-company-sub">'+esc(co.address)+'</div></div><div style="text-align:right"><div class="gp-gpno-label">Gate Pass No</div><div class="gp-gpno-value">'+esc(g.gpNo)+'</div></div></div>';
+
+  /* Title bar */
+  body+='<div class="gp-title-bar"><span>Gate Pass</span><div style="display:flex;gap:8px;align-items:center"><span class="gp-type-badge'+(g.type==='Returnable'?' checked':'')+'"><i class="fas '+(g.type==='Returnable'?'fa-undo':'fa-truck')+'"></i> '+g.type+'</span></div></div>';
+
+  /* Date row */
+  body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Date</span>'+esc(g.date||'-')+'</div><div class="gp-field"><span class="gp-field-label">Created By</span>'+esc(g.createdBy||'-')+'</div><div class="gp-field"></div></div>';
+
+  /* Client details */
+  if(fl.client&&(g.client||g.carriedBy||g.mobile)){
+    body+='<div class="gp-section-title">Client / Carrier Details</div>';
+    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Client / Company</span>'+esc(g.client||'-')+'</div><div class="gp-field"><span class="gp-field-label">Carried By</span>'+esc(g.carriedBy||'-')+'</div><div class="gp-field"><span class="gp-field-label">Mobile No</span>'+esc(g.mobile||'-')+'</div></div>';
+  }
+
+  /* Location */
+  if(fl.location&&(g.locationFrom||g.locationTo)){
+    body+='<div class="gp-section-title">Location / Destination</div>';
+    body+='<div class="gp-field-row-2"><div class="gp-field"><span class="gp-field-label">From (Source)</span>'+esc(g.locationFrom||'-')+'</div><div class="gp-field"><span class="gp-field-label">To (Destination)</span>'+esc(g.locationTo||'-')+'</div></div>';
+  }
+
+  /* Vehicle */
+  if(fl.vehicle&&g.vehicleNo){
+    body+='<div class="gp-section-title">Vehicle Information</div>';
+    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Vehicle No</span>'+esc(g.vehicleNo)+'</div><div class="gp-field"></div><div class="gp-field"></div></div>';
+  }
+
+  /* Time — SINGLE field */
+  if(fl.time&&g.timeValue){
+    body+='<div class="gp-section-title">'+(g.timeLabel==='In'?'Time In':'Time Out')+'</div>';
+    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">'+(g.timeLabel==='In'?'TIME IN':'TIME OUT')+'</span>'+esc(g.timeValue)+'</div><div class="gp-field"></div><div class="gp-field"></div></div>';
+  }
+
+  /* Items */
+  if(fl.items&&g.items&&g.items.some(i=>i.description)){
+    body+='<div class="gp-section-title">Items / Equipment</div>';
+    body+='<table class="gp-items-table"><thead><tr><th style="width:40px">SL</th><th>Description</th><th style="width:80px">Unit</th><th style="width:60px">Qty</th><th>Remarks</th></tr></thead><tbody>';
+    g.items.forEach(it=>{
+      if(it.description){
+        body+='<tr><td style="text-align:center">'+it.sl+'</td><td>'+esc(it.description)+'</td><td style="text-align:center">'+esc(it.unit)+'</td><td style="text-align:center">'+esc(it.quantity)+'</td><td>'+esc(it.remarks)+'</td></tr>';
+      }
+    });
+    body+='</tbody></table>';
+  }
+
+  /* Purpose */
+  if(fl.purpose&&g.purpose){
+    body+='<div class="gp-section-title">Purpose / Remarks</div>';
+    body+='<div class="gp-field" style="min-height:50px"><span class="gp-field-label">Purpose</span>'+esc(g.purpose)+'</div>';
+  }
+
+  /* ALWAYS show 3 signatures: PREPARED BY, CHECKED BY, RECEIVED BY */
+  body+='<div class="gp-signature-row">';
+  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.preparedBy||'')+'</div><div class="gp-sign-line">Prepared By</div></div>';
+  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.checkedBy||'')+'</div><div class="gp-sign-line">Checked By</div></div>';
+  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.receivedBy||'')+'</div><div class="gp-sign-line">Received By</div></div>';
+  body+='</div>';
+
+  /* Footer */
+  body+='<div class="gp-footer"><span>'+esc(co.name)+'</span><span>'+esc(co.phone)+' | '+esc(co.email)+'</span><span>'+esc(co.web)+'</span></div>';
+
+  return '<div class="gp-outer"><div class="gp-stamp-space gp-stamp-space-left"></div><div class="gp-doc">'+body+'</div><div class="gp-stamp-space gp-stamp-space-right"></div></div>';
+}
+
+function viewGatePass(id){
+  const g=getGatePasses().find(x=>x.id===id);
+  if(!g){showToast('Gate pass not found','warn');return;}
+  viewingPassId=id;
+  document.getElementById('viewModalBody').innerHTML=buildGPDoc(g);
+  document.getElementById('viewModal').classList.remove('hidden');
+}
+function closeViewModal(){document.getElementById('viewModal').classList.add('hidden');viewingPassId=null;}
+
+function printGatePass(){
+  if(!viewingPassId)return;
+  const g=getGatePasses().find(x=>x.id===viewingPassId);
+  if(!g)return;
+  const pa=document.getElementById('printArea');
+  pa.innerHTML=buildGPDoc(g);pa.classList.remove('hidden');
+  window.print();
+  setTimeout(()=>pa.classList.add('hidden'),500);
+}
+
+function downloadGatePass(){
+  if(!viewingPassId)return;
+  const g=getGatePasses().find(x=>x.id===viewingPassId);
+  if(!g)return;
+  /* Create a standalone HTML for download */
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+esc(g.gpNo)+'</title><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{background:#f5f5f5;display:flex;justify-content:center;padding:20px}.gp-outer{background:white;width:210mm;min-height:297mm;display:flex;flex-direction:row;font-family:Lora,Georgia,serif;box-shadow:0 4px 20px rgba(0,0,0,.15)}.gp-stamp-space{width:18mm;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc}.gp-stamp-space::after{content:"STAMP";writing-mode:vertical-rl;text-orientation:mixed;font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#bbb;text-transform:uppercase}.gp-stamp-space-left{border-right:none}.gp-stamp-space-right{border-left:none}.gp-doc{flex:1;padding:16mm 14mm;color:#111;position:relative;min-height:297mm}.gp-doc .gp-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:14px;margin-bottom:6px}.gp-doc .gp-company-name{font-family:Rajdhani,sans-serif;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#111;line-height:1.2}.gp-doc .gp-company-sub{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em;color:#555;margin-top:2px}.gp-doc .gp-gpno-label{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-gpno-value{font-family:Rajdhani,sans-serif;font-size:26px;font-weight:700;letter-spacing:.1em;color:#111;line-height:1}.gp-doc .gp-title-bar{display:flex;justify-content:space-between;align-items:center;background:#111;color:white;padding:9px 16px;margin:12px 0 18px;border-left:6px solid #dc2626;font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field{border:1px solid #999;padding:6px 10px;min-height:34px;font-size:13px;background:#fff;position:relative;font-family:Lora,serif}.gp-doc .gp-field-label{position:absolute;top:-8px;left:8px;background:white;padding:0 4px;font-size:9px;text-transform:uppercase;font-weight:700;color:#555;letter-spacing:.06em;font-family:Rajdhani,sans-serif}.gp-doc .gp-type-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid #111;font-size:11px;font-weight:700;text-transform:uppercase;font-family:Rajdhani,sans-serif;letter-spacing:.06em}.gp-doc .gp-type-badge.checked{background:#dc2626;color:white;border-color:#dc2626}.gp-doc .gp-items-table{width:100%;border-collapse:collapse;margin-top:8px;font-family:Lora,serif}.gp-doc .gp-items-table th{background:#f0f0f0;border:1px solid #555;padding:8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-family:Rajdhani,sans-serif;font-weight:700}.gp-doc .gp-items-table td{border:1px solid #555;padding:8px 6px;font-size:13px}.gp-doc .gp-signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}.gp-doc .gp-signature{text-align:center}.gp-doc .gp-sign-line{border-top:1px solid #111;margin-top:40px;padding-top:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:Rajdhani,sans-serif}.gp-doc .gp-sign-name{font-size:13px;font-family:Lora,serif;color:#333;margin-top:2px;min-height:18px}.gp-doc .gp-footer{margin-top:24px;padding-top:12px;border-top:1px solid #999;display:flex;justify-content:space-between;font-size:9px;color:#666;font-family:Rajdhani,sans-serif;letter-spacing:.03em}.gp-doc .gp-section-title{font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;color:#111;letter-spacing:.08em;text-transform:uppercase;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid #ccc}@media print{body{padding:0;background:white}.gp-outer{box-shadow:none;width:100%}.gp-stamp-space{width:15mm}.gp-doc{padding:12mm 10mm;min-height:auto}@page{size:A4;margin:0}}</style></head><body>'+buildGPDoc(g)+'</body></html>';
+  const blob=new Blob([html],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=g.gpNo+'.html';a.click();
+  URL.revokeObjectURL(a.href);showToast('Downloaded: '+g.gpNo);
+}
+
+function editGP(id){
+  const g=getGatePasses().find(x=>x.id===id);
+  if(!g){showToast('Gate pass not found','warn');return;}
+  editingId=id;navigateTo('create');
+}
+
+function confirmDeleteGP(id){
+  const g=getGatePasses().find(x=>x.id===id);
+  if(!g)return;
+  deleteTargetId=id;
+  document.getElementById('deleteMsg').textContent='Delete gate pass '+g.gpNo+'? This cannot be undone.';
+  document.getElementById('deleteModal').classList.remove('hidden');
+}
 function closeDeleteModal(){document.getElementById('deleteModal').classList.add('hidden');deleteTargetId=null;}
-function printGatePassById(id){const g=getGatePasses().find(x=>x.id===id);if(!g)return;printGatePass(g);}
-function printGatePass(g){const c=getCompany(),ls=getCustomLogo()||'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';const a=document.getElementById('printArea');a.innerHTML=buildGatePassDoc(g,c,ls);a.classList.remove('hidden');setTimeout(()=>{window.print();setTimeout(()=>a.classList.add('hidden'),500);},300);}
 
-function usersHTML(){const u=getUsers();return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-users-cog"></i><span>USER MANAGEMENT</span></div><h1 class="font-display text-4xl font-bold text-white">Manage Users</h1><p class="text-gray-500 mt-1">'+u.length+' registered accounts</p></div><button onclick="openAdminCreateModal()" class="btn-primary"><i class="fas fa-user-plus mr-2"></i> Create Account</button></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-5 mb-6"><div class="flex items-center gap-3 text-sm"><i class="fas fa-info-circle text-yellow-500"></i><span class="text-gray-400">Only <strong class="text-white">Admin</strong> accounts can create new Admin accounts.</span></div></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead><tbody>'+(u.map(x=>'<tr><td class="font-semibold">'+escapeHtml(x.name)+'</td><td class="text-gray-400">'+escapeHtml(x.username)+'</td><td><span class="role-badge '+x.role+'"><i class="fas '+(x.role==='admin'?'fa-shield-alt':'fa-user')+' text-[8px]"></i> '+x.role.toUpperCase()+'</span></td><td class="text-gray-400 text-sm">'+formatDate(x.createdAt)+'</td><td>'+(x.id!==currentUser.id?'<button onclick="deleteUser(\''+x.id+'\')" class="text-gray-400 hover:text-red-400 transition" title="Delete"><i class="fas fa-trash-alt"></i></button>':'<span class="text-xs text-gray-600">Current</span>')+'</td></tr>').join('')||'<tr><td colspan="5" class="text-center text-gray-500 py-8">No users found</td></tr>')+'</tbody></table></div></div></div>';}
-function deleteUser(id){if(id===currentUser.id){showToast('Cannot delete your own account.','warn');return;}saveUsers(getUsers().filter(u=>u.id!==id));showToast('User deleted.','success');renderPage('users');}
+document.getElementById('confirmDeleteBtn').addEventListener('click',()=>{
+  if(!deleteTargetId)return;
+  let list=getGatePasses();list=list.filter(g=>g.id!==deleteTargetId);
+  saveGatePasses(list);closeDeleteModal();updateCount();renderPage('all');showToast('Gate Pass deleted');
+});
 
-function uploadHTML(){const c=getCustomLogo();return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-upload"></i><span>LOGO SETTINGS</span></div><h1 class="font-display text-4xl font-bold text-white">Upload Logo</h1><p class="text-gray-500 mt-1">Custom logo for gate pass documents</p></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6"><div class="mb-5"><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">SELECT IMAGE</label><input type="file" id="logoFile" accept="image/*" class="field" style="padding:10px"></div><div class="flex gap-3"><button onclick="uploadLogo()" class="btn-primary"><i class="fas fa-upload mr-2"></i> Upload</button>'+(c?'<button onclick="removeLogo()" class="btn-danger"><i class="fas fa-trash mr-2"></i> Remove Custom Logo</button>':'')+'</div></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6"><h3 class="font-display text-lg font-semibold text-white mb-4">Preview</h3><div class="border border-gray-700 rounded-lg p-4 bg-white inline-block"><img id="logoPreview" src="'+(c||'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8')+'" style="height:80px;border-radius:4px" onerror="this.src=\'\'"></div></div></div>';}
-function uploadLogo(){const f=document.getElementById('logoFile').files[0];if(!f){showToast('Please select an image.','warn');return;}if(f.size>500000){showToast('Image must be under 500KB.','warn');return;}const r=new FileReader();r.onload=function(e){saveCustomLogo(e.target.result);showToast('Logo uploaded!','success');renderPage('upload');};r.readAsDataURL(f);}
-function removeLogo(){clearCustomLogo();showToast('Custom logo removed.','success');renderPage('upload');}
+/* ===== USERS PAGE ===== */
+function usersHTML(){
+  const users=getUsers();
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-users-cog"></i><span>ADMINISTRATION</span></div><h1 class="font-display text-4xl font-bold text-white">Manage Users</h1><p class="text-gray-500 mt-1">'+users.length+' registered accounts</p></div><button onclick="openAdminCreateModal()" class="btn-primary"><i class="fas fa-user-plus mr-2"></i>Create Account</button></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead><tbody>'+
+  (users.map(u=>'<tr><td class="font-semibold text-white">'+esc(u.name)+'</td><td class="text-gray-400">'+esc(u.username)+'</td><td><span class="role-badge '+(u.role==='admin'?'admin':'user')+'"><i class="fas '+(u.role==='admin'?'fa-shield-alt':'fa-user')+' text-[8px]"></i> '+u.role+'</span></td><td class="text-gray-500 text-sm">'+fmtDate(u.createdAt)+'</td><td>'+(u.id!=='admin_0'?'<button onclick="confirmDeleteUser(\''+u.id+'\')" class="text-gray-400 hover:text-red-400 p-1 transition" title="Delete"><i class="fas fa-trash-alt"></i></button>':'<span class="text-gray-700 text-xs">Protected</span>')+'</td></tr>').join(''))+
+  '</tbody></table></div></div></div>';
+}
 
-function companyHTML(){const c=getCompany();return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-building"></i><span>COMPANY INFO</span></div><h1 class="font-display text-4xl font-bold text-white">Company Information</h1><p class="text-gray-500 mt-1">Details displayed on gate pass documents</p></div><div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-5"><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">COMPANY NAME</label><input type="text" id="ci_name" class="field" value="'+escapeHtml(c.name)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">ADDRESS</label><input type="text" id="ci_address" class="field" value="'+escapeHtml(c.address)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PHONE</label><input type="text" id="ci_phone" class="field" value="'+escapeHtml(c.phone)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">EMAIL</label><input type="text" id="ci_email" class="field" value="'+escapeHtml(c.email)+'"></div><div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">WEBSITE</label><input type="text" id="ci_web" class="field" value="'+escapeHtml(c.web)+'"></div></div><div class="mt-6 flex gap-3"><button onclick="saveCompanyInfo()" class="btn-primary"><i class="fas fa-save mr-2"></i> Save Changes</button><button onclick="resetCompanyInfo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i> Reset to Default</button></div></div></div>';}
-function saveCompanyInfo(){saveCompany({name:document.getElementById('ci_name').value.trim(),address:document.getElementById('ci_address').value.trim(),phone:document.getElementById('ci_phone').value.trim(),email:document.getElementById('ci_email').value.trim(),web:document.getElementById('ci_web').value.trim()});showToast('Company info saved!','success');}
-function resetCompanyInfo(){saveCompany(defaultCompany);showToast('Reset to default.','success');renderPage('company');}
+function openAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.remove('hidden');document.getElementById('acError').classList.add('hidden');document.getElementById('adminCreateForm').reset();selectAdminRole(document.querySelector('[data-arole="user"]'),'user');}
+function closeAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.add('hidden');}
 
-function updateLiveTime(){const el=document.getElementById('liveTime');if(el)el.textContent=now12h();}
+document.getElementById('adminCreateForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const r=document.getElementById('ac_role').value,nm=document.getElementById('ac_name').value.trim(),
+  un=document.getElementById('ac_user').value.trim(),pw=document.getElementById('ac_pass').value,
+  er=document.getElementById('acError'),em=document.getElementById('acErrorMsg');
+  if(!nm||!un||!pw){em.textContent='All fields are required.';er.classList.remove('hidden');return;}
+  if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}
+  if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}
+  const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:r,createdAt:new Date().toISOString()});
+  saveUsers(us);closeAdminCreateModal();renderPage('users');showToast('Account "'+un+'" created!');
+});
 
-updateLoginTabs();checkAuth();setInterval(updateLiveTime,1000);updateLiveTime();
-document.querySelectorAll('.modal-backdrop').forEach(m=>{m.addEventListener('click',function(e){if(e.target===this)this.classList.add('hidden');});});
+function confirmDeleteUser(id){
+  const u=getUsers().find(x=>x.id===id);
+  if(!u||u.id==='admin_0')return;
+  deleteUserTargetId=id;
+  document.getElementById('deleteUserMsg').textContent='Delete user "'+u.name+'"? This cannot be undone.';
+  document.getElementById('deleteUserModal').classList.remove('hidden');
+}
+function closeDeleteUserModal(){document.getElementById('deleteUserModal').classList.add('hidden');deleteUserTargetId=null;}
+
+document.getElementById('confirmDeleteUserBtn').addEventListener('click',()=>{
+  if(!deleteUserTargetId)return;
+  let us=getUsers();us=us.filter(u=>u.id!==deleteUserTargetId);
+  saveUsers(us);closeDeleteUserModal();renderPage('users');showToast('User deleted');
+});
+
+/* ===== UPLOAD LOGO ===== */
+function uploadHTML(){
+  const cl=getCustomLogo();
+  const def='https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+  const src=cl||def;
+  return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-image"></i><span>BRANDING</span></div><h1 class="font-display text-4xl font-bold text-white">Change Logo</h1><p class="text-gray-500 mt-1">Upload a custom logo for gate pass documents</p></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-8 max-w-lg">'+
+  '<div class="mb-6"><div class="text-xs font-display tracking-widest text-gray-500 mb-3">CURRENT LOGO</div><div class="bg-white rounded-lg p-6 flex items-center justify-center" style="min-height:120px"><img src="'+src+'" style="max-height:100px;max-width:300px;object-fit:contain" id="logoPreview"></div></div>'+
+  '<div class="mb-6"><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">UPLOAD NEW LOGO</label><input type="file" id="logoInput" accept="image/*" class="field" style="padding:10px"><p class="text-xs text-gray-600 mt-2">Recommended: PNG or JPG, square aspect ratio, max 500KB</p></div>'+
+  '<div class="flex gap-3"><button onclick="uploadLogoFile()" class="btn-primary"><i class="fas fa-upload mr-2"></i>Upload</button>'+(cl?'<button onclick="resetLogo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset to Default</button>':'')+'</div>'+
+  '</div></div>';
+}
+
+function uploadLogoFile(){
+  const f=document.getElementById('logoInput').files[0];
+  if(!f){showToast('Please select a file','warn');return;}
+  if(f.size>512000){showToast('File too large. Max 500KB.','warn');return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    saveCustomLogo(e.target.result);applyLogos();
+    const prev=document.getElementById('logoPreview');if(prev)prev.src=e.target.result;
+    showToast('Logo updated successfully!');renderPage('upload');
+  };
+  reader.readAsDataURL(f);
+}
+function resetLogo(){clearCustomLogo();applyLogos();showToast('Logo reset to default');renderPage('upload');}
+
+/* ===== COMPANY INFO ===== */
+function companyHTML(){
+  const c=getCompany();
+  return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-building"></i><span>SETTINGS</span></div><h1 class="font-display text-4xl font-bold text-white">Company Information</h1><p class="text-gray-500 mt-1">Details shown on gate pass documents</p></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-8 max-w-2xl">'+
+  '<div class="space-y-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">COMPANY NAME</label><input type="text" id="c_name" class="field" value="'+esc(c.name)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">ADDRESS</label><input type="text" id="c_address" class="field" value="'+esc(c.address)+'"></div>'+
+  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PHONE</label><input type="text" id="c_phone" class="field" value="'+esc(c.phone)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">EMAIL</label><input type="text" id="c_email" class="field" value="'+esc(c.email)+'"></div>'+
+  '</div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">WEBSITE</label><input type="text" id="c_web" class="field" value="'+esc(c.web)+'"></div>'+
+  '</div>'+
+  '<div class="flex gap-3 mt-8"><button onclick="saveCompanyInfo()" class="btn-primary"><i class="fas fa-save mr-2"></i>Save Changes</button><button onclick="resetCompanyInfo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset Defaults</button></div>'+
+  '</div></div>';
+}
+
+function saveCompanyInfo(){
+  const c={name:document.getElementById('c_name').value.trim(),address:document.getElementById('c_address').value.trim(),phone:document.getElementById('c_phone').value.trim(),email:document.getElementById('c_email').value.trim(),web:document.getElementById('c_web').value.trim()};
+  if(!c.name){showToast('Company name is required','warn');return;}
+  saveCompany(c);document.getElementById('headerCompanySub').textContent=c.name.split(' ').slice(0,3).join(' ').toUpperCase();
+  showToast('Company info saved!');
+}
+function resetCompanyInfo(){saveCompany({...defaultCompany});renderPage('company');showToast('Reset to defaults');}
+
+/* ===== LIVE CLOCK ===== */
+setInterval(()=>{
+  const el=document.getElementById('liveTime');if(el)el.textContent=now12h();
+},1000);
+
+/* ===== INIT ===== */
+checkAuth();
 </script>
 </body>
 </html>
