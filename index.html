@@ -33,6 +33,10 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
 .btn-danger{background:#7f1d1d;color:white;border:none;padding:8px 16px;border-radius:6px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
 .btn-danger:hover{background:#991b1b}
 .btn-sm{padding:6px 14px;font-size:12px}
+.btn-success{background:#166534;color:white;border:none;padding:8px 16px;border-radius:6px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+.btn-success:hover{background:#15803d}
+.btn-warning{background:#854d0e;color:white;border:none;padding:8px 16px;border-radius:6px;font-weight:600;font-family:'Rajdhani',sans-serif;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .2s ease}
+.btn-warning:hover{background:#a16207}
 .sidebar-item{display:flex;align-items:center;gap:12px;padding:14px 20px;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:all .2s ease;font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.04em;font-size:15px}
 .sidebar-item:hover{color:var(--fg);background:rgba(220,38,38,.05)}
 .sidebar-item.active{color:var(--accent-2);background:linear-gradient(90deg,rgba(220,38,38,.12),transparent);border-left-color:var(--accent)}
@@ -48,12 +52,8 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .toast{position:fixed;bottom:32px;right:32px;background:var(--panel);border:1px solid var(--accent);color:var(--fg);padding:16px 24px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 30px rgba(220,38,38,.2);z-index:9999;display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.03em}
 .toast.show{transform:translateX(0)}
-.gp-outer{background:white;width:210mm;min-height:297mm;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6);display:flex;flex-direction:row;font-family:'Lora','Georgia',serif}
-.gp-stamp-space{width:18mm;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc}
-.gp-stamp-space::after{content:'STAMP';writing-mode:vertical-rl;text-orientation:mixed;font-family:'Rajdhani',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#bbb;text-transform:uppercase}
-.gp-stamp-space-left{border-right:none}
-.gp-stamp-space-right{border-left:none}
-.gp-doc{flex:1;padding:16mm 14mm;color:#111;position:relative;min-height:297mm}
+.gp-outer{background:white;width:210mm;min-height:297mm;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.6);font-family:'Lora','Georgia',serif}
+.gp-doc{padding:16mm 18mm;color:#111;position:relative;min-height:297mm}
 .gp-doc .gp-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:14px;margin-bottom:6px}
 .gp-doc .gp-company-name{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#111;line-height:1.2}
 .gp-doc .gp-company-sub{font-family:'Rajdhani',sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em;color:#555;margin-top:2px}
@@ -80,8 +80,7 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
   #printArea,#printArea *{visibility:visible}
   #printArea{position:absolute;left:0;top:0;width:100%;margin:0;padding:0}
   .gp-outer{box-shadow:none;width:100%;min-height:auto}
-  .gp-stamp-space{width:15mm}
-  .gp-doc{padding:12mm 10mm;min-height:auto}
+  .gp-doc{padding:12mm 14mm;min-height:auto}
   @page{size:A4;margin:0}
 }
 ::-webkit-scrollbar{width:10px;height:10px}
@@ -126,6 +125,23 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
 .time-type-toggle .tt-btn.active{background:rgba(220,38,38,.15);color:var(--accent-2)}
 .time-type-toggle .tt-btn:hover:not(.active){color:var(--fg);background:rgba(255,255,255,.03)}
 @media(max-width:1024px){.sidebar-mobile-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:none}.sidebar-mobile-overlay.show{display:block}#sidebar{position:fixed;left:0;top:65px;bottom:0;z-index:45;transform:translateX(-100%);transition:transform .3s ease}#sidebar.mobile-open{transform:translateX(0)}}
+.filter-toggle-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;transition:all .2s ease;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:14px}
+.filter-toggle-btn:hover{border-color:#444;color:var(--fg);background:rgba(255,255,255,.06)}
+.filter-toggle-btn.active{border-color:var(--accent);color:var(--accent-2);background:rgba(220,38,38,.08)}
+.filter-toggle-btn .filter-count{background:var(--accent);color:white;font-size:10px;padding:1px 7px;border-radius:999px;font-weight:700;display:none}
+.filter-toggle-btn .filter-count.visible{display:inline-block}
+.filter-panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:0;overflow:hidden;max-height:0;opacity:0;transition:max-height .4s ease,opacity .3s ease,margin .3s ease;margin-top:0}
+.filter-panel.open{max-height:400px;opacity:1;margin-top:16px;padding:24px}
+.filter-field{background:rgba(255,255,255,.03);border:1px solid var(--border);color:var(--fg);padding:10px 14px;border-radius:6px;width:100%;font-family:'Inter',sans-serif;transition:all .2s ease;font-size:13px;color-scheme:dark}
+.filter-field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.filter-field option{background:#111;color:#f0f0f0}
+.filter-label{display:block;font-size:11px;font-family:'Rajdhani',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.search-box{position:relative}
+.search-box input{padding-left:40px}
+.search-box .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#555;font-size:14px;pointer-events:none}
+.status-active{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-family:'Rajdhani',sans-serif;background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
+.status-inactive{display:inline-flex;align-items:center;gap:5px;padding:3px 12px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-family:'Rajdhani',sans-serif;background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.3)}
+.action-btn-group{display:flex;gap:6px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -234,6 +250,16 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
   </div>
 </div>
 
+<!-- ===== TOGGLE USER STATUS MODAL ===== -->
+<div id="toggleStatusModal" class="modal-backdrop hidden">
+  <div class="modal-content p-8 text-center" style="max-width:400px">
+    <div class="w-16 h-16 rounded-full bg-yellow-600/20 flex items-center justify-center mx-auto mb-4"><i class="fas fa-user-shield text-2xl text-yellow-500" id="toggleStatusIcon"></i></div>
+    <h3 class="font-display text-xl font-bold text-white mb-2" id="toggleStatusTitle">Change User Status?</h3>
+    <p class="text-gray-400 text-sm mb-6" id="toggleStatusMsg"></p>
+    <div class="flex gap-3"><button onclick="closeToggleStatusModal()" class="btn-ghost flex-1">Cancel</button><button id="confirmToggleStatusBtn" class="btn-warning flex-1"><i class="fas fa-check mr-1"></i> Confirm</button></div>
+  </div>
+</div>
+
 <!-- ===== MAIN APP ===== -->
 <div id="mainApp" class="hidden min-h-screen">
   <header class="header-glow border-b border-gray-800 sticky top-0 z-30 bg-black/80 backdrop-blur-xl">
@@ -269,30 +295,50 @@ html,body{background:var(--bg);color:var(--fg);font-family:'Inter',sans-serif;ov
 <div id="toast" class="toast"><i class="fas fa-check-circle text-red-500" id="toastIcon"></i><span id="toastMsg">Saved</span></div>
 
 <script>
+/* ===== CONSTANTS ===== */
 const HARDADMIN_USERNAME='munna0909',HARDADMIN_PASSWORD='mun0909@@##';
-const HARDADMIN={id:'admin_0',name:'System Administrator',username:HARDADMIN_USERNAME,password:HARDADMIN_PASSWORD,role:'admin',createdAt:new Date().toISOString()};
+const HARDADMIN={id:'admin_0',name:'System Administrator',username:HARDADMIN_USERNAME,password:HARDADMIN_PASSWORD,role:'admin',active:true,createdAt:new Date().toISOString()};
 const STORAGE_KEY='limburg_gatepasses',LOGO_KEY='limburg_custom_logo',COMPANY_KEY='limburg_company_info',AUTH_KEY='limburg_auth',USERS_KEY='limburg_users';
 const defaultCompany={name:'LIMBURG POWER SOLUTIONS LIMITED',address:'House #16, Road #18, Sector #10, Uttara, Dhaka - 1230',phone:'+880 1700-000000',email:'info@limburgpower.com',web:'www.limburgpower.com'};
 
-let currentPage='dashboard',editingId=null,selectedLoginRole='admin',deleteTargetId=null,deleteUserTargetId=null,currentUser=null,viewingPassId=null;
+/* ===== STATE ===== */
+let currentPage='dashboard',editingId=null,selectedLoginRole='admin',deleteTargetId=null,deleteUserTargetId=null,toggleStatusTargetId=null,toggleStatusAction=null,currentUser=null,viewingPassId=null;
+let filterState={search:'',type:'All',dateFrom:'',dateTo:'',client:'All',carriedBy:'All'};
+let filterPanelOpen=false;
 
+/* ===== UTILITIES ===== */
 function esc(s){if(!s)return'';const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function fmtDate(d){if(!d)return'-';try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch{return d;}}
+function fmtDateTime(d){if(!d)return'-';try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+' '+new Date(d).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});}catch{return d;}}
 function to12h(t){if(!t)return'-';if(t.includes('AM')||t.includes('PM'))return t;const p=t.split(':');if(p.length<2)return t;let h=parseInt(p[0],10);const m=p[1];const a=h>=12?'PM':'AM';h=h%12||12;return String(h).padStart(2,'0')+':'+m+' '+a;}
 function now12h(){const n=new Date();let h=n.getHours();const m=String(n.getMinutes()).padStart(2,'0'),s=String(n.getSeconds()).padStart(2,'0'),a=h>=12?'PM':'AM';h=h%12||12;return String(h).padStart(2,'0')+':'+m+':'+s+' '+a;}
 
+/* ===== TOAST ===== */
 function showToast(msg,type){
   const t=document.getElementById('toast'),ic=document.getElementById('toastIcon');
   document.getElementById('toastMsg').textContent=msg;
-  ic.className=type==='warn'?'fas fa-exclamation-triangle text-yellow-500':'fas fa-check-circle text-red-500';
-  t.style.borderColor=type==='warn'?'#eab308':'var(--accent)';
+  ic.className=type==='warn'?'fas fa-exclamation-triangle text-yellow-500':type==='error'?'fas fa-times-circle text-red-500':'fas fa-check-circle text-red-500';
+  t.style.borderColor=type==='warn'?'#eab308':type==='error'?'#dc2626':'var(--accent)';
   t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-function getUsers(){try{let u=JSON.parse(localStorage.getItem(USERS_KEY))||[];if(!u.some(x=>x.id==='admin_0')){u.unshift({...HARDADMIN});saveUsers(u);}const ai=u.findIndex(x=>x.id==='admin_0');if(ai>-1){u[ai].username=HARDADMIN_USERNAME;u[ai].password=HARDADMIN_PASSWORD;saveUsers(u);}return u;}catch{return [{...HARDADMIN}]};}
+/* ===== DATA ACCESS ===== */
+function getUsers(){
+  try{
+    let u=JSON.parse(localStorage.getItem(USERS_KEY))||[];
+    /* Ensure hard admin exists with active field */
+    const ai=u.findIndex(x=>x.id==='admin_0');
+    if(ai>-1){u[ai].username=HARDADMIN_USERNAME;u[ai].password=HARDADMIN_PASSWORD;u[ai].active=true;}
+    else{u.unshift({...HARDADMIN});}
+    /* Migrate old users missing 'active' field */
+    u.forEach(x=>{if(x.active===undefined)x.active=true;});
+    saveUsers(u);
+    return u;
+  }catch{return [{...HARDADMIN}];}
+}
 function saveUsers(l){localStorage.setItem(USERS_KEY,JSON.stringify(l));}
-function findUser(u,p){return getUsers().find(x=>x.username.toLowerCase()===u.toLowerCase()&&x.password===p);}
-function usernameExists(u){return getUsers().some(x=>x.username.toLowerCase()===u.toLowerCase());}
+function findUser(u,p){const user=getUsers().find(x=>x.username.toLowerCase()===u.toLowerCase()&&x.password===p);if(!user)return null;if(user.active===false)return null;return user;}
+function usernameExists(u,excludeId){return getUsers().some(x=>x.username.toLowerCase()===u.toLowerCase()&&x.id!==excludeId);}
 function getGatePasses(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||[];}catch{return[];}}
 function saveGatePasses(l){localStorage.setItem(STORAGE_KEY,JSON.stringify(l));}
 function getCompany(){try{const c=localStorage.getItem(COMPANY_KEY);return c?JSON.parse(c):{...defaultCompany};}catch{return {...defaultCompany};}}
@@ -311,12 +357,15 @@ function applyLogos(){
   if(li)li.src=src;if(hi)hi.src=src;
 }
 
+/* ===== LOGIN TAB ===== */
 function switchLoginTab(role){
   selectedLoginRole=role;
   document.querySelectorAll('.login-tab').forEach(t=>t.classList.toggle('active',t.dataset.role===role));
   document.getElementById('registerSection').style.display=role==='user'?'block':'none';
   document.getElementById('loginError').classList.add('hidden');
 }
+
+/* ===== REGISTER MODAL ===== */
 function openRegisterModal(){document.getElementById('registerModal').classList.remove('hidden');document.getElementById('regError').classList.add('hidden');document.getElementById('registerForm').reset();}
 function closeRegisterModal(){document.getElementById('registerModal').classList.add('hidden');}
 
@@ -329,18 +378,22 @@ document.getElementById('registerForm').addEventListener('submit',e=>{
   if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}
   if(pw!==pc){em.textContent='Passwords do not match.';er.classList.remove('hidden');return;}
   if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}
-  const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:'user',createdAt:new Date().toISOString()});
-  saveUsers(us);closeRegisterModal();showToast('User "'+un+'" created successfully!');
+  const us=getUsers();
+  us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:'user',active:true,createdAt:new Date().toISOString()});
+  saveUsers(us);closeRegisterModal();showToast('User "'+un+'" created successfully! Login now.');
 });
 
+/* ===== LOGIN ===== */
 document.getElementById('loginForm').addEventListener('submit',e=>{
   e.preventDefault();
   const un=document.getElementById('loginUser').value.trim(),pw=document.getElementById('loginPass').value.trim(),
   er=document.getElementById('loginError'),em=document.getElementById('loginErrorMsg');
   if(!un||!pw){em.textContent='Please enter both username and password.';er.classList.remove('hidden');return;}
-  const u=findUser(un,pw);
+  const allUsers=getUsers();
+  const u=allUsers.find(x=>x.username.toLowerCase()===un.toLowerCase()&&x.password===pw);
   if(!u){em.textContent='Invalid username or password.';er.classList.remove('hidden');document.getElementById('loginPass').value='';return;}
   if(u.role!==selectedLoginRole){em.textContent='This is a "'+u.role+'" account. Switch to the correct tab.';er.classList.remove('hidden');return;}
+  if(u.active===false){em.textContent='Your account has been DEACTIVATED by the administrator. Contact admin for access.';er.classList.remove('hidden');return;}
   currentUser=u;
   sessionStorage.setItem(AUTH_KEY,JSON.stringify({id:u.id,username:u.username,name:u.name,role:u.role}));
   er.classList.add('hidden');showApp();showToast('Welcome back, '+u.name);
@@ -358,7 +411,18 @@ document.getElementById('logoutBtn').addEventListener('click',()=>{
   document.getElementById('loginPass').value='';document.getElementById('loginUser').value='';
 });
 
-function checkAuth(){try{const a=JSON.parse(sessionStorage.getItem(AUTH_KEY));if(a&&a.id){const u=getUsers().find(x=>x.id===a.id);if(u){currentUser=u;showApp();return;}}}catch{}}
+function checkAuth(){
+  try{
+    const a=JSON.parse(sessionStorage.getItem(AUTH_KEY));
+    if(a&&a.id){
+      const u=getUsers().find(x=>x.id===a.id);
+      if(u){
+        if(u.active===false){sessionStorage.removeItem(AUTH_KEY);showToast('Your account was deactivated by admin.','error');return;}
+        currentUser=u;showApp();return;
+      }
+    }
+  }catch{}
+}
 
 function showApp(){
   document.getElementById('loginPage').classList.add('hidden');document.getElementById('mainApp').classList.remove('hidden');
@@ -369,6 +433,7 @@ function showApp(){
   applyLogos();buildSidebar();renderPage(currentUser.role==='admin'?'dashboard':'create');updateCount();
 }
 
+/* ===== SIDEBAR ===== */
 function buildSidebar(){
   const nav=document.getElementById('sidebarNav'),r=currentUser.role;
   const secs=[{l:'MAIN MENU',i:[
@@ -404,7 +469,7 @@ function renderPage(p){
   const c=document.getElementById('content');
   if(p==='dashboard')c.innerHTML=dashboardHTML();
   else if(p==='create')c.innerHTML=createHTML();
-  else if(p==='all')c.innerHTML=allHTML();
+  else if(p==='all'){c.innerHTML=allHTML();initAllPageListeners();}
   else if(p==='users')c.innerHTML=usersHTML();
   else if(p==='upload')c.innerHTML=uploadHTML();
   else if(p==='company')c.innerHTML=companyHTML();
@@ -455,7 +520,7 @@ function dashboardHTML(){
   '</div></div></div></div>';
 }
 
-/* ===== CREATE / EDIT ===== */
+/* ===== CREATE / EDIT GATE PASS ===== */
 function selectType(el,t){
   el.parentElement.querySelectorAll('.check-pill').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');document.getElementById('f_type').value=t;
@@ -471,92 +536,94 @@ function selectAdminRole(el,r){
   el.classList.add('active');document.getElementById('ac_role').value=r;
 }
 
+function itemRowHTML(sl,desc,unit,qty,rem){
+  return '<tr>'+
+  '<td class="text-center text-gray-400 font-display">'+sl+'</td>'+
+  '<td><input type="text" class="field py-2 text-sm" placeholder="Description" value="'+esc(desc||'')+'"></td>'+
+  '<td><input type="text" class="field py-2 text-sm" placeholder="Unit" value="'+esc(unit||'')+'"></td>'+
+  '<td><input type="text" class="field py-2 text-sm" placeholder="Qty" value="'+esc(qty||'')+'"></td>'+
+  '<td><input type="text" class="field py-2 text-sm" placeholder="Remarks" value="'+esc(rem||'')+'"></td>'+
+  '<td class="text-center"><button type="button" onclick="removeItemRow(this)" class="text-red-500 hover:text-red-400 transition p-2" title="Remove"><i class="fas fa-times-circle"></i></button></td>'+
+  '</tr>';
+}
+
 function createHTML(){
   const gn=generateGpNo(),td=new Date().toISOString().split('T')[0];
   const ed=editingId?getGatePasses().find(g=>g.id===editingId):null;
   const d=ed||{gpNo:gn,date:td,type:'Returnable',client:'',carriedBy:'',mobile:'',vehicleNo:'',timeValue:'',timeLabel:'In',purpose:'',locationFrom:'',locationTo:'',preparedBy:'',checkedBy:'',receivedBy:'',items:[{sl:1,description:'',unit:'',quantity:'',remarks:''}],flaps:{}};
   const fl=d.flaps||{};
-  const hasClient=d.client||d.carriedBy||d.mobile;
-  const hasVehicle=d.vehicleNo;
-  const hasTime=d.timeValue;
-  const hasPurpose=d.purpose;
-  const hasLocation=d.locationFrom||d.locationTo;
-  const hasItems=d.items&&d.items.some(i=>i.description);
+  const hasClient=fl.client||(d.client||d.carriedBy||d.mobile);
+  const hasVehicle=fl.vehicle||d.vehicleNo;
+  const hasTime=fl.time||d.timeValue;
+  const hasPurpose=fl.purpose||d.purpose;
+  const hasLocation=fl.location||(d.locationFrom||d.locationTo);
+  const hasItems=fl.items||(d.items&&d.items.some(i=>i.description));
 
-  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-plus-circle"></i><span>'+(editingId?'EDIT':'NEW')+' GATE PASS</span></div><h1 class="font-display text-4xl font-bold text-white">'+(editingId?'Edit':'Create')+' Gate Pass</h1><p class="text-gray-500 mt-1">Toggle each section ON to include it in the gate pass.</p></div>'+(editingId?'<button onclick="cancelEdit()" class="btn-ghost"><i class="fas fa-arrow-left mr-1"></i> Cancel Edit</button>':'')+'</div>'+
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas '+(editingId?'fa-edit':'fa-plus-circle')+'"></i><span>'+(editingId?'EDIT':'NEW')+' GATE PASS</span></div><h1 class="font-display text-4xl font-bold text-white">'+(editingId?'Edit':'Create')+' Gate Pass</h1><p class="text-gray-500 mt-1">Toggle each section ON to include it in the gate pass.</p></div>'+(editingId?'<button onclick="cancelEdit()" class="btn-ghost"><i class="fas fa-arrow-left mr-1"></i> Cancel Edit</button>':'')+'</div>'+
 
-  /* Basic Info */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
   '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
   '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">GATE PASS NO</label><input type="text" id="f_gpNo" class="field" value="'+esc(d.gpNo)+'" readonly></div>'+
   '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">DATE</label><input type="date" id="f_date" class="field" value="'+esc(d.date)+'"></div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PASS TYPE</label><div class="flex gap-2 pt-2"><div class="check-pill '+(d.type==='Returnable'?'active':'')+'" onclick="selectType(this,\'Returnable\')"><i class="fas fa-undo text-xs"></i> Returnable</div><div class="check-pill '+(d.type==='Non-Returnable'?'active':'')+'" onclick="selectType(this,\'Non-Returnable\')"><i class="fas fa-truck text-xs"></i> Non-Returnable</div></div><input type="hidden" id="f_type" value="'+d.type+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TYPE</label><div class="flex gap-3 mt-1"><div class="check-pill '+(d.type==='Returnable'?'active':'')+'" onclick="selectType(this,\'Returnable\')"><i class="fas fa-undo text-xs"></i> Returnable</div><div class="check-pill '+(d.type==='Non-Returnable'?'active':'')+'" onclick="selectType(this,\'Non-Returnable\')"><i class="fas fa-truck text-xs"></i> Non-Returnable</div></div><input type="hidden" id="f_type" value="'+d.type+'"></div>'+
   '</div></div>'+
 
-  /* Client Details Flap */
+  /* Client Flap */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_client','Client / Carrier Details',!!(fl.client||hasClient))+
-  '<div id="flap_client" class="flap-body'+(fl.client||hasClient?' open':'')+'">'+
+  flapHTML('flap_client','Client / Carrier Information',!!hasClient)+
+  '<div class="flap-body '+(hasClient?'open':'')+'" id="flap_client">'+
   '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CLIENT / COMPANY</label><input type="text" id="f_client" class="field" placeholder="Client / Company name" value="'+esc(d.client)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CLIENT / COMPANY NAME</label><input type="text" id="f_client" class="field" placeholder="Client or company name" value="'+esc(d.client)+'"></div>'+
   '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CARRIED BY</label><input type="text" id="f_carriedBy" class="field" placeholder="Person name" value="'+esc(d.carriedBy)+'"></div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">MOBILE NO</label><input type="text" id="f_mobile" class="field" placeholder="+8801XXXXXXXXX" value="'+esc(d.mobile)+'"></div>'+
-  '</div></div></div>'+
-
-  /* Location Flap */
-  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_location','Location / Destination',!!(fl.location||hasLocation))+
-  '<div id="flap_location" class="flap-body'+(fl.location||hasLocation?' open':'')+'">'+
-  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">FROM (SOURCE)</label><input type="text" id="f_locFrom" class="field" placeholder="e.g. Warehouse, Site A" value="'+esc(d.locationFrom||'')+'"></div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TO (DESTINATION)</label><input type="text" id="f_locTo" class="field" placeholder="e.g. Client Site, Office" value="'+esc(d.locationTo||'')+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">MOBILE NO</label><input type="text" id="f_mobile" class="field" placeholder="Mobile number" value="'+esc(d.mobile)+'"></div>'+
   '</div></div></div>'+
 
   /* Vehicle Flap */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_vehicle','Vehicle Information',!!(fl.vehicle||hasVehicle))+
-  '<div id="flap_vehicle" class="flap-body'+(fl.vehicle||hasVehicle?' open':'')+'">'+
-  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">VEHICLE NO</label><input type="text" id="f_vehicleNo" class="field" placeholder="e.g. Dhaka Metro GA-12-3456" value="'+esc(d.vehicleNo)+'"></div>'+
-  '<div></div>'+
-  '</div></div></div>'+
-
-  /* Time Flap — SINGLE time field with IN/OUT toggle */
-  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_time','Time Record',!!(fl.time||hasTime))+
-  '<div id="flap_time" class="flap-body'+(fl.time||hasTime?' open':'')+'">'+
-  '<div class="time-type-toggle"><button type="button" class="tt-btn '+(d.timeLabel==='In'?'active':'')+'" data-tt="In" onclick="selectTimeType(\'In\')"><i class="fas fa-sign-in-alt mr-1"></i> Time In</button><button type="button" class="tt-btn '+(d.timeLabel==='Out'?'active':'')+'" data-tt="Out" onclick="selectTimeType(\'Out\')"><i class="fas fa-sign-out-alt mr-1"></i> Time Out</button></div>'+
-  '<input type="hidden" id="f_timeLabel" value="'+(d.timeLabel||'In')+'">'+
-  '<div class="flex items-center gap-4"><label class="text-xs font-display tracking-widest text-gray-400 whitespace-nowrap" id="timeLabelDisplay">'+(d.timeLabel==='In'?'TIME IN':'TIME OUT')+'</label>'+tpHTML('f_timePicker',d.timeValue||'')+'</div>'+
+  flapHTML('flap_vehicle','Vehicle Information',!!hasVehicle)+
+  '<div class="flap-body '+(hasVehicle?'open':'')+'" id="flap_vehicle">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">VEHICLE NO</label><input type="text" id="f_vehicleNo" class="field" placeholder="Vehicle registration number" value="'+esc(d.vehicleNo)+'"></div>'+
   '</div></div>'+
 
-  /* Items Flap */
+  /* Time Flap */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_items','Items / Equipment',!!(fl.items||hasItems))+
-  '<div id="flap_items" class="flap-body'+(fl.items||hasItems?' open':'')+'">'+
-  '<div class="overflow-x-auto"><table class="data-table" id="itemsTable"><thead><tr><th style="width:50px">SL</th><th>Description</th><th>Unit</th><th>Qty</th><th>Remarks</th><th style="width:50px"></th></tr></thead><tbody>'+
-  (d.items||[{sl:1,description:'',unit:'',quantity:'',remarks:''}]).map((it,i)=>'<tr>'+
-  '<td><input type="text" class="field text-center item-sl" value="'+it.sl+'" style="padding:8px 4px"></td>'+
-  '<td><input type="text" class="field item-desc" placeholder="Item description" value="'+esc(it.description)+'"></td>'+
-  '<td><input type="text" class="field item-unit" placeholder="Pcs/Box" value="'+esc(it.unit)+'" style="max-width:100px"></td>'+
-  '<td><input type="text" class="field item-qty text-center" placeholder="0" value="'+esc(it.quantity)+'" style="max-width:80px"></td>'+
-  '<td><input type="text" class="field item-remarks" placeholder="Remarks" value="'+esc(it.remarks)+'"></td>'+
-  '<td><button onclick="removeItemRow(this)" class="text-gray-500 hover:text-red-400 transition text-sm"><i class="fas fa-times"></i></button></td>'+
-  '</tr>').join('')+
-  '</tbody></table></div>'+
-  '<button onclick="addItemRow()" class="btn-ghost text-xs mt-3"><i class="fas fa-plus mr-1"></i> Add Row</button>'+
+  flapHTML('flap_time','Time Information',!!hasTime)+
+  '<div class="flap-body '+(hasTime?'open':'')+'" id="flap_time">'+
+  '<div class="time-type-toggle"><button type="button" class="tt-btn '+(d.timeLabel==='In'?'active':'')+'" data-tt="In" onclick="selectTimeType(\'In\')">TIME IN</button><button type="button" class="tt-btn '+(d.timeLabel==='Out'?'active':'')+'" data-tt="Out" onclick="selectTimeType(\'Out\')">TIME OUT</button></div>'+
+  '<label class="block text-xs font-display tracking-widest text-gray-400 mb-2" id="timeLabelDisplay">'+(d.timeLabel==='In'?'TIME IN':'TIME OUT')+'</label>'+
+  tpHTML('f_timeValue',d.timeValue)+
+  '<input type="hidden" id="f_timeLabel" value="'+d.timeLabel+'">'+
   '</div></div>'+
 
   /* Purpose Flap */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
-  flapHTML('flap_purpose','Purpose / Remarks',!!(fl.purpose||hasPurpose))+
-  '<div id="flap_purpose" class="flap-body'+(fl.purpose||hasPurpose?' open':'')+'">'+
-  '<textarea id="f_purpose" class="field" rows="3" placeholder="Purpose of this gate pass...">'+esc(d.purpose)+'</textarea>'+
+  flapHTML('flap_purpose','Purpose',!!hasPurpose)+
+  '<div class="flap-body '+(hasPurpose?'open':'')+'" id="flap_purpose">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PURPOSE / REMARKS</label><textarea id="f_purpose" class="field" rows="3" placeholder="Purpose of gate pass...">'+esc(d.purpose)+'</textarea></div>'+
   '</div></div>'+
 
-  /* Signature Names — always shown for data entry */
+  /* Location Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_location','Location',!!hasLocation)+
+  '<div class="flap-body '+(hasLocation?'open':'')+'" id="flap_location">'+
+  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">FROM</label><input type="text" id="f_locationFrom" class="field" placeholder="Location from" value="'+esc(d.locationFrom)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">TO</label><input type="text" id="f_locationTo" class="field" placeholder="Location to" value="'+esc(d.locationTo)+'"></div>'+
+  '</div></div></div>'+
+
+  /* Items Flap */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-4">'+
+  flapHTML('flap_items','Items Details',!!hasItems)+
+  '<div class="flap-body '+(hasItems?'open':'')+'" id="flap_items">'+
+  '<div class="overflow-x-auto"><table class="data-table" id="itemsTable"><thead><tr><th style="width:50px">SL</th><th>Description</th><th>Unit</th><th>Qty</th><th>Remarks</th><th style="width:50px"></th></tr></thead><tbody>'+
+  (d.items||[{sl:1,description:'',unit:'',quantity:'',remarks:''}]).map((it,i)=>itemRowHTML(i+1,it.description,it.unit,it.quantity,it.remarks)).join('')+
+  '</tbody></table></div>'+
+  '<button type="button" onclick="addItemRow()" class="btn-ghost btn-sm mt-3"><i class="fas fa-plus mr-1"></i> Add Item Row</button>'+
+  '</div></div>'+
+
+  /* Signatures */
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-6 mb-6">'+
-  '<div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-4"><i class="fas fa-pen-nib"></i><span>SIGNATURE FIELDS (Always Shown on Gate Pass)</span></div>'+
+  '<div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-4"><i class="fas fa-signature"></i><span>SIGNATURES</span></div>'+
   '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
   '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PREPARED BY</label><input type="text" id="f_preparedBy" class="field" placeholder="Name" value="'+esc(d.preparedBy)+'"></div>'+
   '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">CHECKED BY</label><input type="text" id="f_checkedBy" class="field" placeholder="Name" value="'+esc(d.checkedBy)+'"></div>'+
@@ -564,315 +631,399 @@ function createHTML(){
   '</div></div>'+
 
   /* Submit */
-  '<div class="flex gap-3 justify-end">'+
-  '<button onclick="navigateTo(\''+(currentUser.role==='admin'?'dashboard':'create')+'\')" class="btn-ghost">Cancel</button>'+
-  '<button onclick="saveGP()" class="btn-primary text-base"><i class="fas fa-save mr-2"></i>'+(editingId?'Update':'Save')+' Gate Pass</button>'+
+  '<div class="flex gap-4 justify-end">'+
+  '<button type="button" onclick="navigateTo(\''+(currentUser.role==='admin'?'dashboard':'all')+'\')" class="btn-ghost">Cancel</button>'+
+  '<button type="button" onclick="saveGatePass()" class="btn-primary text-base px-8"><i class="fas fa-save mr-2"></i>'+(editingId?'Update Gate Pass':'Save Gate Pass')+'</button>'+
   '</div></div>';
 }
 
 function addItemRow(){
   const tb=document.querySelector('#itemsTable tbody');
-  const rows=tb.querySelectorAll('tr');const n=rows.length+1;
+  if(!tb)return;
+  const n=tb.querySelectorAll('tr').length+1;
   const tr=document.createElement('tr');
-  tr.innerHTML='<td><input type="text" class="field text-center item-sl" value="'+n+'" style="padding:8px 4px"></td><td><input type="text" class="field item-desc" placeholder="Item description"></td><td><input type="text" class="field item-unit" placeholder="Pcs/Box" style="max-width:100px"></td><td><input type="text" class="field item-qty text-center" placeholder="0" style="max-width:80px"></td><td><input type="text" class="field item-remarks" placeholder="Remarks"></td><td><button onclick="removeItemRow(this)" class="text-gray-500 hover:text-red-400 transition text-sm"><i class="fas fa-times"></i></button></td>';
+  tr.innerHTML=itemRowHTML(n,'','','','');
   tb.appendChild(tr);
 }
 function removeItemRow(btn){
   const tb=document.querySelector('#itemsTable tbody');
-  if(tb.querySelectorAll('tr').length<=1){showToast('At least one row required','warn');return;}
+  if(!tb||tb.querySelectorAll('tr').length<=1){showToast('At least one item row required.','warn');return;}
   btn.closest('tr').remove();
-  tb.querySelectorAll('tr').forEach((r,i)=>{r.querySelector('.item-sl').value=i+1;});
+  tb.querySelectorAll('tr').forEach((tr,i)=>{tr.querySelector('td:first-child').textContent=i+1;});
 }
 
-function collectItems(){
-  const rows=document.querySelectorAll('#itemsTable tbody tr');const items=[];
-  rows.forEach((r,i)=>{
-    items.push({
-      sl:i+1,
-      description:r.querySelector('.item-desc').value.trim(),
-      unit:r.querySelector('.item-unit').value.trim(),
-      quantity:r.querySelector('.item-qty').value.trim(),
-      remarks:r.querySelector('.item-remarks').value.trim()
-    });
-  });
-  return items;
-}
+function cancelEdit(){editingId=null;navigateTo('all');}
 
-function saveGP(){
+function saveGatePass(){
   const gpNo=document.getElementById('f_gpNo').value.trim();
   const date=document.getElementById('f_date').value;
   const type=document.getElementById('f_type').value;
   const client=document.getElementById('f_client').value.trim();
   const carriedBy=document.getElementById('f_carriedBy').value.trim();
   const mobile=document.getElementById('f_mobile').value.trim();
-  const locFrom=document.getElementById('f_locFrom').value.trim();
-  const locTo=document.getElementById('f_locTo').value.trim();
   const vehicleNo=document.getElementById('f_vehicleNo').value.trim();
-  const timeLabel=document.getElementById('f_timeLabel').value||'In';
-  const timeValue=getTPV('f_timePicker');
+  const timeValue=getTPV('f_timeValue');
+  const timeLabel=document.getElementById('f_timeLabel').value;
   const purpose=document.getElementById('f_purpose').value.trim();
+  const locationFrom=document.getElementById('f_locationFrom').value.trim();
+  const locationTo=document.getElementById('f_locationTo').value.trim();
   const preparedBy=document.getElementById('f_preparedBy').value.trim();
   const checkedBy=document.getElementById('f_checkedBy').value.trim();
   const receivedBy=document.getElementById('f_receivedBy').value.trim();
-  const items=collectItems();
 
-  if(!date){showToast('Please select a date','warn');return;}
+  if(!date){showToast('Date is required.','warn');return;}
+
+  const items=[];
+  document.querySelectorAll('#itemsTable tbody tr').forEach((tr,i)=>{
+    const inputs=tr.querySelectorAll('input');
+    items.push({sl:i+1,description:inputs[0].value.trim(),unit:inputs[1].value.trim(),quantity:inputs[2].value.trim(),remarks:inputs[3].value.trim()});
+  });
 
   const flaps={
-    client:!!(client||carriedBy||mobile),
-    location:!!(locFrom||locTo),
-    vehicle:!!vehicleNo,
-    time:!!timeValue,
-    items:items.some(i=>i.description),
-    purpose:!!purpose
+    client:document.getElementById('flap_client').classList.contains('open'),
+    vehicle:document.getElementById('flap_vehicle').classList.contains('open'),
+    time:document.getElementById('flap_time').classList.contains('open'),
+    purpose:document.getElementById('flap_purpose').classList.contains('open'),
+    location:document.getElementById('flap_location').classList.contains('open'),
+    items:document.getElementById('flap_items').classList.contains('open')
   };
 
-  const data={gpNo,date,type,client,carriedBy,mobile,locationFrom:locFrom,locationTo:locTo,vehicleNo,timeLabel,timeValue,purpose,preparedBy,checkedBy,receivedBy,items,flaps,createdBy:currentUser.name,createdAt:new Date().toISOString()};
+  const entry={gpNo,date,type,client,carriedBy,mobile,vehicleNo,timeValue,timeLabel,purpose,locationFrom,locationTo,preparedBy,checkedBy,receivedBy,items,flaps};
 
   const list=getGatePasses();
   if(editingId){
     const idx=list.findIndex(g=>g.id===editingId);
-    if(idx>-1){data.id=editingId;data.createdAt=list[idx].createdAt;list[idx]=data;}
-    editingId=null;
-    showToast('Gate Pass updated successfully!');
+    if(idx>-1){entry.id=editingId;entry.createdAt=list[idx].createdAt;entry.updatedAt=new Date().toISOString();list[idx]=entry;}
+    showToast('Gate Pass '+gpNo+' updated successfully!');
   }else{
-    data.id='gp_'+Date.now()+'_'+Math.random().toString(36).substr(2,5);
-    list.push(data);
-    showToast('Gate Pass created successfully!');
+    entry.id='gp_'+Date.now();
+    entry.createdAt=new Date().toISOString();
+    list.push(entry);
+    showToast('Gate Pass '+gpNo+' created successfully!');
   }
-  saveGatePasses(list);updateCount();navigateTo('all');
+  saveGatePasses(list);updateCount();editingId=null;
+  navigateTo('all');
 }
 
-function cancelEdit(){editingId=null;navigateTo(currentUser.role==='admin'?'dashboard':'create');}
+/* ===== EDIT GATE PASS - KEY FUNCTION ===== */
+function editGatePass(id){
+  editingId=id;
+  navigateTo('create');
+}
 
 /* ===== ALL GATE PASSES ===== */
 function allHTML(){
-  const list=getGatePasses().slice().reverse();
-  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-list-alt"></i><span>RECORDS</span></div><h1 class="font-display text-4xl font-bold text-white">All Gate Passes</h1><p class="text-gray-500 mt-1">'+list.length+' total records</p></div><button onclick="navigateTo(\'create\')" class="btn-primary"><i class="fas fa-plus mr-2"></i>New Gate Pass</button></div>'+
-  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Date</th><th>Type</th><th>Client</th><th>Carried By</th><th>Time</th><th>Actions</th></tr></thead><tbody>'+
-  (list.map(g=>{
-    const timeStr=g.timeValue?(g.timeLabel==='In'?'IN: ':'OUT: ')+g.timeValue:'-';
-    return '<tr><td class="font-display font-semibold text-red-400">'+esc(g.gpNo)+'</td><td class="text-gray-400">'+(g.date||'-')+'</td><td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td><td>'+esc(g.client||'-')+'</td><td>'+esc(g.carriedBy||'-')+'</td><td class="text-gray-400 text-sm">'+timeStr+'</td><td><div class="flex gap-1"><button onclick="viewGatePass(\''+g.id+'\')" class="text-gray-400 hover:text-blue-400 p-1 transition" title="View"><i class="fas fa-eye"></i></button><button onclick="editGP(\''+g.id+'\')" class="text-gray-400 hover:text-yellow-400 p-1 transition" title="Edit"><i class="fas fa-edit"></i></button><button onclick="confirmDeleteGP(\''+g.id+'\')" class="text-gray-400 hover:text-red-400 p-1 transition" title="Delete"><i class="fas fa-trash-alt"></i></button></div></td></tr>';
-  }).join('')||'<tr><td colspan="7" class="text-center text-gray-500 py-8">No gate passes found</td></tr>')+
+  const all=getGatePasses();
+  let filtered=[...all];
+
+  /* Apply filters */
+  if(filterState.search){
+    const s=filterState.search.toLowerCase();
+    filtered=filtered.filter(g=>(g.gpNo||'').toLowerCase().includes(s)||(g.client||'').toLowerCase().includes(s)||(g.carriedBy||'').toLowerCase().includes(s)||(g.vehicleNo||'').toLowerCase().includes(s));
+  }
+  if(filterState.type!=='All')filtered=filtered.filter(g=>g.type===filterState.type);
+  if(filterState.dateFrom)filtered=filtered.filter(g=>g.date>=filterState.dateFrom);
+  if(filterState.dateTo)filtered=filtered.filter(g=>g.date<=filterState.dateTo);
+  if(filterState.client!=='All')filtered=filtered.filter(g=>g.client===filterState.client);
+  if(filterState.carriedBy!=='All')filtered=filtered.filter(g=>g.carriedBy===filterState.carriedBy);
+
+  const clients=[...new Set(all.map(g=>g.client).filter(Boolean))].sort();
+  const carriers=[...new Set(all.map(g=>g.carriedBy).filter(Boolean))].sort();
+  const activeCount=[filterState.type!=='All',filterState.dateFrom,filterState.dateTo,filterState.client!=='All',filterState.carriedBy!=='All',filterState.search].filter(Boolean).length;
+
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-list-alt"></i><span>ALL GATE PASSES</span></div><h1 class="font-display text-4xl font-bold text-white">All Gate Passes</h1><p class="text-gray-500 mt-1">'+filtered.length+' of '+all.length+' records shown</p></div>'+
+  '<button onclick="navigateTo(\'create\')" class="btn-primary"><i class="fas fa-plus mr-2"></i>New Gate Pass</button></div>'+
+
+  /* Filter toggle */
+  '<button class="filter-toggle-btn '+(filterPanelOpen?'active':'')+'" onclick="toggleFilterPanel()"><i class="fas fa-filter"></i> Filters <span class="filter-count '+(activeCount?'visible':'')+'">'+activeCount+'</span></button>'+
+
+  /* Filter panel */
+  '<div class="filter-panel '+(filterPanelOpen?'open':'')+'" id="filterPanel">'+
+  '<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">'+
+  '<div class="md:col-span-2"><label class="filter-label">SEARCH</label><div class="search-box"><i class="fas fa-search search-icon"></i><input type="text" class="filter-field" id="filter_search" placeholder="Search by GP No, Client, Carrier, Vehicle..." value="'+esc(filterState.search)+'" oninput="applyFilters()"></div></div>'+
+  '<div><label class="filter-label">TYPE</label><select class="filter-field" id="filter_type" onchange="applyFilters()"><option value="All">All Types</option><option value="Returnable"'+(filterState.type==='Returnable'?' selected':'')+'>Returnable</option><option value="Non-Returnable"'+(filterState.type==='Non-Returnable'?' selected':'')+'>Non-Returnable</option></select></div>'+
+  '<div><label class="filter-label">DATE FROM</label><input type="date" class="filter-field" id="filter_dateFrom" value="'+esc(filterState.dateFrom)+'" onchange="applyFilters()"></div>'+
+  '<div><label class="filter-label">DATE TO</label><input type="date" class="filter-field" id="filter_dateTo" value="'+esc(filterState.dateTo)+'" onchange="applyFilters()"></div>'+
+  '<div><label class="filter-label">CLIENT</label><select class="filter-field" id="filter_client" onchange="applyFilters()"><option value="All">All Clients</option>'+clients.map(c=>'<option value="'+esc(c)+'"'+(filterState.client===c?' selected':'')+'>'+esc(c)+'</option>').join('')+'</select></div>'+
+  '<div><label class="filter-label">CARRIED BY</label><select class="filter-field" id="filter_carriedBy" onchange="applyFilters()"><option value="All">All Carriers</option>'+carriers.map(c=>'<option value="'+esc(c)+'"'+(filterState.carriedBy===c?' selected':'')+'>'+esc(c)+'</option>').join('')+'</select></div>'+
+  '<div class="flex items-end"><button onclick="clearFilters()" class="btn-ghost btn-sm w-full"><i class="fas fa-times mr-1"></i> Clear All</button></div>'+
+  '</div></div>'+
+
+  /* Table */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden mt-4">'+
+  '<div class="overflow-x-auto"><table class="data-table"><thead><tr><th>GP No</th><th>Date</th><th>Client</th><th>Carried By</th><th>Type</th><th>Vehicle</th><th>Actions</th></tr></thead><tbody>'+
+  (filtered.length?filtered.reverse().map(g=>'<tr>'+
+  '<td class="font-display font-semibold text-red-400">'+esc(g.gpNo)+'</td>'+
+  '<td class="text-gray-400 text-sm">'+(g.date||'-')+'</td>'+
+  '<td>'+esc(g.client||'-')+'</td>'+
+  '<td>'+esc(g.carriedBy||'-')+'</td>'+
+  '<td><span class="text-xs px-2 py-1 rounded '+(g.type==='Returnable'?'bg-yellow-500/20 text-yellow-400':'bg-blue-500/20 text-blue-400')+'">'+g.type+'</span></td>'+
+  '<td class="text-gray-400 text-sm">'+esc(g.vehicleNo||'-')+'</td>'+
+  '<td><div class="action-btn-group">'+
+  '<button onclick="viewGatePass(\''+g.id+'\')" class="btn-ghost btn-sm" title="View"><i class="fas fa-eye"></i></button>'+
+  '<button onclick="editGatePass(\''+g.id+'\')" class="btn-ghost btn-sm" title="Edit" style="border-color:#22c55e;color:#22c55e"><i class="fas fa-edit"></i></button>'+
+  '<button onclick="confirmDeleteGP(\''+g.id+'\')" class="btn-ghost btn-sm" title="Delete" style="border-color:#ef4444;color:#ef4444"><i class="fas fa-trash"></i></button>'+
+  '</div></td>'+
+  '</tr>').join(''):'<tr><td colspan="7" class="text-center text-gray-500 py-12"><i class="fas fa-inbox text-3xl mb-3 block text-gray-700"></i>No gate passes found</td></tr>')+
   '</tbody></table></div></div></div>';
 }
 
-/* ===== VIEW / PRINT / DOWNLOAD ===== */
-function buildGPDoc(g){
-  const co=getCompany();
-  const cl=getCustomLogo();
-  const def='https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
-  const logoSrc=cl||def;
-  const fl=g.flaps||{};
-
-  let body='';
-
-  /* Header */
-  body+='<div class="gp-header"><div><img src="'+logoSrc+'" style="height:50px;border-radius:4px;margin-bottom:6px"><div class="gp-company-name">'+esc(co.name)+'</div><div class="gp-company-sub">'+esc(co.address)+'</div></div><div style="text-align:right"><div class="gp-gpno-label">Gate Pass No</div><div class="gp-gpno-value">'+esc(g.gpNo)+'</div></div></div>';
-
-  /* Title bar */
-  body+='<div class="gp-title-bar"><span>Gate Pass</span><div style="display:flex;gap:8px;align-items:center"><span class="gp-type-badge'+(g.type==='Returnable'?' checked':'')+'"><i class="fas '+(g.type==='Returnable'?'fa-undo':'fa-truck')+'"></i> '+g.type+'</span></div></div>';
-
-  /* Date row */
-  body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Date</span>'+esc(g.date||'-')+'</div><div class="gp-field"><span class="gp-field-label">Created By</span>'+esc(g.createdBy||'-')+'</div><div class="gp-field"></div></div>';
-
-  /* Client details */
-  if(fl.client&&(g.client||g.carriedBy||g.mobile)){
-    body+='<div class="gp-section-title">Client / Carrier Details</div>';
-    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Client / Company</span>'+esc(g.client||'-')+'</div><div class="gp-field"><span class="gp-field-label">Carried By</span>'+esc(g.carriedBy||'-')+'</div><div class="gp-field"><span class="gp-field-label">Mobile No</span>'+esc(g.mobile||'-')+'</div></div>';
-  }
-
-  /* Location */
-  if(fl.location&&(g.locationFrom||g.locationTo)){
-    body+='<div class="gp-section-title">Location / Destination</div>';
-    body+='<div class="gp-field-row-2"><div class="gp-field"><span class="gp-field-label">From (Source)</span>'+esc(g.locationFrom||'-')+'</div><div class="gp-field"><span class="gp-field-label">To (Destination)</span>'+esc(g.locationTo||'-')+'</div></div>';
-  }
-
-  /* Vehicle */
-  if(fl.vehicle&&g.vehicleNo){
-    body+='<div class="gp-section-title">Vehicle Information</div>';
-    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Vehicle No</span>'+esc(g.vehicleNo)+'</div><div class="gp-field"></div><div class="gp-field"></div></div>';
-  }
-
-  /* Time — SINGLE field */
-  if(fl.time&&g.timeValue){
-    body+='<div class="gp-section-title">'+(g.timeLabel==='In'?'Time In':'Time Out')+'</div>';
-    body+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">'+(g.timeLabel==='In'?'TIME IN':'TIME OUT')+'</span>'+esc(g.timeValue)+'</div><div class="gp-field"></div><div class="gp-field"></div></div>';
-  }
-
-  /* Items */
-  if(fl.items&&g.items&&g.items.some(i=>i.description)){
-    body+='<div class="gp-section-title">Items / Equipment</div>';
-    body+='<table class="gp-items-table"><thead><tr><th style="width:40px">SL</th><th>Description</th><th style="width:80px">Unit</th><th style="width:60px">Qty</th><th>Remarks</th></tr></thead><tbody>';
-    g.items.forEach(it=>{
-      if(it.description){
-        body+='<tr><td style="text-align:center">'+it.sl+'</td><td>'+esc(it.description)+'</td><td style="text-align:center">'+esc(it.unit)+'</td><td style="text-align:center">'+esc(it.quantity)+'</td><td>'+esc(it.remarks)+'</td></tr>';
-      }
-    });
-    body+='</tbody></table>';
-  }
-
-  /* Purpose */
-  if(fl.purpose&&g.purpose){
-    body+='<div class="gp-section-title">Purpose / Remarks</div>';
-    body+='<div class="gp-field" style="min-height:50px"><span class="gp-field-label">Purpose</span>'+esc(g.purpose)+'</div>';
-  }
-
-  /* ALWAYS show 3 signatures: PREPARED BY, CHECKED BY, RECEIVED BY */
-  body+='<div class="gp-signature-row">';
-  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.preparedBy||'')+'</div><div class="gp-sign-line">Prepared By</div></div>';
-  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.checkedBy||'')+'</div><div class="gp-sign-line">Checked By</div></div>';
-  body+='<div class="gp-signature"><div class="gp-sign-name">'+esc(g.receivedBy||'')+'</div><div class="gp-sign-line">Received By</div></div>';
-  body+='</div>';
-
-  /* Footer */
-  body+='<div class="gp-footer"><span>'+esc(co.name)+'</span><span>'+esc(co.phone)+' | '+esc(co.email)+'</span><span>'+esc(co.web)+'</span></div>';
-
-  return '<div class="gp-outer"><div class="gp-stamp-space gp-stamp-space-left"></div><div class="gp-doc">'+body+'</div><div class="gp-stamp-space gp-stamp-space-right"></div></div>';
+function toggleFilterPanel(){
+  filterPanelOpen=!filterPanelOpen;
+  const p=document.getElementById('filterPanel');
+  if(p)p.classList.toggle('open',filterPanelOpen);
+  document.querySelector('.filter-toggle-btn').classList.toggle('active',filterPanelOpen);
 }
+function applyFilters(){
+  filterState.search=(document.getElementById('filter_search')||{}).value||'';
+  filterState.type=(document.getElementById('filter_type')||{}).value||'All';
+  filterState.dateFrom=(document.getElementById('filter_dateFrom')||{}).value||'';
+  filterState.dateTo=(document.getElementById('filter_dateTo')||{}).value||'';
+  filterState.client=(document.getElementById('filter_client')||{}).value||'All';
+  filterState.carriedBy=(document.getElementById('filter_carriedBy')||{}).value||'All';
+  renderPage('all');
+}
+function clearFilters(){
+  filterState={search:'',type:'All',dateFrom:'',dateTo:'',client:'All',carriedBy:'All'};
+  renderPage('all');
+}
+function initAllPageListeners(){}
 
+/* ===== VIEW GATE PASS ===== */
 function viewGatePass(id){
-  const g=getGatePasses().find(x=>x.id===id);
-  if(!g){showToast('Gate pass not found','warn');return;}
-  viewingPassId=id;
+  viewingPassId=id;const g=getGatePasses().find(x=>x.id===id);if(!g)return;
   document.getElementById('viewModalBody').innerHTML=buildGPDoc(g);
   document.getElementById('viewModal').classList.remove('hidden');
 }
-function closeViewModal(){document.getElementById('viewModal').classList.add('hidden');viewingPassId=null;}
+function closeViewModal(){document.getElementById('viewModal').classList.add('hidden');}
+
+function buildGPDoc(g){
+  const co=getCompany();
+  const logoSrc=getCustomLogo()||'https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
+  let html='<div class="gp-outer"><div class="gp-doc">';
+  /* Header */
+  html+='<div class="gp-header"><div style="display:flex;align-items:center;gap:12px"><img src="'+logoSrc+'" style="height:50px;border-radius:4px"><div><div class="gp-company-name">'+esc(co.name)+'</div><div class="gp-company-sub">'+esc(co.address)+'</div><div class="gp-company-sub">'+esc(co.phone)+' | '+esc(co.email)+'</div></div></div><div style="text-align:right"><div class="gp-gpno-label">Gate Pass No</div><div class="gp-gpno-value">'+esc(g.gpNo)+'</div></div></div>';
+  /* Title bar */
+  html+='<div class="gp-title-bar"><span>Gate Pass</span><div style="display:flex;gap:8px"><span class="gp-type-badge '+(g.type==='Returnable'?'checked':'')+'">'+(g.type==='Returnable'?'<i class="fas fa-undo" style="font-size:9px"></i>':'')+' '+g.type+'</span><span style="font-size:13px;font-weight:500;letter-spacing:.04em">'+esc(g.date)+'</span></div></div>';
+  /* Client info */
+  if(g.flaps&&g.flaps.client&&(g.client||g.carriedBy||g.mobile)){
+    html+='<div class="gp-field-row"><div class="gp-field"><span class="gp-field-label">Client / Company</span>'+esc(g.client||'-')+'</div><div class="gp-field"><span class="gp-field-label">Carried By</span>'+esc(g.carriedBy||'-')+'</div><div class="gp-field"><span class="gp-field-label">Mobile No</span>'+esc(g.mobile||'-')+'</div></div>';
+  }
+  /* Vehicle */
+  if(g.flaps&&g.flaps.vehicle&&g.vehicleNo){
+    html+='<div class="gp-field-row" style="grid-template-columns:1fr 1fr"><div class="gp-field"><span class="gp-field-label">Vehicle No</span>'+esc(g.vehicleNo)+'</div><div class="gp-field"></div></div>';
+  }
+  /* Time */
+  if(g.flaps&&g.flaps.time&&g.timeValue){
+    html+='<div class="gp-field-row" style="grid-template-columns:1fr 1fr"><div class="gp-field"><span class="gp-field-label">Time '+(g.timeLabel||'In')+'</span>'+esc(g.timeValue)+'</div><div class="gp-field"></div></div>';
+  }
+  /* Purpose */
+  if(g.flaps&&g.flaps.purpose&&g.purpose){
+    html+='<div class="gp-field"><span class="gp-field-label">Purpose / Remarks</span>'+esc(g.purpose)+'</div>';
+  }
+  /* Location */
+  if(g.flaps&&g.flaps.location&&(g.locationFrom||g.locationTo)){
+    html+='<div class="gp-field-row-2"><div class="gp-field"><span class="gp-field-label">From</span>'+esc(g.locationFrom||'-')+'</div><div class="gp-field"><span class="gp-field-label">To</span>'+esc(g.locationTo||'-')+'</div></div>';
+  }
+  /* Items */
+  if(g.flaps&&g.flaps.items&&g.items&&g.items.some(i=>i.description)){
+    html+='<div class="gp-section-title">Items Details</div><table class="gp-items-table"><thead><tr><th>SL</th><th>Description</th><th>Unit</th><th>Qty</th><th>Remarks</th></tr></thead><tbody>';
+    g.items.forEach(it=>{html+='<tr><td style="text-align:center">'+it.sl+'</td><td>'+esc(it.description)+'</td><td style="text-align:center">'+esc(it.unit)+'</td><td style="text-align:center">'+esc(it.quantity)+'</td><td>'+esc(it.remarks)+'</td></tr>';});
+    html+='</tbody></table>';
+  }
+  /* Signatures */
+  html+='<div class="gp-signature-row"><div class="gp-signature"><div class="gp-sign-line">Prepared By</div><div class="gp-sign-name">'+esc(g.preparedBy||'')+'</div></div><div class="gp-signature"><div class="gp-sign-line">Checked By</div><div class="gp-sign-name">'+esc(g.checkedBy||'')+'</div></div><div class="gp-signature"><div class="gp-sign-line">Received By</div><div class="gp-sign-name">'+esc(g.receivedBy||'')+'</div></div></div>';
+  /* Footer */
+  html+='<div class="gp-footer"><span>'+esc(co.web)+'</span><span>Printed: '+new Date().toLocaleString('en-GB')+'</span></div>';
+  html+='</div></div>';
+  return html;
+}
 
 function printGatePass(){
-  if(!viewingPassId)return;
-  const g=getGatePasses().find(x=>x.id===viewingPassId);
-  if(!g)return;
-  const pa=document.getElementById('printArea');
-  pa.innerHTML=buildGPDoc(g);pa.classList.remove('hidden');
-  window.print();
-  setTimeout(()=>pa.classList.add('hidden'),500);
+  const g=getGatePasses().find(x=>x.id===viewingPassId);if(!g)return;
+  document.getElementById('printArea').innerHTML=buildGPDoc(g);
+  document.getElementById('printArea').classList.remove('hidden');
+  setTimeout(()=>{window.print();setTimeout(()=>{document.getElementById('printArea').classList.add('hidden');},500);},200);
 }
-
 function downloadGatePass(){
-  if(!viewingPassId)return;
-  const g=getGatePasses().find(x=>x.id===viewingPassId);
-  if(!g)return;
-  /* Create a standalone HTML for download */
-  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+esc(g.gpNo)+'</title><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{background:#f5f5f5;display:flex;justify-content:center;padding:20px}.gp-outer{background:white;width:210mm;min-height:297mm;display:flex;flex-direction:row;font-family:Lora,Georgia,serif;box-shadow:0 4px 20px rgba(0,0,0,.15)}.gp-stamp-space{width:18mm;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;border:1px dashed #ccc}.gp-stamp-space::after{content:"STAMP";writing-mode:vertical-rl;text-orientation:mixed;font-family:Rajdhani,sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;color:#bbb;text-transform:uppercase}.gp-stamp-space-left{border-right:none}.gp-stamp-space-right{border-left:none}.gp-doc{flex:1;padding:16mm 14mm;color:#111;position:relative;min-height:297mm}.gp-doc .gp-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:14px;margin-bottom:6px}.gp-doc .gp-company-name{font-family:Rajdhani,sans-serif;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#111;line-height:1.2}.gp-doc .gp-company-sub{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em;color:#555;margin-top:2px}.gp-doc .gp-gpno-label{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-gpno-value{font-family:Rajdhani,sans-serif;font-size:26px;font-weight:700;letter-spacing:.1em;color:#111;line-height:1}.gp-doc .gp-title-bar{display:flex;justify-content:space-between;align-items:center;background:#111;color:white;padding:9px 16px;margin:12px 0 18px;border-left:6px solid #dc2626;font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field{border:1px solid #999;padding:6px 10px;min-height:34px;font-size:13px;background:#fff;position:relative;font-family:Lora,serif}.gp-doc .gp-field-label{position:absolute;top:-8px;left:8px;background:white;padding:0 4px;font-size:9px;text-transform:uppercase;font-weight:700;color:#555;letter-spacing:.06em;font-family:Rajdhani,sans-serif}.gp-doc .gp-type-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid #111;font-size:11px;font-weight:700;text-transform:uppercase;font-family:Rajdhani,sans-serif;letter-spacing:.06em}.gp-doc .gp-type-badge.checked{background:#dc2626;color:white;border-color:#dc2626}.gp-doc .gp-items-table{width:100%;border-collapse:collapse;margin-top:8px;font-family:Lora,serif}.gp-doc .gp-items-table th{background:#f0f0f0;border:1px solid #555;padding:8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-family:Rajdhani,sans-serif;font-weight:700}.gp-doc .gp-items-table td{border:1px solid #555;padding:8px 6px;font-size:13px}.gp-doc .gp-signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}.gp-doc .gp-signature{text-align:center}.gp-doc .gp-sign-line{border-top:1px solid #111;margin-top:40px;padding-top:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:Rajdhani,sans-serif}.gp-doc .gp-sign-name{font-size:13px;font-family:Lora,serif;color:#333;margin-top:2px;min-height:18px}.gp-doc .gp-footer{margin-top:24px;padding-top:12px;border-top:1px solid #999;display:flex;justify-content:space-between;font-size:9px;color:#666;font-family:Rajdhani,sans-serif;letter-spacing:.03em}.gp-doc .gp-section-title{font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;color:#111;letter-spacing:.08em;text-transform:uppercase;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid #ccc}@media print{body{padding:0;background:white}.gp-outer{box-shadow:none;width:100%}.gp-stamp-space{width:15mm}.gp-doc{padding:12mm 10mm;min-height:auto}@page{size:A4;margin:0}}</style></head><body>'+buildGPDoc(g)+'</body></html>';
-  const blob=new Blob([html],{type:'text/html'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=g.gpNo+'.html';a.click();
-  URL.revokeObjectURL(a.href);showToast('Downloaded: '+g.gpNo);
+  const g=getGatePasses().find(x=>x.id===viewingPassId);if(!g)return;
+  const content='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>'+g.gpNo+'</title><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet"><style>body{margin:0;padding:0;background:white}*{box-sizing:border-box}.gp-outer{background:white;width:210mm;min-height:297mm;margin:0 auto;font-family:Lora,Georgia,serif}.gp-doc{padding:16mm 18mm;color:#111;position:relative;min-height:297mm}.gp-doc .gp-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #111;padding-bottom:14px;margin-bottom:6px}.gp-doc .gp-company-name{font-family:Rajdhani,sans-serif;font-size:20px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#111;line-height:1.2}.gp-doc .gp-company-sub{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:500;letter-spacing:.04em;color:#555;margin-top:2px}.gp-doc .gp-gpno-label{font-family:Rajdhani,sans-serif;font-size:10px;font-weight:600;color:#999;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-gpno-value{font-family:Rajdhani,sans-serif;font-size:26px;font-weight:700;letter-spacing:.1em;color:#111;line-height:1}.gp-doc .gp-title-bar{display:flex;justify-content:space-between;align-items:center;background:#111;color:white;padding:9px 16px;margin:12px 0 18px;border-left:6px solid #dc2626;font-family:Rajdhani,sans-serif;font-size:18px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.gp-doc .gp-field-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.gp-doc .gp-field{border:1px solid #999;padding:6px 10px;min-height:34px;font-size:13px;background:#fff;position:relative;font-family:Lora,serif}.gp-doc .gp-field-label{position:absolute;top:-8px;left:8px;background:white;padding:0 4px;font-size:9px;text-transform:uppercase;font-weight:700;color:#555;letter-spacing:.06em;font-family:Rajdhani,sans-serif}.gp-doc .gp-type-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid #111;font-size:11px;font-weight:700;text-transform:uppercase;margin-right:8px;font-family:Rajdhani,sans-serif;letter-spacing:.06em}.gp-doc .gp-type-badge.checked{background:#dc2626;color:white;border-color:#dc2626}.gp-doc .gp-items-table{width:100%;border-collapse:collapse;margin-top:8px;font-family:Lora,serif}.gp-doc .gp-items-table th{background:#f0f0f0;border:1px solid #555;padding:8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;font-family:Rajdhani,sans-serif;font-weight:700}.gp-doc .gp-items-table td{border:1px solid #555;padding:8px 6px;font-size:13px;min-height:30px}.gp-doc .gp-signature-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:40px}.gp-doc .gp-signature{text-align:center}.gp-doc .gp-sign-line{border-top:1px solid #111;margin-top:40px;padding-top:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-family:Rajdhani,sans-serif}.gp-doc .gp-sign-name{font-size:13px;font-family:Lora,serif;color:#333;margin-top:2px;min-height:18px}.gp-doc .gp-footer{margin-top:24px;padding-top:12px;border-top:1px solid #999;display:flex;justify-content:space-between;font-size:9px;color:#666;font-family:Rajdhani,sans-serif;letter-spacing:.03em}.gp-doc .gp-section-title{font-family:Rajdhani,sans-serif;font-size:12px;font-weight:700;color:#111;letter-spacing:.08em;text-transform:uppercase;margin:16px 0 10px;padding-bottom:4px;border-bottom:1px solid #ccc}@page{size:A4;margin:0}</style></head><body>'+buildGPDoc(g)+'</body></html>';
+  const blob=new Blob([content],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=g.gpNo+'.html';a.click();URL.revokeObjectURL(a.href);
+  showToast('Downloaded '+g.gpNo);
 }
 
-function editGP(id){
-  const g=getGatePasses().find(x=>x.id===id);
-  if(!g){showToast('Gate pass not found','warn');return;}
-  editingId=id;navigateTo('create');
-}
-
+/* ===== DELETE GATE PASS ===== */
 function confirmDeleteGP(id){
-  const g=getGatePasses().find(x=>x.id===id);
-  if(!g)return;
-  deleteTargetId=id;
-  document.getElementById('deleteMsg').textContent='Delete gate pass '+g.gpNo+'? This cannot be undone.';
+  deleteTargetId=id;const g=getGatePasses().find(x=>x.id===id);
+  document.getElementById('deleteMsg').textContent='Gate Pass "'+(g?g.gpNo:'')+'" will be permanently deleted.';
   document.getElementById('deleteModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteBtn').onclick=()=>{
+    const l=getGatePasses().filter(x=>x.id!==deleteTargetId);saveGatePasses(l);updateCount();
+    closeDeleteModal();showToast('Gate Pass deleted.');renderPage('all');
+  };
 }
-function closeDeleteModal(){document.getElementById('deleteModal').classList.add('hidden');deleteTargetId=null;}
+function closeDeleteModal(){document.getElementById('deleteModal').classList.add('hidden');}
 
-document.getElementById('confirmDeleteBtn').addEventListener('click',()=>{
-  if(!deleteTargetId)return;
-  let list=getGatePasses();list=list.filter(g=>g.id!==deleteTargetId);
-  saveGatePasses(list);closeDeleteModal();updateCount();renderPage('all');showToast('Gate Pass deleted');
-});
-
-/* ===== USERS PAGE ===== */
+/* ===== MANAGE USERS ===== */
 function usersHTML(){
   const users=getUsers();
-  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-users-cog"></i><span>ADMINISTRATION</span></div><h1 class="font-display text-4xl font-bold text-white">Manage Users</h1><p class="text-gray-500 mt-1">'+users.length+' registered accounts</p></div><button onclick="openAdminCreateModal()" class="btn-primary"><i class="fas fa-user-plus mr-2"></i>Create Account</button></div>'+
-  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden"><div class="overflow-x-auto"><table class="data-table"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead><tbody>'+
-  (users.map(u=>'<tr><td class="font-semibold text-white">'+esc(u.name)+'</td><td class="text-gray-400">'+esc(u.username)+'</td><td><span class="role-badge '+(u.role==='admin'?'admin':'user')+'"><i class="fas '+(u.role==='admin'?'fa-shield-alt':'fa-user')+' text-[8px]"></i> '+u.role+'</span></td><td class="text-gray-500 text-sm">'+fmtDate(u.createdAt)+'</td><td>'+(u.id!=='admin_0'?'<button onclick="confirmDeleteUser(\''+u.id+'\')" class="text-gray-400 hover:text-red-400 p-1 transition" title="Delete"><i class="fas fa-trash-alt"></i></button>':'<span class="text-gray-700 text-xs">Protected</span>')+'</td></tr>').join(''))+
+  const adminCount=users.filter(u=>u.role==='admin').length;
+  const userCount=users.filter(u=>u.role==='user').length;
+  const activeCount=users.filter(u=>u.active!==false).length;
+  const inactiveCount=users.filter(u=>u.active===false).length;
+
+  return '<div class="page"><div class="mb-6 flex items-center justify-between flex-wrap gap-4"><div><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-users-cog"></i><span>MANAGE USERS</span></div><h1 class="font-display text-4xl font-bold text-white">Manage Users</h1><p class="text-gray-500 mt-1">'+users.length+' total registered accounts</p></div>'+
+  '<button onclick="openAdminCreateModal()" class="btn-primary"><i class="fas fa-user-plus mr-2"></i>Create Account</button></div>'+
+
+  /* Stats */
+  '<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">'+
+  statCard('TOTAL',users.length,'fa-users','red','REGISTERED ACCOUNTS')+
+  statCard('ADMINS',adminCount,'fa-shield-alt','yellow','ADMINISTRATORS')+
+  statCard('ACTIVE',activeCount,'fa-check-circle','green','CAN LOGIN')+
+  statCard('INACTIVE',inactiveCount,'fa-ban','red','BLOCKED FROM LOGIN')+
+  '</div>'+
+
+  /* Table */
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl overflow-hidden">'+
+  '<div class="overflow-x-auto"><table class="data-table"><thead><tr><th>User</th><th>Username</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead><tbody>'+
+  users.map(u=>'<tr>'+
+  '<td><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full '+(u.role==='admin'?'bg-gradient-to-br from-red-600 to-red-900':'bg-gradient-to-br from-blue-600 to-blue-900')+' flex items-center justify-center font-display font-bold text-white text-sm">'+esc(u.name.charAt(0).toUpperCase())+'</div><div><div class="font-semibold text-white text-sm">'+esc(u.name)+'</div>'+(u.id==='admin_0'?'<div class="text-[10px] text-yellow-500 font-display tracking-wider">HARD-CODED ADMIN</div>':'')+'</div></div></td>'+
+  '<td class="font-display text-sm">'+esc(u.username)+'</td>'+
+  '<td><span class="role-badge '+(u.role==='admin'?'admin':'user')+'"><i class="fas '+(u.role==='admin'?'fa-shield-alt':'fa-user')+' text-[8px]"></i> '+u.role+'</span></td>'+
+  '<td>'+(u.active!==false?'<span class="status-active"><i class="fas fa-circle text-[6px]"></i> Active</span>':'<span class="status-inactive"><i class="fas fa-circle text-[6px]"></i> Inactive</span>')+'</td>'+
+  '<td class="text-gray-400 text-xs">'+fmtDateTime(u.createdAt)+'</td>'+
+  '<td><div class="action-btn-group">'+
+  (u.id!=='admin_0'?(
+    (u.active!==false?'<button onclick="openToggleStatusModal(\''+u.id+'\',false)" class="btn-warning btn-sm" title="Deactivate"><i class="fas fa-ban mr-1"></i>Deactivate</button>':'<button onclick="openToggleStatusModal(\''+u.id+'\',true)" class="btn-success btn-sm" title="Activate"><i class="fas fa-check mr-1"></i>Activate</button>')+
+    '<button onclick="confirmDeleteUser(\''+u.id+'\')" class="btn-danger btn-sm" title="Delete"><i class="fas fa-trash"></i></button>'
+  ):'<span class="text-xs text-gray-600 font-display tracking-wider">PROTECTED</span>')+
+  '</div></td>'+
+  '</tr>').join('')+
   '</tbody></table></div></div></div>';
 }
 
-function openAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.remove('hidden');document.getElementById('acError').classList.add('hidden');document.getElementById('adminCreateForm').reset();selectAdminRole(document.querySelector('[data-arole="user"]'),'user');}
+/* ===== TOGGLE USER STATUS ===== */
+function openToggleStatusModal(userId,makeActive){
+  toggleStatusTargetId=userId;
+  toggleStatusAction=makeActive;
+  const u=getUsers().find(x=>x.id===userId);
+  if(!u)return;
+  if(makeActive){
+    document.getElementById('toggleStatusTitle').textContent='Activate User?';
+    document.getElementById('toggleStatusMsg').textContent='"'+u.name+'" ('+u.username+') will be able to login again.';
+    document.getElementById('toggleStatusIcon').className='fas fa-user-check text-2xl text-green-500';
+    document.getElementById('toggleStatusIcon').parentElement.className='w-16 h-16 rounded-full bg-green-600/20 flex items-center justify-center mx-auto mb-4';
+    document.getElementById('confirmToggleStatusBtn').className='btn-success flex-1';
+  }else{
+    document.getElementById('toggleStatusTitle').textContent='Deactivate User?';
+    document.getElementById('toggleStatusMsg').textContent='"'+u.name+'" ('+u.username+') will be BLOCKED from logging in. Their existing session will be terminated.';
+    document.getElementById('toggleStatusIcon').className='fas fa-user-shield text-2xl text-yellow-500';
+    document.getElementById('toggleStatusIcon').parentElement.className='w-16 h-16 rounded-full bg-yellow-600/20 flex items-center justify-center mx-auto mb-4';
+    document.getElementById('confirmToggleStatusBtn').className='btn-warning flex-1';
+  }
+  document.getElementById('toggleStatusModal').classList.remove('hidden');
+  document.getElementById('confirmToggleStatusBtn').onclick=()=>{
+    const users=getUsers();
+    const idx=users.findIndex(x=>x.id===toggleStatusTargetId);
+    if(idx>-1){
+      users[idx].active=toggleStatusAction;
+      saveUsers(users);
+      /* If deactivating the currently logged-in user (other than hard admin viewing), force logout */
+      if(!toggleStatusAction&&currentUser&&currentUser.id===toggleStatusTargetId){
+        sessionStorage.removeItem(AUTH_KEY);currentUser=null;
+        document.getElementById('mainApp').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+        document.getElementById('loginUser').value='';
+        document.getElementById('loginPass').value='';
+        closeToggleStatusModal();
+        showToast('Your account has been deactivated by admin.','error');
+        return;
+      }
+      closeToggleStatusModal();
+      showToast('User "'+users[idx].name+'" is now '+(toggleStatusAction?'ACTIVE':'INACTIVE')+'.');
+      renderPage('users');
+    }
+  };
+}
+function closeToggleStatusModal(){document.getElementById('toggleStatusModal').classList.add('hidden');}
+
+/* ===== DELETE USER ===== */
+function confirmDeleteUser(id){
+  deleteUserTargetId=id;const u=getUsers().find(x=>x.id===id);
+  document.getElementById('deleteUserMsg').textContent='"'+(u?u.name:'')+'" ('+(u?u.username:'')+') will be permanently removed.';
+  document.getElementById('deleteUserModal').classList.remove('hidden');
+  document.getElementById('confirmDeleteUserBtn').onclick=()=>{
+    if(deleteUserTargetId===currentUser.id){closeDeleteUserModal();showToast('Cannot delete your own account.','warn');return;}
+    const l=getUsers().filter(x=>x.id!==deleteUserTargetId);saveUsers(l);
+    closeDeleteUserModal();showToast('User deleted.');renderPage('users');
+  };
+}
+function closeDeleteUserModal(){document.getElementById('deleteUserModal').classList.add('hidden');}
+
+/* ===== ADMIN CREATE USER ===== */
+function openAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.remove('hidden');document.getElementById('acError').classList.add('hidden');document.getElementById('adminCreateForm').reset();document.getElementById('ac_role').value='user';document.querySelectorAll('#adminCreateForm .check-pill').forEach(p=>p.classList.toggle('active',p.dataset.arole==='user'));}
 function closeAdminCreateModal(){document.getElementById('adminCreateUserModal').classList.add('hidden');}
 
 document.getElementById('adminCreateForm').addEventListener('submit',e=>{
   e.preventDefault();
-  const r=document.getElementById('ac_role').value,nm=document.getElementById('ac_name').value.trim(),
+  const role=document.getElementById('ac_role').value,nm=document.getElementById('ac_name').value.trim(),
   un=document.getElementById('ac_user').value.trim(),pw=document.getElementById('ac_pass').value,
   er=document.getElementById('acError'),em=document.getElementById('acErrorMsg');
   if(!nm||!un||!pw){em.textContent='All fields are required.';er.classList.remove('hidden');return;}
   if(pw.length<4){em.textContent='Password must be at least 4 characters.';er.classList.remove('hidden');return;}
   if(usernameExists(un)){em.textContent='Username already exists.';er.classList.remove('hidden');return;}
-  const us=getUsers();us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:r,createdAt:new Date().toISOString()});
-  saveUsers(us);closeAdminCreateModal();renderPage('users');showToast('Account "'+un+'" created!');
-});
-
-function confirmDeleteUser(id){
-  const u=getUsers().find(x=>x.id===id);
-  if(!u||u.id==='admin_0')return;
-  deleteUserTargetId=id;
-  document.getElementById('deleteUserMsg').textContent='Delete user "'+u.name+'"? This cannot be undone.';
-  document.getElementById('deleteUserModal').classList.remove('hidden');
-}
-function closeDeleteUserModal(){document.getElementById('deleteUserModal').classList.add('hidden');deleteUserTargetId=null;}
-
-document.getElementById('confirmDeleteUserBtn').addEventListener('click',()=>{
-  if(!deleteUserTargetId)return;
-  let us=getUsers();us=us.filter(u=>u.id!==deleteUserTargetId);
-  saveUsers(us);closeDeleteUserModal();renderPage('users');showToast('User deleted');
+  const us=getUsers();
+  us.push({id:'user_'+Date.now(),name:nm,username:un,password:pw,role:role,active:true,createdAt:new Date().toISOString()});
+  saveUsers(us);closeAdminCreateModal();showToast((role==='admin'?'Admin':'User')+' "'+un+'" created!');renderPage('users');
 });
 
 /* ===== UPLOAD LOGO ===== */
 function uploadHTML(){
   const cl=getCustomLogo();
   const def='https://z-cdn-media.chatglm.cn/files/db53c338-e7ed-4bd2-89c8-9913c71d5bea.jpeg?auth_key=1883857491-a1a3b5c2d64c4ea68e5ff371a0f69d19-0-67800ad86885e75ec522eca359520da8';
-  const src=cl||def;
-  return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-image"></i><span>BRANDING</span></div><h1 class="font-display text-4xl font-bold text-white">Change Logo</h1><p class="text-gray-500 mt-1">Upload a custom logo for gate pass documents</p></div>'+
-  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-8 max-w-lg">'+
-  '<div class="mb-6"><div class="text-xs font-display tracking-widest text-gray-500 mb-3">CURRENT LOGO</div><div class="bg-white rounded-lg p-6 flex items-center justify-center" style="min-height:120px"><img src="'+src+'" style="max-height:100px;max-width:300px;object-fit:contain" id="logoPreview"></div></div>'+
-  '<div class="mb-6"><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">UPLOAD NEW LOGO</label><input type="file" id="logoInput" accept="image/*" class="field" style="padding:10px"><p class="text-xs text-gray-600 mt-2">Recommended: PNG or JPG, square aspect ratio, max 500KB</p></div>'+
-  '<div class="flex gap-3"><button onclick="uploadLogoFile()" class="btn-primary"><i class="fas fa-upload mr-2"></i>Upload</button>'+(cl?'<button onclick="resetLogo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset to Default</button>':'')+'</div>'+
-  '</div></div>';
+  return '<div class="page"><div class="mb-8"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-image"></i><span>CHANGE LOGO</span></div><h1 class="font-display text-4xl font-bold text-white">Change Logo</h1><p class="text-gray-500 mt-1">Upload a custom logo for gate pass documents</p></div>'+
+  '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-8 max-w-xl">'+
+  '<div class="mb-6"><label class="block text-xs font-display tracking-widest text-gray-400 mb-3">CURRENT LOGO</label><div class="bg-black/40 border border-gray-800 rounded-lg p-6 flex items-center justify-center"><img src="'+(cl||def)+'" id="logoPreview" style="max-height:120px;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.5)"></div></div>'+
+  '<div class="mb-6"><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">UPLOAD NEW LOGO</label><input type="file" id="logoFileInput" accept="image/*" class="field py-3 cursor-pointer" onchange="previewLogo(this)"></div>'+
+  '<div class="flex gap-3"><button onclick="uploadNewLogo()" class="btn-primary"><i class="fas fa-upload mr-2"></i>Upload & Apply</button>'+
+  (cl?'<button onclick="resetLogo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset to Default</button>':'')+
+  '</div></div></div>';
 }
-
-function uploadLogoFile(){
-  const f=document.getElementById('logoInput').files[0];
-  if(!f){showToast('Please select a file','warn');return;}
-  if(f.size>512000){showToast('File too large. Max 500KB.','warn');return;}
-  const reader=new FileReader();
-  reader.onload=function(e){
-    saveCustomLogo(e.target.result);applyLogos();
-    const prev=document.getElementById('logoPreview');if(prev)prev.src=e.target.result;
-    showToast('Logo updated successfully!');renderPage('upload');
-  };
-  reader.readAsDataURL(f);
+function previewLogo(input){
+  if(input.files&&input.files[0]){
+    const r=new FileReader();r.onload=e=>{document.getElementById('logoPreview').src=e.target.result;};r.readAsDataURL(input.files[0]);
+  }
 }
-function resetLogo(){clearCustomLogo();applyLogos();showToast('Logo reset to default');renderPage('upload');}
+function uploadNewLogo(){
+  const f=document.getElementById('logoFileInput');
+  if(!f.files||!f.files[0]){showToast('Select an image first.','warn');return;}
+  const r=new FileReader();r.onload=e=>{saveCustomLogo(e.target.result);applyLogos();showToast('Logo updated successfully!');renderPage('upload');};r.readAsDataURL(f.files[0]);
+}
+function resetLogo(){clearCustomLogo();applyLogos();showToast('Logo reset to default.');renderPage('upload');}
 
 /* ===== COMPANY INFO ===== */
 function companyHTML(){
-  const c=getCompany();
-  return '<div class="page"><div class="mb-6"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-building"></i><span>SETTINGS</span></div><h1 class="font-display text-4xl font-bold text-white">Company Information</h1><p class="text-gray-500 mt-1">Details shown on gate pass documents</p></div>'+
+  const co=getCompany();
+  return '<div class="page"><div class="mb-8"><div class="flex items-center gap-2 text-red-400 text-xs font-display tracking-widest mb-2"><i class="fas fa-building"></i><span>COMPANY INFO</span></div><h1 class="font-display text-4xl font-bold text-white">Company Information</h1><p class="text-gray-500 mt-1">Details shown on gate pass documents</p></div>'+
   '<div class="bg-[var(--panel)] border border-gray-800 rounded-xl p-8 max-w-2xl">'+
   '<div class="space-y-5">'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">COMPANY NAME</label><input type="text" id="c_name" class="field" value="'+esc(c.name)+'"></div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">ADDRESS</label><input type="text" id="c_address" class="field" value="'+esc(c.address)+'"></div>'+
-  '<div class="grid grid-cols-1 md:grid-cols-2 gap-5">'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PHONE</label><input type="text" id="c_phone" class="field" value="'+esc(c.phone)+'"></div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">EMAIL</label><input type="text" id="c_email" class="field" value="'+esc(c.email)+'"></div>'+
-  '</div>'+
-  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">WEBSITE</label><input type="text" id="c_web" class="field" value="'+esc(c.web)+'"></div>'+
-  '</div>'+
-  '<div class="flex gap-3 mt-8"><button onclick="saveCompanyInfo()" class="btn-primary"><i class="fas fa-save mr-2"></i>Save Changes</button><button onclick="resetCompanyInfo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset Defaults</button></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">COMPANY NAME</label><input type="text" id="co_name" class="field" value="'+esc(co.name)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">ADDRESS</label><textarea id="co_address" class="field" rows="2">'+esc(co.address)+'</textarea></div>'+
+  '<div class="grid grid-cols-1 md:grid-cols-3 gap-5">'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">PHONE</label><input type="text" id="co_phone" class="field" value="'+esc(co.phone)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">EMAIL</label><input type="text" id="co_email" class="field" value="'+esc(co.email)+'"></div>'+
+  '<div><label class="block text-xs font-display tracking-widest text-gray-400 mb-2">WEBSITE</label><input type="text" id="co_web" class="field" value="'+esc(co.web)+'"></div>'+
+  '</div></div>'+
+  '<div class="mt-6 flex gap-3"><button onclick="saveCompanyInfo()" class="btn-primary"><i class="fas fa-save mr-2"></i>Save Changes</button><button onclick="resetCompanyInfo()" class="btn-ghost"><i class="fas fa-undo mr-2"></i>Reset to Default</button></div>'+
   '</div></div>';
 }
-
 function saveCompanyInfo(){
-  const c={name:document.getElementById('c_name').value.trim(),address:document.getElementById('c_address').value.trim(),phone:document.getElementById('c_phone').value.trim(),email:document.getElementById('c_email').value.trim(),web:document.getElementById('c_web').value.trim()};
-  if(!c.name){showToast('Company name is required','warn');return;}
-  saveCompany(c);document.getElementById('headerCompanySub').textContent=c.name.split(' ').slice(0,3).join(' ').toUpperCase();
+  saveCompany({name:document.getElementById('co_name').value.trim(),address:document.getElementById('co_address').value.trim(),phone:document.getElementById('co_phone').value.trim(),email:document.getElementById('co_email').value.trim(),web:document.getElementById('co_web').value.trim()});
+  const co=getCompany();document.getElementById('headerCompanySub').textContent=co.name.split(' ').slice(0,3).join(' ').toUpperCase();
   showToast('Company info saved!');
 }
-function resetCompanyInfo(){saveCompany({...defaultCompany});renderPage('company');showToast('Reset to defaults');}
+function resetCompanyInfo(){saveCompany({...defaultCompany});document.getElementById('headerCompanySub').textContent=defaultCompany.name.split(' ').slice(0,3).join(' ').toUpperCase();showToast('Company info reset.');renderPage('company');}
 
 /* ===== LIVE CLOCK ===== */
 setInterval(()=>{
@@ -880,6 +1031,7 @@ setInterval(()=>{
 },1000);
 
 /* ===== INIT ===== */
+applyLogos();
 checkAuth();
 </script>
 </body>
